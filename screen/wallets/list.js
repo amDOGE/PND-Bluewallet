@@ -20,6 +20,7 @@ import { NavigationEvents } from 'react-navigation';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
+import Notifications from '../../models/notifications';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -59,6 +60,8 @@ export default class WalletsList extends Component {
 
   componentDidMount() {
     this.refreshFunction();
+    Notifications.configure();
+    Notifications.testLocalNotification()
   }
 
   /**
