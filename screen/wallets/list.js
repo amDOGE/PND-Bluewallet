@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, FlatList, RefreshControl, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Text, FlatList, RefreshControl, ScrollView, PushNotificationIOS } from 'react-native';
 import {
   BlueTransactionOnchainIcon,
   BlueLoading,
@@ -21,6 +21,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
 import Notifications from '../../models/notifications';
+import PushNotification from 'react-native-push-notification';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -61,9 +62,14 @@ export default class WalletsList extends Component {
   componentDidMount() {
     this.refreshFunction();
     Notifications.configure();
-    Notifications.configureBackgroundFetch()
-    Notifications.backgroundFetchAuthorizationStatus()
-    setTimeout(() => Notifications.testLocalNotification(), 10000);
+    Notifications.configureBackgroundFetch();
+    // Notifications.testBackgroundFetch();
+    PushNotificationIOS.presentLocalNotification({
+      alertBody: 'hola',
+      userInfo: {
+        message: 'holaaaa'
+      }
+    });
   }
 
   /**

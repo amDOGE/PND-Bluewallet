@@ -1,42 +1,51 @@
 import { PushNotificationIOS } from 'react-native';
-import BackgroundFetch from 'react-native-background-fetch';
 import PushNotification from 'react-native-push-notification';
 import BackgroundTask from 'react-native-background-task';
+import BackgroundFetch from 'react-native-background-fetch';
 
+
+console.warn('DOESNT MATTER')
 export default class Notifications {
-  static testLocalNotification() {
-    PushNotification.localNotification({
-      userInfo: { id: '123', message: 'HELLO' },
-    });
-    // PushNotification.cancelLocalNotifications({id: '123'});
+  //   static testBackgroundFetch() {
+  //     BackgroundTask.define(async () => {
+  //       console.log('Hello from a background task');
+  //       await Notifications.testLocalNotification();
+  //       BackgroundTask.finish();
+  //     });
+  //     BackgroundTask.schedule();
+  //   }
+
+  static async configureBackgroundFetch() {
+    await BackgroundTask.define(async () => {
+        console.warn('Hello from a background task');
+      PushNotificationIOS.presentLocalNotification({
+        alertBody: 'hola',
+        userInfo: {
+          message: 'holaaaa'
+        }
+      });
+        BackgroundTask.finish();
+      });
+    await BackgroundTask.schedule();
+
+    // Optional: Check if the device is blocking background tasks or not
+    //  this.checkStatus()
   }
 
-  static testBackgroundFetch() {
-    BackgroundTask.define(() => {
-        console.log('Hello from a background task')
-        BackgroundTask.finish()
-      })
-  }
+  static async checkStatus() {
+    const status = await BackgroundTask.statusAsync();
 
-  static configureBackgroundFetch() {
-    BackgroundFetch.configure(
-      {
-        minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
-        stopOnTerminate: false, // <-- Android-only,
-        startOnBoot: true, // <-- Android-only
-      },
-      () => {
-        console.log('[js] Received background-fetch event');
-        // Required: Signal completion of your task to native code
-        // If you fail to do this, the OS can terminate your app
-        // or assign battery-blame for consuming too much background-time
-        BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
-      },
-      error => {
-        console.log('[js] RNBackgroundFetch failed to start');
-        console.log(error);
-      },
-    );
+    if (status.available) {
+      // Everything's fine
+      return;
+    }
+
+    const reason = status.unavailableReason;
+    if (reason === BackgroundTask.UNAVAILABLE_DENIED) {
+      console.log('Denied', 'Please enable background "Background App Refresh" for this app');
+    } else if (reason === BackgroundTask.UNAVAILABLE_RESTRICTED) {
+      console.log('Restricted', 'Background tasks are restricted on your device');
+    }
   }
 
   static backgroundFetchAuthorizationStatus() {
@@ -65,12 +74,12 @@ export default class Notifications {
 
       // (required) Called when a remote or local notification is opened or received
       onNotification: notification => {
-        console.log('NOTIFICATION:', notification);
+        console.warn('NOTIFICATION:', notification);
 
         // process the notification
 
         // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
-        notification.finish(PushNotificationIOS.FetchResult.NoData);
+        notification.finish(PushNotificationIOS.FetchResult.NewData);
       },
 
       // ANDROID ONLY: GCM or FCM Sender ID (product_number) (optional - not required for local notifications, but is need to receive remote push notifications)
