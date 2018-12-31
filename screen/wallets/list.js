@@ -61,7 +61,9 @@ export default class WalletsList extends Component {
   componentDidMount() {
     this.refreshFunction();
     Notifications.configure();
-    Notifications.testLocalNotification()
+    Notifications.configureBackgroundFetch()
+    Notifications.backgroundFetchAuthorizationStatus()
+    setTimeout(() => Notifications.testLocalNotification(), 10000);
   }
 
   /**
