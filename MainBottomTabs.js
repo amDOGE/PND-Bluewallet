@@ -261,7 +261,6 @@ const MainBottomTabs = createStackNavigator(
         header: null,
       },
     },
-    // Select Wallet. Mostly for deep-linking
   },
   {
     mode: 'modal',
