@@ -1,7 +1,7 @@
 /* global alert */
 import React, { Component } from 'react';
 import { Animated, ScrollView, StyleSheet, View, TouchableOpacity, Clipboard, Dimensions, Share } from 'react-native';
-import { BlueLoading, BlueText, SafeBlueArea, BlueButton, BlueNavigationStyle } from '../../BlueComponents';
+import { BlueLoading, BlueText, SafeBlueArea, BlueButton, BlueNavigationStyle, BlueSpacing20 } from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
@@ -15,7 +15,7 @@ const { width } = Dimensions.get('window');
 export default class LNDViewInvoice extends Component {
   static navigationOptions = ({ navigation }) => ({
     ...BlueNavigationStyle(navigation, true, () => navigation.dismiss()),
-    title: loc.receive.header,
+    title: 'Lightning Invoice',
     headerLeft: null,
   });
 
@@ -44,28 +44,32 @@ export default class LNDViewInvoice extends Component {
               : invoice.payment_request === this.state.invoice,
           )[0];
 
-          this.setState({ invoice: updatedUserInvoice, isLoading: false, addressText: updatedUserInvoice.payment_request });
-          if (updatedUserInvoice.ispaid) {
-            // we fetched the invoice, and it is paid :-)
-            this.setState({ isFetchingInvoices: false });
-            ReactNativeHapticFeedback.trigger('notificationSuccess', false);
-            clearInterval(this.fetchInvoiceInterval);
-            this.fetchInvoiceInterval = undefined;
-            EV(EV.enum.TRANSACTIONS_COUNT_CHANGED);
-          } else {
-            const currentDate = new Date();
-            const now = (currentDate.getTime() / 1000) | 0;
-            const invoiceExpiration = updatedUserInvoice.timestamp + updatedUserInvoice.expire_time;
-            if (invoiceExpiration < now && !updatedUserInvoice.ispaid) {
-              // invoice expired :-(
+          if (typeof updatedUserInvoice !== 'undefined') {
+            this.setState({ invoice: updatedUserInvoice, isLoading: false, addressText: updatedUserInvoice.payment_request });
+            if (updatedUserInvoice.ispaid) {
+              // we fetched the invoice, and it is paid :-)
               this.setState({ isFetchingInvoices: false });
-              ReactNativeHapticFeedback.trigger('notificationError', false);
+              ReactNativeHapticFeedback.trigger('notificationSuccess', false);
               clearInterval(this.fetchInvoiceInterval);
               this.fetchInvoiceInterval = undefined;
               EV(EV.enum.TRANSACTIONS_COUNT_CHANGED);
+            } else {
+              const currentDate = new Date();
+              const now = (currentDate.getTime() / 1000) | 0;
+              const invoiceExpiration = updatedUserInvoice.timestamp + updatedUserInvoice.expire_time;
+              if (invoiceExpiration < now && !updatedUserInvoice.ispaid) {
+                // invoice expired :-(
+                this.setState({ isFetchingInvoices: false });
+                ReactNativeHapticFeedback.trigger('notificationError', false);
+                clearInterval(this.fetchInvoiceInterval);
+                this.fetchInvoiceInterval = undefined;
+                EV(EV.enum.TRANSACTIONS_COUNT_CHANGED);
+              }
             }
           }
         } catch (error) {
+          clearInterval(this.fetchInvoiceInterval);
+          this.fetchInvoiceInterval = undefined;
           console.log(error);
           alert(error);
           this.props.navigation.dismiss();
@@ -157,15 +161,25 @@ export default class LNDViewInvoice extends Component {
 
     // Invoice has not expired, nor has it been paid for.
     return (
-      <SafeBlueArea style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-          <QRFast
-            value={typeof this.state.invoice === 'object' ? invoice.payment_request : invoice}
-            size={width - 40}
-            fgColor={BlueApp.settings.brandingColor}
-            bgColor={BlueApp.settings.foregroundColor}
-          />
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
+      <SafeBlueArea>
+        <ScrollView style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 8,
+              paddingHorizontal: 16,
+              justifyContent: 'space-between',
+            }}
+          >
+            <QRFast
+              value={typeof this.state.invoice === 'object' ? invoice.payment_request : invoice}
+              size={width - 40}
+              fgColor={BlueApp.settings.brandingColor}
+              bgColor={BlueApp.settings.foregroundColor}
+            />
+            <BlueSpacing20 />
             {invoice && invoice.amt && <BlueText>Please pay {invoice.amt} sats</BlueText>}
             {invoice && invoice.description && <BlueText>For: {invoice.description}</BlueText>}
             <TouchableOpacity onPress={this.copyToClipboard}>
@@ -198,7 +212,7 @@ export default class LNDViewInvoice extends Component {
               title="Additional Information"
             />
           </View>
-          <View style={{ marginBottom: 24 }} />
+          <BlueSpacing20 />
         </ScrollView>
       </SafeBlueArea>
     );
