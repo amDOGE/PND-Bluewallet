@@ -36,6 +36,7 @@ import Success from './screen/send/success';
 import ManageFunds from './screen/lnd/manageFunds';
 import ScanLndInvoice from './screen/lnd/scanLndInvoice';
 import LNDCreateInvoice from './screen/lnd/lndCreateInvoice';
+import LNDZigZag from './screen/lnd/lndZigZag';
 import LNDViewInvoice from './screen/lnd/lndViewInvoice';
 import LNDViewAdditionalInvoiceInformation from './screen/lnd/lndViewAdditionalInvoiceInformation';
 
@@ -136,6 +137,9 @@ const CreateTransactionStackNavigator = createStackNavigator({
 const ManageFundsStackNavigator = createStackNavigator({
   ManageFunds: {
     screen: ManageFunds,
+  },
+  LNDZigZag: {
+    screen: LNDZigZag,
   },
   SelectWallet: {
     screen: SelectWallet,
