@@ -50,6 +50,9 @@ export default class Settings extends Component {
           <TouchableOpacity onPress={() => this.props.navigation.navigate('About')}>
             <BlueListItem title={loc.settings.about} />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('ATMFinder')}>
+            <BlueListItem title={loc.settings.findAnATM} />
+          </TouchableOpacity>
         </ScrollView>
       </SafeBlueArea>
     );

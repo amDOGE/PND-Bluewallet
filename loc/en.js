@@ -187,6 +187,7 @@ module.exports = {
     about: 'About',
     language: 'Language',
     currency: 'Currency',
+    findAnATM: 'Find an ATM',
   },
   plausibledeniability: {
     title: 'Plausible Deniability',

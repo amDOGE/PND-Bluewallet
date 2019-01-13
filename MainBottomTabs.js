@@ -8,6 +8,7 @@ import Currency from './screen/settings/currency';
 import EncryptStorage from './screen/settings/encryptStorage';
 import PlausibleDeniability from './screen/plausibledeniability';
 import LightningSettings from './screen/settings/lightningSettings';
+import ATMFinder from './screen/atmFinder/atmFinder';
 import WalletsList from './screen/wallets/list';
 import WalletTransactions from './screen/wallets/transactions';
 import AddWallet from './screen/wallets/add';
@@ -104,6 +105,10 @@ const WalletsStackNavigator = createStackNavigator(
     LightningSettings: {
       screen: LightningSettings,
       path: 'LightningSettings',
+    },
+    ATMFinder: {
+      screen: ATMFinder,
+      path: 'ATMFinder',
     },
   },
   { headerBackTitleVisible: false },
