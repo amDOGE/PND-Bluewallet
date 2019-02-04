@@ -19,6 +19,7 @@ import {
   InputAccessoryView,
   Clipboard,
   Platform,
+  NetInfo,
   TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -784,9 +785,23 @@ export class BlueTransactionOutgoingIcon extends Component {
 //
 
 export class BlueReceiveButtonIcon extends Component {
+  state = { isConnectedToInternet: true };
+
+  componentWillMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+  }
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange = change => {
+    this.setState({ isConnectedToInternet: change });
+  };
+
   render() {
+    const isDisabled = this.props.isReceiveRequiresConnectivity && !this.state.isConnectedToInternet;
     return (
-      <TouchableOpacity {...this.props}>
+      <TouchableOpacity {...this.props} disabled={isDisabled} style={isDisabled ? { opacity: 0.3 } : { opacity: 1.0 }}>
         <View
           style={{
             flex: 1,
@@ -806,7 +821,7 @@ export class BlueReceiveButtonIcon extends Component {
                 marginBottom: -11,
               }}
             >
-              <Icon {...this.props} name="arrow-down" size={16} type="font-awesome" color="#2f5fb3" />
+              <Icon disabled {...this.props} name="arrow-down" size={16} type="font-awesome" color="#2f5fb3" />
             </View>
             <Text
               style={{
@@ -827,9 +842,23 @@ export class BlueReceiveButtonIcon extends Component {
 }
 
 export class BlueSendButtonIcon extends Component {
+  state = { isConnectedToInternet: true };
+
+  componentWillMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+  }
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange = change => {
+    this.setState({ isConnectedToInternet: change });
+  };
+
   render() {
+    const isDisabled = this.props.isReceiveRequiresConnectivity && !this.state.isConnectedToInternet;
     return (
-      <TouchableOpacity {...this.props}>
+      <TouchableOpacity {...this.props} disabled={isDisabled} style={isDisabled ? { opacity: 0.3 } : { opacity: 1.0 }}>
         <View
           style={{
             flex: 1,
@@ -849,7 +878,7 @@ export class BlueSendButtonIcon extends Component {
                 marginBottom: 11,
               }}
             >
-              <Icon {...this.props} name="arrow-down" size={16} type="font-awesome" color="#2f5fb3" />
+              <Icon disabled {...this.props} name="arrow-down" size={16} type="font-awesome" color="#2f5fb3" />
             </View>
             <Text
               style={{
@@ -869,9 +898,23 @@ export class BlueSendButtonIcon extends Component {
 }
 
 export class ManageFundsBigButton extends Component {
+  state = { isConnectedToInternet: true };
+
+  componentWillMount() {
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+  }
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange = change => {
+    this.setState({ isConnectedToInternet: change });
+  };
+
   render() {
+    const isDisabled = this.props.isReceiveRequiresConnectivity && !this.state.isConnectedToInternet;
     return (
-      <TouchableOpacity {...this.props}>
+      <TouchableOpacity {...this.props} disabled={isDisabled} style={isDisabled ? { opacity: 0.3 } : { opacity: 1.0 }}>
         <View
           style={{
             flex: 1,
@@ -889,7 +932,7 @@ export class ManageFundsBigButton extends Component {
                 transform: [{ rotate: '90deg' }],
               }}
             >
-              <Icon {...this.props} name="link" size={16} type="font-awesome" color="#2f5fb3" />
+              <Icon {...this.props} disabled name="link" size={16} type="font-awesome" color="#2f5fb3" />
             </View>
             <Text
               style={{
@@ -1475,8 +1518,8 @@ export class WalletsCarousel extends Component {
           >
             <Image
               source={
-                LightningCustodianWallet.type === item.type ||
-                (ACINQStrikeLightningWallet.type === item.type && require('./img/lnd-shape.png')) ||
+                ((LightningCustodianWallet.type === item.type || ACINQStrikeLightningWallet.type === item.type) &&
+                  require('./img/lnd-shape.png')) ||
                 require('./img/btc-shape.png')
               }
               style={{

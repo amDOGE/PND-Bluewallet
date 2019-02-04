@@ -196,8 +196,8 @@ export default class WalletTransactions extends Component {
       <LinearGradient colors={WalletGradient.gradientsFor(this.state.wallet.type)} style={{ padding: 15, minHeight: 164 }}>
         <Image
           source={
-            LightningCustodianWallet.type === this.state.wallet.type ||
-            (ACINQStrikeLightningWallet.type === this.state.wallet.type && require('../../img/lnd-shape.png')) ||
+            ((LightningCustodianWallet.type === this.state.wallet.type || ACINQStrikeLightningWallet.type === this.state.wallet.type) &&
+              require('../../img/lnd-shape.png')) ||
             require('../../img/btc-shape.png')
           }
           style={{
@@ -431,6 +431,9 @@ export default class WalletTransactions extends Component {
                       navigate('ReceiveDetails', { address: this.state.wallet.getAddress(), secret: this.state.wallet.getSecret() });
                     }
                   }}
+                  isReceiveRequiresConnectivity={
+                    this.state.wallet.type === LightningCustodianWallet.type || this.state.wallet.type === ACINQStrikeLightningWallet.type
+                  }
                 />
               );
             }
@@ -447,6 +450,9 @@ export default class WalletTransactions extends Component {
                       navigate('SendDetails', { fromAddress: this.state.wallet.getAddress(), fromSecret: this.state.wallet.getSecret() });
                     }
                   }}
+                  isReceiveRequiresConnectivity={
+                    this.state.wallet.type === LightningCustodianWallet.type || this.state.wallet.type === ACINQStrikeLightningWallet.type
+                  }
                 />
               );
             }
@@ -460,6 +466,9 @@ export default class WalletTransactions extends Component {
                     console.log('navigating to', this.state.wallet.getLabel());
                     navigate('ManageFunds', { fromWallet: this.state.wallet });
                   }}
+                  isReceiveRequiresConnectivity={
+                    this.state.wallet.type === LightningCustodianWallet.type || this.state.wallet.type === ACINQStrikeLightningWallet.type
+                  }
                 />
               );
             }
