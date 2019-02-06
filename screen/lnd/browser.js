@@ -320,6 +320,7 @@ export default class Browser extends Component {
             console.log('injected');
           }
         }}
+        startInLoadingState={true}
       />
     );
   };
