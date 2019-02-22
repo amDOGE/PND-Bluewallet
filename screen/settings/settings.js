@@ -33,13 +33,10 @@ export default class Settings extends Component {
 
     return (
       <SafeBlueArea forceInset={{ horizontal: 'always' }} style={{ flex: 1 }}>
-        <BlueHeaderDefaultSub leftText={loc.settings.header} rightComponent={null} />
-        <ScrollView maxHeight={450}>
+        <ScrollView>
+          <BlueHeaderDefaultSub leftText={loc.settings.header} rightComponent={null} />
           <TouchableOpacity onPress={() => this.props.navigation.navigate('EncryptStorage')}>
             <BlueListItem title={loc.settings.encrypt_storage} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('LightningSettings')}>
-            <BlueListItem title={loc.settings.lightning_settings} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('Language')}>
             <BlueListItem title={loc.settings.language} />
@@ -49,6 +46,13 @@ export default class Settings extends Component {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('About')}>
             <BlueListItem title={loc.settings.about} />
+          </TouchableOpacity>
+          <BlueHeaderDefaultSub leftText={"advanced"} rightComponent={null} />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('LightningSettings')}>
+            <BlueListItem title={loc.settings.lightning_settings} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('ElectrumSettings')}>
+            <BlueListItem title={"Electrum"} />
           </TouchableOpacity>
         </ScrollView>
       </SafeBlueArea>

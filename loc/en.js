@@ -179,7 +179,7 @@ module.exports = {
     retype_password: 'Re-type password',
     passwords_do_not_match: 'Passwords do not match',
     encrypt_storage: 'Encrypt storage',
-    lightning_settings: 'Lightning Settings',
+    lightning_settings: 'Lightning',
     lightning_settings_explain:
       'To connect to your own LND node please install LndHub' +
       ' and put its URL here in settings. Leave blank to use default LndHub (lndhub.io)',
