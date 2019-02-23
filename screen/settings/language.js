@@ -19,15 +19,18 @@ export default class Language extends Component {
       availableLanguages: [
         { label: 'English', value: 'en' },
         { label: 'Česky (CZ)', value: 'cs_cz' },
+        { label: 'Chinese (ZH)', value: 'zh_cn' },
         { label: 'Croatian (HR)', value: 'hr_hr' },
         { label: 'Danish (DK)', value: 'da_dk' },
         { label: 'Deutsch (DE)', value: 'de_de' },
-        { label: 'Dutch (NL)', value: 'nl_nl' },
+        { label: 'Español (ES)', value: 'es' },
         { label: 'Français (FR)', value: 'fr_fr' },
+        { label: 'Indonesia (ID)', value: 'id_id' },
+        { label: '日本語 (JP)', value: 'jp_jp' },
+        { label: 'Nederlands (NL)', value: 'nl_nl' },
         { label: 'Portuguese (BR)', value: 'pt_br' },
         { label: 'Portuguese (PT)', value: 'pt_pt' },
         { label: 'Русский', value: 'ru' },
-        { label: 'Spanish', value: 'es' },
         { label: 'Thai (TH)', value: 'th_th' },
         { label: 'Українська', value: 'ua' },
       ],
@@ -77,7 +80,7 @@ export default class Language extends Component {
           renderItem={this.renderItem}
         />
         <BlueCard>
-          <BlueText>When selecting a new language, restarting Blue Wallet may be required for the change to take effect.</BlueText>
+          <BlueText>When selecting a new language, restarting BlueWallet may be required for the change to take effect.</BlueText>
         </BlueCard>
       </SafeBlueArea>
     );

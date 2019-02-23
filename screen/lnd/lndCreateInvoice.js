@@ -1,7 +1,7 @@
 /* global alert */
 import React, { Component } from 'react';
 import { ActivityIndicator, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Text } from 'react-native';
-import { BlueNavigationStyle, BlueButton, BlueBitcoinAmount } from '../../BlueComponents';
+import { BlueNavigationStyle, BlueButton, BlueBitcoinAmount, BlueDismissKeyboardInputAccessory } from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
@@ -35,6 +35,7 @@ export default class LNDCreateInvoice extends Component {
         this.props.navigation.navigate('LNDViewInvoice', {
           invoice: invoiceRequest,
           fromWallet: this.state.fromWallet,
+          isModal: true,
         });
       } catch (_error) {
         ReactNativeHapticFeedback.trigger('notificationError', false);
@@ -46,15 +47,11 @@ export default class LNDCreateInvoice extends Component {
 
   renderCreateButton = () => {
     return (
-      <View style={{ paddingHorizontal: 56, paddingVertical: 16, alignContent: 'center', backgroundColor: '#FFFFFF' }}>
+      <View style={{ marginHorizontal: 56, marginVertical: 16, minHeight: 45, alignContent: 'center', backgroundColor: '#FFFFFF' }}>
         {this.state.isLoading ? (
           <ActivityIndicator />
         ) : (
-          <BlueButton
-            disabled={!(this.state.description.length > 0 && this.state.amount > 0)}
-            onPress={() => this.createInvoice()}
-            title={loc.send.details.create}
-          />
+          <BlueButton disabled={!this.state.amount > 0} onPress={() => this.createInvoice()} title={loc.send.details.create} />
         )}
       </View>
     );
@@ -82,6 +79,7 @@ export default class LNDCreateInvoice extends Component {
                 }}
                 disabled={this.state.isLoading}
                 unit={BitcoinUnit.SATS}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
               <View
                 style={{
@@ -106,8 +104,11 @@ export default class LNDCreateInvoice extends Component {
                   numberOfLines={1}
                   style={{ flex: 1, marginHorizontal: 8, minHeight: 33 }}
                   editable={!this.state.isLoading}
+                  onSubmitEditing={Keyboard.dismiss}
+                  inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
                 />
               </View>
+              <BlueDismissKeyboardInputAccessory />
               {this.renderCreateButton()}
             </KeyboardAvoidingView>
           </View>
@@ -119,7 +120,7 @@ export default class LNDCreateInvoice extends Component {
 
 LNDCreateInvoice.propTypes = {
   navigation: PropTypes.shape({
-    goBack: PropTypes.function,
+    goBack: PropTypes.func,
     navigate: PropTypes.func,
     getParam: PropTypes.func,
   }),

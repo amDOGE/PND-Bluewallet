@@ -1,31 +1,36 @@
+/* eslint react/prop-types: 0 */
+/* global alert */
 /** @type {AppStorage} */
 import React, { Component } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
-import { Icon, Button, FormLabel, FormInput, Text, Header, List, ListItem } from 'react-native-elements';
+import { Icon, FormLabel, FormInput, Text, Header, List, ListItem } from 'react-native-elements';
 import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Animated,
   ActivityIndicator,
   View,
+  UIManager,
   StyleSheet,
   Dimensions,
   Image,
+  Keyboard,
   SafeAreaView,
+  InputAccessoryView,
   Clipboard,
   Platform,
   TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { WatchOnlyWallet, LegacyWallet } from './class';
+import { LightningCustodianWallet } from './class';
 import Carousel from 'react-native-snap-carousel';
 import DeviceInfo from 'react-native-device-info';
-import { HDLegacyP2PKHWallet } from './class/hd-legacy-p2pkh-wallet';
-import { HDLegacyBreadwalletWallet } from './class/hd-legacy-breadwallet-wallet';
-import { HDSegwitP2SHWallet } from './class/hd-segwit-p2sh-wallet';
-import { LightningCustodianWallet } from './class/lightning-custodian-wallet';
 import { BitcoinUnit } from './models/bitcoinUnits';
+import NavigationService from './NavigationService';
+import ImagePicker from 'react-native-image-picker';
+import WalletGradient from './class/walletGradient';
+const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
 let loc = require('./loc/');
 /** @type {AppStorage} */
 let BlueApp = require('./BlueApp');
@@ -40,30 +45,34 @@ if (aspectRatio > 1.6) {
 
 export class BlueButton extends Component {
   render() {
-    // eslint-disable-next-line
-    this.props.buttonStyle = this.props.buttonStyle || {};
-
+    let backgroundColor = this.props.backgroundColor ? this.props.backgroundColor : '#ccddf9';
+    let fontColor = '#0c2550';
+    if (this.props.hasOwnProperty('disabled') && this.props.disabled === true) {
+      backgroundColor = '#eef0f4';
+      fontColor = '#9aa0aa';
+    }
     return (
-      <Button
-        activeOpacity={0.1}
-        delayPressIn={0}
-        {...this.props}
+      <TouchableOpacity
         style={{
+          flex: 1,
           borderWidth: 0.7,
           borderColor: 'transparent',
+          backgroundColor: backgroundColor,
+          minHeight: 45,
+          height: 45,
+          maxHeight: 45,
+          borderRadius: 25,
+          minWidth: width / 1.5,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
-        buttonStyle={Object.assign(
-          {
-            backgroundColor: '#ccddf9',
-            minHeight: 45,
-            height: 45,
-            borderWidth: 0,
-            borderRadius: 25,
-          },
-          this.props.buttonStyle,
-        )}
-        color="#0c2550"
-      />
+        {...this.props}
+      >
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          {this.props.icon && <Icon name={this.props.icon.name} type={this.props.icon.type} color={this.props.icon.color} />}
+          {this.props.title && <Text style={{ marginHorizontal: 8, fontSize: 16, color: fontColor }}>{this.props.title}</Text>}
+        </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -106,7 +115,6 @@ export class LightningButton extends Component {
   render() {
     return (
       <TouchableOpacity
-        disabled={this.props.disabled}
         onPress={() => {
           // eslint-disable-next-line
           if (this.props.onPress) this.props.onPress();
@@ -137,32 +145,20 @@ export class LightningButton extends Component {
   }
 }
 
-LightningButton.propTypes = {
-  disabled: PropTypes.bool,
-};
-
 export class BlueButtonLink extends Component {
   render() {
-    // eslint-disable-next-line
-    this.props.buttonStyle = this.props.buttonStyle || {};
-
     return (
-      <Button
-        activeOpacity={0.1}
-        delayPressIn={0}
-        {...this.props}
+      <TouchableOpacity
         style={{
-          marginTop: 20,
-          borderWidth: 0.7,
-          borderColor: 'transparent',
+          minHeight: 60,
+          minWidth: 100,
+          height: 60,
+          justifyContent: 'center',
         }}
-        buttonStyle={{
-          height: 45,
-          width: width / 1.5,
-        }}
-        backgroundColor="transparent"
-        color="#0c2550"
-      />
+        {...this.props}
+      >
+        <Text style={{ color: '#0c2550', textAlign: 'center', fontSize: 16 }}>{this.props.title}</Text>
+      </TouchableOpacity>
     );
   }
 }
@@ -181,7 +177,14 @@ export const BlueNavigationStyle = (navigation, withNavigationCloseButton = fals
   headerRight: withNavigationCloseButton ? (
     <TouchableOpacity
       style={{ width: 40, height: 40, padding: 14 }}
-      onPress={customCloseButtonFunction === undefined ? () => navigation.goBack(null) : customCloseButtonFunction}
+      onPress={
+        customCloseButtonFunction === undefined
+          ? () => {
+              Keyboard.dismiss();
+              navigation.goBack(null);
+            }
+          : customCloseButtonFunction
+      }
     >
       <Image style={{ alignSelf: 'center' }} source={require('./img/close.png')} />
     </TouchableOpacity>
@@ -196,6 +199,56 @@ export const BlueCopyToClipboardButton = ({ stringToCopy }) => {
     </TouchableOpacity>
   );
 };
+
+export class BlueCopyTextToClipboard extends Component {
+  static propTypes = {
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    text: '',
+  };
+
+  constructor(props) {
+    super(props);
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+    this.state = { hasTappedText: false, address: props.text };
+  }
+
+  copyToClipboard = () => {
+    this.setState({ hasTappedText: true }, () => {
+      Clipboard.setString(this.props.text);
+      this.setState({ address: loc.wallets.xpub.copiedToClipboard }, () => {
+        setTimeout(() => {
+          this.setState({ hasTappedText: false, address: this.props.text });
+        }, 1000);
+      });
+    });
+  };
+
+  render() {
+    return (
+      <View style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
+        <TouchableOpacity onPress={this.copyToClipboard} disabled={this.state.hasTappedText}>
+          <Animated.Text style={styleCopyTextToClipboard.address} numberOfLines={0}>
+            {this.state.address}
+          </Animated.Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+const styleCopyTextToClipboard = StyleSheet.create({
+  address: {
+    marginVertical: 32,
+    fontSize: 15,
+    color: '#9aa0aa',
+    textAlign: 'center',
+  },
+});
 
 export class SafeBlueArea extends Component {
   render() {
@@ -219,13 +272,12 @@ export class BlueText extends Component {
   render() {
     return (
       <Text
-        style={Object.assign(
-          {
-            color: BlueApp.settings.foregroundColor,
-          },
+        style={{
+          color: BlueApp.settings.foregroundColor,
+
           // eslint-disable-next-line
-          this.props.style,
-        )}
+          ...this.props.style,
+        }}
         {...this.props}
       />
     );
@@ -500,6 +552,50 @@ export class BlueList extends Component {
   }
 }
 
+export class BlueUseAllFundsButton extends Component {
+  static InputAccessoryViewID = 'useMaxInputAccessoryViewID';
+  static propTypes = {
+    wallet: PropTypes.shape().isRequired,
+    onUseAllPressed: PropTypes.func.isRequired,
+  };
+
+  render() {
+    return (
+      <InputAccessoryView nativeID={BlueUseAllFundsButton.InputAccessoryViewID}>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ color: '#9aa0aa', fontSize: 16, marginHorizontal: 8 }}>
+            Total: {this.props.wallet.getBalance()} {BitcoinUnit.BTC}
+          </Text>
+          <BlueButtonLink title="Use All" onPress={this.props.onUseAllPressed} />
+        </View>
+      </InputAccessoryView>
+    );
+  }
+}
+
+export class BlueDismissKeyboardInputAccessory extends Component {
+  static InputAccessoryViewID = 'BlueDismissKeyboardInputAccessory';
+
+  render() {
+    return Platform.OS !== 'ios' ? null : (
+      <InputAccessoryView nativeID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}>
+        <View
+          style={{
+            backgroundColor: '#eef0f4',
+            height: 44,
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <BlueButtonLink title="Done" onPress={Keyboard.dismiss} />
+        </View>
+      </InputAccessoryView>
+    );
+  }
+}
+
 export class BlueLoading extends Component {
   render() {
     return (
@@ -525,7 +621,7 @@ const stylesBlueIcon = StyleSheet.create({
     paddingHorizontal: 14,
     paddingTop: 8,
   },
-  boxIncomming: {
+  boxIncoming: {
     position: 'relative',
   },
   ball: {
@@ -534,14 +630,14 @@ const stylesBlueIcon = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#ccddf9',
   },
-  ballIncomming: {
+  ballIncoming: {
     width: 30,
     height: 30,
     borderRadius: 15,
     backgroundColor: '#d2f8d6',
     transform: [{ rotate: '-45deg' }],
   },
-  ballIncommingWithoutRotate: {
+  ballIncomingWithoutRotate: {
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -604,12 +700,12 @@ export class BluePlusIcon extends Component {
   }
 }
 
-export class BlueTransactionIncommingIcon extends Component {
+export class BlueTransactionIncomingIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
-          <View style={stylesBlueIcon.ballIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
+          <View style={stylesBlueIcon.ballIncoming}>
             <Icon {...this.props} name="arrow-down" size={16} type="font-awesome" color="#37c0a1" iconStyle={{ left: 0, top: 8 }} />
           </View>
         </View>
@@ -622,7 +718,7 @@ export class BlueTransactionPendingIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
           <View style={stylesBlueIcon.ball}>
             <Icon
               {...this.props}
@@ -643,7 +739,7 @@ export class BlueTransactionExpiredIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
           <View style={stylesBlueIcon.ballOutgoingWithoutRotate}>
             <Icon {...this.props} name="hourglass-end" size={16} type="font-awesome" color="#d0021b" iconStyle={{ left: 0, top: 6 }} />
           </View>
@@ -657,8 +753,8 @@ export class BlueTransactionOnchainIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
-          <View style={stylesBlueIcon.ballIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
+          <View style={stylesBlueIcon.ballIncoming}>
             <Icon
               {...this.props}
               name="link"
@@ -678,7 +774,7 @@ export class BlueTransactionOffchainIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
           <View style={stylesBlueIcon.ballOutgoingWithoutRotate}>
             <Icon {...this.props} name="bolt" size={16} type="font-awesome" color="#d0021b" iconStyle={{ left: 0, top: 7 }} />
           </View>
@@ -692,8 +788,8 @@ export class BlueTransactionOffchainIncomingIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
-          <View style={stylesBlueIcon.ballIncommingWithoutRotate}>
+        <View style={stylesBlueIcon.boxIncoming}>
+          <View style={stylesBlueIcon.ballIncomingWithoutRotate}>
             <Icon {...this.props} name="bolt" size={16} type="font-awesome" color="#37c0a1" iconStyle={{ left: 0, top: 7 }} />
           </View>
         </View>
@@ -706,7 +802,7 @@ export class BlueTransactionOutgoingIcon extends Component {
   render() {
     return (
       <View {...this.props}>
-        <View style={stylesBlueIcon.boxIncomming}>
+        <View style={stylesBlueIcon.boxIncoming}>
           <View style={stylesBlueIcon.ballOutgoing}>
             <Icon {...this.props} name="arrow-down" size={16} type="font-awesome" color="#d0021b" iconStyle={{ left: 0, top: 8 }} />
           </View>
@@ -887,7 +983,7 @@ export class NewWalletPanel extends Component {
         style={{ marginVertical: 17 }}
       >
         <LinearGradient
-          colors={['#eef0f4', '#eef0f4']}
+          colors={WalletGradient.createWallet}
           style={{
             padding: 15,
             borderRadius: 10,
@@ -932,6 +1028,386 @@ export class NewWalletPanel extends Component {
   }
 }
 
+export class BlueTransactionListItem extends Component {
+  static propTypes = {
+    item: PropTypes.shape().isRequired,
+    itemPriceUnit: PropTypes.string,
+  };
+
+  static defaultProps = {
+    itemPriceUnit: BitcoinUnit.BTC,
+  };
+
+  txMemo = () => {
+    if (BlueApp.tx_metadata[this.props.item.hash] && BlueApp.tx_metadata[this.props.item.hash]['memo']) {
+      return BlueApp.tx_metadata[this.props.item.hash]['memo'];
+    }
+    return '';
+  };
+
+  rowTitle = () => {
+    const item = this.props.item;
+    if (item.type === 'user_invoice' || item.type === 'payment_request') {
+      if (isNaN(item.value)) {
+        item.value = '0';
+      }
+      const currentDate = new Date();
+      const now = (currentDate.getTime() / 1000) | 0;
+      const invoiceExpiration = item.timestamp + item.expire_time;
+
+      if (invoiceExpiration > now) {
+        return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+      } else if (invoiceExpiration < now) {
+        if (item.ispaid) {
+          return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+        } else {
+          return loc.lnd.expired;
+        }
+      }
+    } else {
+      return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+    }
+  };
+
+  rowTitleStyle = () => {
+    const item = this.props.item;
+    let color = '#37c0a1';
+
+    if (item.type === 'user_invoice' || item.type === 'payment_request') {
+      const currentDate = new Date();
+      const now = (currentDate.getTime() / 1000) | 0;
+      const invoiceExpiration = item.timestamp + item.expire_time;
+
+      if (invoiceExpiration > now) {
+        color = '#37c0a1';
+      } else if (invoiceExpiration < now) {
+        if (item.ispaid) {
+          color = '#37c0a1';
+        } else {
+          color = '#FF0000';
+        }
+      }
+    } else if (item.value / 100000000 < 0) {
+      color = BlueApp.settings.foregroundColor;
+    }
+
+    return {
+      fontWeight: '600',
+      fontSize: 16,
+      color: color,
+    };
+  };
+
+  avatar = () => {
+    // is it lightning refill tx?
+    if (this.props.item.category === 'receive' && this.props.item.confirmations < 3) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionPendingIcon />
+        </View>
+      );
+    }
+
+    if (this.props.item.type && this.props.item.type === 'bitcoind_tx') {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOnchainIcon />
+        </View>
+      );
+    }
+    if (this.props.item.type === 'paid_invoice') {
+      // is it lightning offchain payment?
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOffchainIcon />
+        </View>
+      );
+    }
+
+    if (this.props.item.type === 'user_invoice' || this.props.item.type === 'payment_request') {
+      if (!this.props.item.ispaid) {
+        const currentDate = new Date();
+        const now = (currentDate.getTime() / 1000) | 0;
+        const invoiceExpiration = this.props.item.timestamp + this.props.item.expire_time;
+        if (invoiceExpiration < now) {
+          return (
+            <View style={{ width: 25 }}>
+              <BlueTransactionExpiredIcon />
+            </View>
+          );
+        }
+      } else {
+        return (
+          <View style={{ width: 25 }}>
+            <BlueTransactionOffchainIncomingIcon />
+          </View>
+        );
+      }
+    }
+
+    if (!this.props.item.confirmations) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionPendingIcon />
+        </View>
+      );
+    } else if (this.props.item.value < 0) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOutgoingIcon />
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionIncomingIcon />
+        </View>
+      );
+    }
+  };
+
+  subtitle = () => {
+    return (
+      (this.props.item.confirmations < 7 ? loc.transactions.list.conf + ': ' + this.props.item.confirmations + ' ' : '') +
+      this.txMemo() +
+      (this.props.item.memo || '')
+    );
+  };
+
+  onPress = () => {
+    if (this.props.item.hash) {
+      NavigationService.navigate('TransactionDetails', { hash: this.props.item.hash });
+    } else if (
+      this.props.item.type === 'user_invoice' ||
+      this.props.item.type === 'payment_request' ||
+      this.props.item.type === 'paid_invoice'
+    ) {
+      const lightningWallet = BlueApp.getWallets().filter(wallet => {
+        if (typeof wallet === 'object') {
+          if (wallet.hasOwnProperty('secret')) {
+            return wallet.getSecret() === this.props.item.fromWallet;
+          }
+        }
+      });
+      if (lightningWallet.length === 1) {
+        NavigationService.navigate('LNDViewInvoice', {
+          invoice: this.props.item,
+          fromWallet: lightningWallet[0],
+          isModal: false,
+        });
+      }
+    }
+  };
+
+  render() {
+    return (
+      <BlueListItem
+        avatar={this.avatar()}
+        title={loc.transactionTimeToReadable(this.props.item.received)}
+        subtitle={this.subtitle()}
+        onPress={this.onPress}
+        badge={{
+          value: 3,
+          textStyle: { color: 'orange' },
+          containerStyle: { marginTop: 0 },
+        }}
+        hideChevron
+        rightTitle={this.rowTitle()}
+        rightTitleStyle={this.rowTitleStyle()}
+      />
+    );
+  }
+}
+
+export class BlueListTransactionItem extends Component {
+  static propTypes = {
+    item: PropTypes.shape().isRequired,
+    itemPriceUnit: PropTypes.string,
+  };
+
+  static defaultProps = {
+    itemPriceUnit: BitcoinUnit.BTC,
+  };
+
+  txMemo = () => {
+    if (BlueApp.tx_metadata[this.props.item.hash] && BlueApp.tx_metadata[this.props.item.hash]['memo']) {
+      return BlueApp.tx_metadata[this.props.item.hash]['memo'];
+    }
+    return '';
+  };
+
+  rowTitle = () => {
+    const item = this.props.item;
+    if (item.type === 'user_invoice' || item.type === 'payment_request') {
+      if (isNaN(item.value)) {
+        item.value = '0';
+      }
+      const currentDate = new Date();
+      const now = (currentDate.getTime() / 1000) | 0;
+      const invoiceExpiration = item.timestamp + item.expire_time;
+
+      if (invoiceExpiration > now) {
+        return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+      } else if (invoiceExpiration < now) {
+        if (item.ispaid) {
+          return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+        } else {
+          return loc.lnd.expired;
+        }
+      }
+    } else {
+      return loc.formatBalanceWithoutSuffix(item.value && item.value, this.props.itemPriceUnit, true).toString();
+    }
+  };
+
+  rowTitleStyle = () => {
+    const item = this.props.item;
+    let color = '#37c0a1';
+
+    if (item.type === 'user_invoice' || item.type === 'payment_request') {
+      const currentDate = new Date();
+      const now = (currentDate.getTime() / 1000) | 0;
+      const invoiceExpiration = item.timestamp + item.expire_time;
+
+      if (invoiceExpiration > now) {
+        color = '#37c0a1';
+      } else if (invoiceExpiration < now) {
+        if (item.ispaid) {
+          color = '#37c0a1';
+        } else {
+          color = '#FF0000';
+        }
+      }
+    } else if (item.value / 100000000 < 0) {
+      color = BlueApp.settings.foregroundColor;
+    }
+
+    return {
+      fontWeight: '600',
+      fontSize: 16,
+      color: color,
+    };
+  };
+
+  avatar = () => {
+    // is it lightning refill tx?
+    if (this.props.item.category === 'receive' && this.props.item.confirmations < 3) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionPendingIcon />
+        </View>
+      );
+    }
+
+    if (this.props.item.type && this.props.item.type === 'bitcoind_tx') {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOnchainIcon />
+        </View>
+      );
+    }
+    if (this.props.item.type === 'paid_invoice') {
+      // is it lightning offchain payment?
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOffchainIcon />
+        </View>
+      );
+    }
+
+    if (this.props.item.type === 'user_invoice' || this.props.item.type === 'payment_request') {
+      if (!this.props.item.ispaid) {
+        const currentDate = new Date();
+        const now = (currentDate.getTime() / 1000) | 0;
+        const invoiceExpiration = this.props.item.timestamp + this.props.item.expire_time;
+        if (invoiceExpiration < now) {
+          return (
+            <View style={{ width: 25 }}>
+              <BlueTransactionExpiredIcon />
+            </View>
+          );
+        }
+      } else {
+        return (
+          <View style={{ width: 25 }}>
+            <BlueTransactionOffchainIncomingIcon />
+          </View>
+        );
+      }
+    }
+
+    if (!this.props.item.confirmations) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionPendingIcon />
+        </View>
+      );
+    } else if (this.props.item.value < 0) {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionOutgoingIcon />
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ width: 25 }}>
+          <BlueTransactionIncomingIcon />
+        </View>
+      );
+    }
+  };
+
+  subtitle = () => {
+    return (
+      (this.props.item.confirmations < 7 ? loc.transactions.list.conf + ': ' + this.props.item.confirmations + ' ' : '') +
+      this.txMemo() +
+      (this.props.item.memo || '')
+    );
+  };
+
+  onPress = () => {
+    if (this.props.item.hash) {
+      NavigationService.navigate('TransactionDetails', { hash: this.props.item.hash });
+    } else if (
+      this.props.item.type === 'user_invoice' ||
+      this.props.item.type === 'payment_request' ||
+      this.props.item.type === 'paid_invoice'
+    ) {
+      const lightningWallet = BlueApp.getWallets().filter(wallet => {
+        if (typeof wallet === 'object') {
+          if (wallet.hasOwnProperty('secret')) {
+            return wallet.getSecret() === this.props.item.fromWallet;
+          }
+        }
+      });
+      NavigationService.navigate('LNDViewInvoice', {
+        invoice: this.props.item,
+        fromWallet: lightningWallet[0],
+        isModal: false,
+      });
+    }
+  };
+
+  render() {
+    return (
+      <BlueListItem
+        avatar={this.avatar()}
+        title={loc.transactionTimeToReadable(this.props.item.received)}
+        subtitle={this.subtitle()}
+        onPress={this.onPress}
+        badge={{
+          value: 3,
+          textStyle: { color: 'orange' },
+          containerStyle: { marginTop: 0 },
+        }}
+        hideChevron
+        rightTitle={this.rowTitle()}
+        rightTitleStyle={this.rowTitleStyle()}
+      />
+    );
+  }
+}
+
 const sliderWidth = width * 1;
 const itemWidth = width * 0.82;
 const sliderHeight = 190;
@@ -948,12 +1424,17 @@ export class WalletsCarousel extends Component {
 
   _renderItem({ item, index }) {
     let scaleValue = new Animated.Value(1.0);
-
+    let props = { duration: 50 };
+    if (Platform.OS === 'android') {
+      props['useNativeDriver'] = true;
+    }
     this.onPressedIn = () => {
-      Animated.spring(scaleValue, { toValue: 0.9, duration: 100, useNativeDriver: Platform.OS === 'android' }).start();
+      props.toValue = 0.9;
+      Animated.spring(scaleValue, props).start();
     };
     this.onPressedOut = () => {
-      Animated.spring(scaleValue, { toValue: 1.0, duration: 100, useNativeDriver: Platform.OS === 'android' }).start();
+      props.toValue = 1.0;
+      Animated.spring(scaleValue, props).start();
     };
 
     if (!item) {
@@ -966,39 +1447,6 @@ export class WalletsCarousel extends Component {
           }}
         />
       );
-    }
-
-    let gradient1 = '#65ceef';
-    let gradient2 = '#68bbe1';
-
-    if (WatchOnlyWallet.type === item.type) {
-      gradient1 = '#7d7d7d';
-      gradient2 = '#4a4a4a';
-    }
-
-    if (LegacyWallet.type === item.type) {
-      gradient1 = '#40fad1';
-      gradient2 = '#15be98';
-    }
-
-    if (HDLegacyP2PKHWallet.type === item.type) {
-      gradient1 = '#e36dfa';
-      gradient2 = '#bd10e0';
-    }
-
-    if (HDLegacyBreadwalletWallet.type === item.type) {
-      gradient1 = '#fe6381';
-      gradient2 = '#f99c42';
-    }
-
-    if (HDSegwitP2SHWallet.type === item.type) {
-      gradient1 = '#c65afb';
-      gradient2 = '#9053fe';
-    }
-
-    if (LightningCustodianWallet.type === item.type) {
-      gradient1 = '#f1be07';
-      gradient2 = '#f79056';
     }
 
     return (
@@ -1014,13 +1462,13 @@ export class WalletsCarousel extends Component {
           onLongPress={WalletsCarousel.handleLongPress}
           onPress={() => {
             if (WalletsCarousel.handleClick) {
-              WalletsCarousel.handleClick(index, [gradient1, gradient2]);
+              WalletsCarousel.handleClick(index);
             }
           }}
         >
           <LinearGradient
             shadowColor="#000000"
-            colors={[gradient1, gradient2]}
+            colors={WalletGradient.gradientsFor(item.type)}
             style={{
               padding: 15,
               borderRadius: 10,
@@ -1111,6 +1559,99 @@ export class WalletsCarousel extends Component {
           console.log('snapped to card #', index);
         }}
       />
+    );
+  }
+}
+
+export class BlueAddressInput extends Component {
+  static propTypes = {
+    isLoading: PropTypes.bool,
+    onChangeText: PropTypes.func,
+    onBarScanned: PropTypes.func,
+    address: PropTypes.string,
+    placeholder: PropTypes.string,
+  };
+
+  static defaultProps = {
+    isLoading: false,
+    address: '',
+    placeholder: loc.send.details.address,
+  };
+
+  render() {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderColor: '#d2d2d2',
+          borderBottomColor: '#d2d2d2',
+          borderWidth: 1.0,
+          borderBottomWidth: 0.5,
+          backgroundColor: '#f5f5f5',
+          minHeight: 44,
+          height: 44,
+          marginHorizontal: 20,
+          alignItems: 'center',
+          marginVertical: 8,
+          borderRadius: 4,
+        }}
+      >
+        <TextInput
+          onChangeText={text => {
+            this.props.onChangeText(text);
+          }}
+          placeholder={this.props.placeholder}
+          numberOfLines={1}
+          value={this.props.address}
+          style={{ flex: 1, marginHorizontal: 8, minHeight: 33 }}
+          editable={!this.props.isLoading}
+          onSubmitEditing={Keyboard.dismiss}
+          {...this.props}
+        />
+        <TouchableOpacity
+          disabled={this.props.isLoading}
+          onPress={() => {
+            Keyboard.dismiss();
+            ImagePicker.showImagePicker(
+              {
+                title: null,
+                mediaType: 'photo',
+                takePhotoButtonTitle: null,
+                customButtons: [{ name: 'navigatetoQRScan', title: 'Use Camera' }],
+              },
+              response => {
+                if (response.customButton) {
+                  NavigationService.navigate('ScanQrAddress', { onBarScanned: this.props.onBarScanned });
+                } else if (response.uri) {
+                  const uri = response.uri.toString().replace('file://', '');
+                  LocalQRCode.decode(uri, (error, result) => {
+                    if (!error) {
+                      this.props.onBarScanned(result);
+                    } else {
+                      alert('The selected image does not contain a QR Code.');
+                    }
+                  });
+                }
+              },
+            );
+          }}
+          style={{
+            width: 75,
+            height: 36,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: '#bebebe',
+            borderRadius: 4,
+            paddingVertical: 4,
+            paddingHorizontal: 8,
+            marginHorizontal: 4,
+          }}
+        >
+          <Icon name="qrcode" size={22} type="font-awesome" color="#FFFFFF" />
+          <Text style={{ color: '#FFFFFF' }}>{loc.send.details.scan}</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }

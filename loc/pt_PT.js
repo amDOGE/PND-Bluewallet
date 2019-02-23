@@ -3,10 +3,6 @@ module.exports = {
     storage_is_encrypted: 'O armazenamento está encriptado. Uma password é necessaria para desencriptar',
     enter_password: 'Inserir password',
     bad_password: 'pasword errada, tente novamente',
-    months_ago: 'months ago',
-    days_ago: 'days ago',
-    hours_ago: 'hours ago',
-    minutes_ago: 'minutes ago',
     never: 'never',
     continue: 'Continue',
     ok: 'OK',
@@ -17,7 +13,7 @@ module.exports = {
     createBitcoinWallet: 'In order to use a Lightning wallet, a Bitcoin wallet is needed to fund it. Would you like to continue anyway?',
 
     list: {
-      app_name: 'Blue Wallet',
+      app_name: 'BlueWallet',
       title: 'wallets',
       header: 'Uma wallet representa um par entre um segredo (chave privada) e um endereço' + 'que pode partilhar para receber Bitcoin.',
       add: 'adicionar wallet',
@@ -170,6 +166,7 @@ module.exports = {
       share: 'partilhar',
       copiedToClipboard: 'copiado para clip board',
       label: 'Description',
+      create: 'Create',
       setAmount: 'Receive with amount',
     },
   },
@@ -184,6 +181,12 @@ module.exports = {
     retype_password: 'Inserir password novamente',
     passwords_do_not_match: 'Passwords não coincidem',
     encrypt_storage: 'Encriptar',
+    lightning_settings: 'Lightning settings',
+    lightning_settings_explain:
+      'To connect to your own LND node please install LndHub' +
+      ' and put its URL here in settings. Leave blank to use default ' +
+      'ndHub\n (lndhub.io)',
+    save: 'save',
     about: 'Sobre',
     language: 'Idioma',
     currency: 'Moeda',
@@ -213,6 +216,7 @@ module.exports = {
     choose_source_wallet: 'Escolha a wallet',
     refill_lnd_balance: 'Carregar o saldo da Lightning wallet',
     refill: 'Carregar',
+    placeholder: 'Invoice',
     withdraw: 'Transferir',
     expired: 'Expired',
     sameWalletAsInvoiceError: 'You can not pay an invoice with the same wallet used to create it.',

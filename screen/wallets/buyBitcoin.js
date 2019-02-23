@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
-import { Animated, Linking, StyleSheet, View, TouchableOpacity, Clipboard } from 'react-native';
-import { BlueNavigationStyle, BlueLoading, SafeBlueArea, BlueButton, BlueText, BlueSpacing40 } from '../../BlueComponents';
+import { Linking, View } from 'react-native';
+import {
+  BlueNavigationStyle,
+  BlueCopyTextToClipboard,
+  BlueLoading,
+  SafeBlueArea,
+  BlueButton,
+  BlueText,
+  BlueSpacing40,
+} from '../../BlueComponents';
 import PropTypes from 'prop-types';
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
@@ -58,15 +66,7 @@ export default class BuyBitcoin extends Component {
     }
   }
 
-  copyToClipboard = () => {
-    this.setState({ addressText: loc.buyBitcoin.copied }, () => {
-      Clipboard.setString(this.state.address);
-      setTimeout(() => this.setState({ addressText: this.state.address }), 1000);
-    });
-  };
-
   render() {
-    console.log('render() receive/details, address,secret=', this.state.address, ',', this.state.secret);
     if (this.state.isLoading) {
       return <BlueLoading />;
     }
@@ -77,11 +77,7 @@ export default class BuyBitcoin extends Component {
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
             <BlueText>{loc.buyBitcoin.tap_your_address}</BlueText>
 
-            <TouchableOpacity onPress={this.copyToClipboard}>
-              <Animated.Text style={styles.address} numberOfLines={0}>
-                {this.state.addressText}
-              </Animated.Text>
-            </TouchableOpacity>
+            <BlueCopyTextToClipboard text={this.state.addressText} />
 
             <BlueButton
               icon={{
@@ -108,18 +104,9 @@ export default class BuyBitcoin extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  address: {
-    marginVertical: 32,
-    fontSize: 15,
-    color: '#9aa0aa',
-    textAlign: 'center',
-  },
-});
-
 BuyBitcoin.propTypes = {
   navigation: PropTypes.shape({
-    goBack: PropTypes.function,
+    goBack: PropTypes.func,
     state: PropTypes.shape({
       params: PropTypes.shape({
         address: PropTypes.string,

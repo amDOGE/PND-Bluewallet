@@ -3,6 +3,27 @@ package io.bluewallet.bluewallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.peel.react.TcpSocketsModule;
+import com.remobile.qrcodeLocalImage.RCTQRCodeLocalImagePackage;
+import com.imagepicker.ImagePickerPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import io.sentry.RNSentryPackage;
+import com.bitgo.randombytes.RandomBytesPackage;
+import im.shimo.react.prompt.RNPromptPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.rnfs.RNFSPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import org.reactnative.camera.RNCameraPackage;
+import io.sentry.RNSentryPackage;
+import com.bitgo.randombytes.RandomBytesPackage;
+import im.shimo.react.prompt.RNPromptPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.horcrux.svg.SvgPackage;
 import io.sentry.RNSentryPackage;
@@ -35,17 +56,21 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFSPackage() ,
-            new VectorIconsPackage(),
-            new SvgPackage(),
+            new TcpSocketsModule(),
+            new RCTQRCodeLocalImagePackage(),
+            new ImagePickerPackage(),
+            new RNCWebViewPackage(),
             new RNSentryPackage(),
             new RandomBytesPackage(),
             new RNPromptPackage(),
-            new LinearGradientPackage(),
             new RNReactNativeHapticFeedbackPackage(),
             new GoogleAnalyticsBridgePackage(),
             new RNDeviceInfo(),
-              new RNCameraPackage(),
+            new LinearGradientPackage(),
+            new RNFSPackage() ,
+            new VectorIconsPackage(),
+            new SvgPackage(),
+            new RNCameraPackage(),
             new RNGestureHandlerPackage()
       );
     }

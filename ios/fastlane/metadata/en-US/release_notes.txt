@@ -1,41 +1,17 @@
-v.3.5.6
--------
+v3.7.2
+======
 
-ADD: Loading indicator for wallet name change and wallet delete
-ADD: Added CZK fiat
-ADD: Alert user if they are trying to create a lightning wallet without a bitcoin wallet
-ADD: French
-ADD: DK - Danish Language Support
-ADD: Thai locale
-ADD: Dutch translation
-FIX: Main wallet list shows transaction unit that is preferred by wallet
-FIX: Export QRCode was too big on iPad
-FIX: Don't override existing tx information when scanning invalid QR
-FIX: Satoshis are now human-readable
-FIX: crash when RBF
-
-v3.5.5
-------
-
-ADD: pay zero-amount (tip) invoices
-ADD: lightning withdrawal through zigzag
-ADD: Thai translation
-ADD: Dutch translation
-ADD: Added Singapore Dollars
-ADD: Added AUD, VEF, and ZAR fiats.
-FIX: Loading indicator when creating a wallet
-FIX: Changelly link
-Fix and improve pt-BR translation
-FIX: Cannot click on Lightning transactions #196
-FIX: Fixed a clipping issue in lightning settings
-FIX: fixed a margin issue in about that caused clipping
-FIX: Changed invoice description field to label
-FIX: Updated transaction buttons maximum width
-FIX: Main Buttons layout #204
-FIX: Add topup indication on wallet selection #207
-FIX: Invoice QR code wrong scale #203
-FIX: Don't allow user to pay for an invoice created with the same wallet.
-FIX: If. balance was not a string, app would crash.
-FIX: Changed language selection screen to FlatList
-FIX: Made amount tap area larger
-FIX: Fixed an issue in currency settings where the checkmark wouldn't be in the correct preference* Merge branch 'master' of github.com:BlueWallet/BlueWallet 
+* FIX: status bar disappears #311
+* FIX: faulty back button on viewLndInvoice screen
+* FIX: lnd - create invoice - cant tap bottom half of button #303
+* FIX: Impossible to scan bech32 QR invoice with a specific amount (closes #296) 
+* REF: better lightning error reporting
+* FIX: not redering QR code #302
+* ADD: Indonesian Translation 
+* FIX: better LN wallet auto-refresh strategy 
+* FIX: Dismiss keyboard when pressing return 
+* FIX: HD wallet balance refresh
+* FIX: no wallet refresh upon startup (faster to start app) 
+* FIX: Dismiss keyboard when pressing return 
+* REF: HD wallet getbalance improvements
+* ADD: NZD as a currency

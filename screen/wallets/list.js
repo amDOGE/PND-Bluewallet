@@ -1,25 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, FlatList, RefreshControl, ScrollView } from 'react-native';
-import {
-  BlueTransactionOnchainIcon,
-  BlueLoading,
-  SafeBlueArea,
-  WalletsCarousel,
-  BlueTransactionIncommingIcon,
-  BlueTransactionOutgoingIcon,
-  BlueTransactionPendingIcon,
-  BlueTransactionOffchainIcon,
-  BlueTransactionExpiredIcon,
-  BlueList,
-  BlueListItem,
-  BlueHeaderDefaultMain,
-  BlueTransactionOffchainIncomingIcon,
-} from '../../BlueComponents';
+import { View, TouchableOpacity, Text, FlatList, InteractionManager, RefreshControl, ScrollView } from 'react-native';
+import { BlueLoading, SafeBlueArea, WalletsCarousel, BlueList, BlueHeaderDefaultMain, BlueTransactionListItem } from '../../BlueComponents';
 import { Icon } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
-import { LightningCustodianWallet } from '../../class';
+import WalletGradient from '../../class/walletGradient';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -47,18 +33,19 @@ export default class WalletsList extends Component {
     super(props);
     this.state = {
       isLoading: true,
+      isFlatListRefreshControlHidden: true,
       wallets: BlueApp.getWallets().concat(false),
       lastSnappedTo: 0,
     };
-    EV(EV.enum.WALLETS_COUNT_CHANGED, this.refreshFunction.bind(this));
+    EV(EV.enum.WALLETS_COUNT_CHANGED, this.redrawScreen.bind(this));
 
     // here, when we receive TRANSACTIONS_COUNT_CHANGED we do not query
     // remote server, we just redraw the screen
-    EV(EV.enum.TRANSACTIONS_COUNT_CHANGED, this.refreshFunction.bind(this));
+    EV(EV.enum.TRANSACTIONS_COUNT_CHANGED, this.redrawScreen.bind(this));
   }
 
   componentDidMount() {
-    this.refreshFunction();
+    this.redrawScreen();
   }
 
   /**
@@ -66,25 +53,26 @@ export default class WalletsList extends Component {
    * Triggered manually by user on pull-to-refresh.
    */
   refreshTransactions() {
-    if (!(this.lastSnappedTo < BlueApp.getWallets().length)) {
+    if (!(this.lastSnappedTo < BlueApp.getWallets().length) && this.lastSnappedTo !== undefined) {
       // last card, nop
       console.log('last card, nop');
       return;
     }
-
     this.setState(
       {
-        isTransactionsLoading: true,
+        isFlatListRefreshControlHidden: true,
       },
-      async function() {
-        let that = this;
-        setTimeout(async function() {
+      () => {
+        InteractionManager.runAfterInteractions(async () => {
           // more responsive
           let noErr = true;
           try {
-            await BlueApp.fetchWalletBalances(that.lastSnappedTo || 0);
+            let balanceStart = +new Date();
+            await BlueApp.fetchWalletBalances(this.lastSnappedTo || 0);
+            let balanceEnd = +new Date();
+            console.log('fetch balance took', (balanceEnd - balanceStart) / 1000, 'sec');
             let start = +new Date();
-            await BlueApp.fetchWalletTransactions(that.lastSnappedTo || 0);
+            await BlueApp.fetchWalletTransactions(this.lastSnappedTo || 0);
             let end = +new Date();
             console.log('fetch tx took', (end - start) / 1000, 'sec');
           } catch (err) {
@@ -93,24 +81,22 @@ export default class WalletsList extends Component {
           }
           if (noErr) await BlueApp.saveToDisk(); // caching
 
-          that.refreshFunction();
-        }, 1);
+          this.redrawScreen();
+        });
       },
     );
   }
 
-  /**
-   * Redraws the screen
-   */
-  refreshFunction() {
+  redrawScreen() {
+    console.log('wallets/list redrawScreen()');
     if (BlueApp.getBalance() !== 0) {
       A(A.ENUM.GOT_NONZERO_BALANCE);
     }
 
     this.setState({
       isLoading: false,
-      isTransactionsLoading: false,
-      dataSource: BlueApp.getTransactions(),
+      isFlatListRefreshControlHidden: true,
+      dataSource: BlueApp.getTransactions(null, 10),
       wallets: BlueApp.getWallets().concat(false),
     });
   }
@@ -122,13 +108,13 @@ export default class WalletsList extends Component {
     return '';
   }
 
-  handleClick(index, gradients) {
+  handleClick(index) {
     console.log('click', index);
     let wallet = BlueApp.wallets[index];
     if (wallet) {
       this.props.navigation.navigate('WalletTransactions', {
         wallet: wallet,
-        gradients: gradients,
+        headerColor: WalletGradient.headerColorFor(wallet.type),
       });
     } else {
       // if its out of index - this must be last card with incentive to create wallet
@@ -174,7 +160,7 @@ export default class WalletsList extends Component {
           console.log('balance changed, thus txs too');
           // balance changed, thus txs too
           await wallets[index].fetchTransactions();
-          this.refreshFunction();
+          this.redrawScreen();
           didRefresh = true;
         } else if (wallets[index].timeToRefreshTransaction()) {
           console.log(wallets[index].getLabel(), 'thinks its time to refresh TXs');
@@ -185,7 +171,7 @@ export default class WalletsList extends Component {
           if (wallets[index].fetchUserInvoices) {
             await wallets[index].fetchUserInvoices();
           }
-          this.refreshFunction();
+          this.redrawScreen();
           didRefresh = true;
         } else {
           console.log('balance not changed');
@@ -229,60 +215,10 @@ export default class WalletsList extends Component {
     }
   };
 
-  rowTitle = item => {
-    if (item.type === 'user_invoice' || item.type === 'payment_request') {
-      if (isNaN(item.value)) {
-        item.value = '0';
-      }
-      const currentDate = new Date();
-      const now = (currentDate.getTime() / 1000) | 0;
-      const invoiceExpiration = item.timestamp + item.expire_time;
-
-      if (invoiceExpiration > now) {
-        return loc.formatBalanceWithoutSuffix(item.value && item.value, item.walletPreferredBalanceUnit, true).toString();
-      } else if (invoiceExpiration < now) {
-        if (item.ispaid) {
-          return loc.formatBalanceWithoutSuffix(item.value && item.value, item.walletPreferredBalanceUnit, true).toString();
-        } else {
-          return loc.lnd.expired;
-        }
-      }
-    } else {
-      return loc.formatBalanceWithoutSuffix(item.value && item.value, item.walletPreferredBalanceUnit, true).toString();
-    }
+  _renderItem = data => {
+    return <BlueTransactionListItem item={data.item} itemPriceUnit={data.item.walletPreferredBalanceUnit} />;
   };
-
-  rowTitleStyle = item => {
-    let color = '#37c0a1';
-
-    if (item.type === 'user_invoice' || item.type === 'payment_request') {
-      const currentDate = new Date();
-      const now = (currentDate.getTime() / 1000) | 0;
-      const invoiceExpiration = item.timestamp + item.expire_time;
-
-      if (invoiceExpiration > now) {
-        color = '#37c0a1';
-      } else if (invoiceExpiration < now) {
-        if (item.ispaid) {
-          color = '#37c0a1';
-        } else {
-          color = '#FF0000';
-        }
-      }
-    } else if (item.value / 100000000 < 0) {
-      color = BlueApp.settings.foregroundColor;
-    }
-
-    return {
-      fontWeight: '600',
-      fontSize: 16,
-      color: color,
-    };
-  };
-
   render() {
-    const { navigate } = this.props.navigation;
-
     if (this.state.isLoading) {
       return <BlueLoading />;
     }
@@ -290,17 +226,19 @@ export default class WalletsList extends Component {
       <SafeBlueArea style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
         <NavigationEvents
           onWillFocus={() => {
-            this.refreshFunction();
+            this.redrawScreen();
           }}
         />
         <ScrollView
-          refreshControl={<RefreshControl onRefresh={() => this.refreshTransactions()} refreshing={this.state.isTransactionsLoading} />}
+          refreshControl={
+            <RefreshControl onRefresh={() => this.refreshTransactions()} refreshing={!this.state.isFlatListRefreshControlHidden} />
+          }
         >
           <BlueHeaderDefaultMain leftText={loc.wallets.list.title} onNewWalletPress={() => this.props.navigation.navigate('AddWallet')} />
           <WalletsCarousel
             data={this.state.wallets}
-            handleClick={(index, headerColor) => {
-              this.handleClick(index, headerColor);
+            handleClick={index => {
+              this.handleClick(index);
             }}
             handleLongPress={this.handleLongPress}
             onSnapToItem={index => {
@@ -335,114 +273,7 @@ export default class WalletsList extends Component {
               data={this.state.dataSource}
               extraData={this.state.dataSource}
               keyExtractor={this._keyExtractor}
-              renderItem={rowData => {
-                return (
-                  <BlueListItem
-                    avatar={(() => {
-                      // is it lightning refill tx?
-                      if (rowData.item.category === 'receive' && rowData.item.confirmations < 3) {
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionPendingIcon />
-                          </View>
-                        );
-                      }
-
-                      if (rowData.item.type && rowData.item.type === 'bitcoind_tx') {
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionOnchainIcon />
-                          </View>
-                        );
-                      }
-                      if (rowData.item.type === 'paid_invoice') {
-                        // is it lightning offchain payment?
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionOffchainIcon />
-                          </View>
-                        );
-                      }
-
-                      if (rowData.item.type === 'user_invoice' || rowData.item.type === 'payment_request') {
-                        if (!rowData.item.ispaid) {
-                          const currentDate = new Date();
-                          const now = (currentDate.getTime() / 1000) | 0;
-                          const invoiceExpiration = rowData.item.timestamp + rowData.item.expire_time;
-                          if (invoiceExpiration < now) {
-                            return (
-                              <View style={{ width: 25 }}>
-                                <BlueTransactionExpiredIcon />
-                              </View>
-                            );
-                          }
-                        } else {
-                          return (
-                            <View style={{ width: 25 }}>
-                              <BlueTransactionOffchainIncomingIcon />
-                            </View>
-                          );
-                        }
-                      }
-
-                      if (!rowData.item.confirmations) {
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionPendingIcon />
-                          </View>
-                        );
-                      } else if (rowData.item.value < 0) {
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionOutgoingIcon />
-                          </View>
-                        );
-                      } else {
-                        return (
-                          <View style={{ width: 25 }}>
-                            <BlueTransactionIncommingIcon />
-                          </View>
-                        );
-                      }
-                    })()}
-                    title={loc.transactionTimeToReadable(rowData.item.received)}
-                    subtitle={
-                      (rowData.item.confirmations < 7 ? loc.transactions.list.conf + ': ' + rowData.item.confirmations + ' ' : '') +
-                      this.txMemo(rowData.item.hash) +
-                      (rowData.item.memo || '')
-                    }
-                    onPress={() => {
-                      if (rowData.item.hash) {
-                        navigate('TransactionDetails', {
-                          hash: rowData.item.hash,
-                        });
-                      } else if (
-                        rowData.item.type === 'user_invoice' ||
-                        rowData.item.type === 'payment_request' ||
-                        rowData.item.type === 'paid_invoice'
-                      ) {
-                        const lightningWallet = this.state.wallets.filter(wallet => wallet.type === LightningCustodianWallet.type);
-                        if (typeof lightningWallet === 'object') {
-                          if (lightningWallet.length === 1) {
-                            this.props.navigation.navigate('LNDViewInvoice', {
-                              invoice: rowData.item,
-                              fromWallet: lightningWallet[0],
-                            });
-                          }
-                        }
-                      }
-                    }}
-                    badge={{
-                      value: 3,
-                      textStyle: { color: 'orange' },
-                      containerStyle: { marginTop: 0 },
-                    }}
-                    hideChevron
-                    rightTitle={this.rowTitle(rowData.item)}
-                    rightTitleStyle={this.rowTitleStyle(rowData.item)}
-                  />
-                );
-              }}
+              renderItem={this._renderItem}
             />
           </BlueList>
         </ScrollView>

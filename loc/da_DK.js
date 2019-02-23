@@ -3,10 +3,6 @@ module.exports = {
     storage_is_encrypted: 'Lageret er krypteret. Indtast adgangskode for at dekryptere',
     enter_password: 'Indtast adgangskode',
     bad_password: 'Forkert adgangskode, prøv igen',
-    months_ago: 'måneder siden',
-    days_ago: 'dage siden',
-    hours_ago: 'timer siden',
-    minutes_ago: 'minutter siden',
     never: 'aldrig',
     continue: 'Continue',
     ok: 'OK',
@@ -16,7 +12,7 @@ module.exports = {
     options: 'valgmuligheder',
     createBitcoinWallet: 'In order to use a Lightning wallet, a Bitcoin wallet is needed to fund it. Would you like to continue anyway?',
     list: {
-      app_name: 'Blue Wallet',
+      app_name: 'BlueWallet',
       title: 'wallets',
       header: 'En wallet består af par af hemmelige (private nøgler) og en adresse' + 'som du kan dele med andre for at modtage coins.',
       add: 'Tilføj Wallet',
@@ -163,6 +159,7 @@ module.exports = {
       share: 'del',
       copiedToClipboard: 'Kopieret til udklipsholder.',
       label: 'Beskrivelse',
+      create: 'Create',
       setAmount: 'Modtag med beløb',
     },
   },
@@ -181,6 +178,12 @@ module.exports = {
     retype_password: 'Gentag adgangskoden',
     passwords_do_not_match: 'Adgangskoden er ikke den samme',
     encrypt_storage: 'Krypter lager',
+    lightning_settings: 'Lightning settings',
+    lightning_settings_explain:
+      'To connect to your own LND node please install LndHub' +
+      ' and put its URL here in settings. Leave blank to use default ' +
+      'ndHub\n (lndhub.io)',
+    save: 'save',
     about: 'Andet',
     language: 'Sprog',
     currency: 'Valuta',
@@ -207,6 +210,7 @@ module.exports = {
   },
   lnd: {
     title: 'Administration',
+    placeholder: 'Invoice',
     choose_source_wallet: 'Vælge en wallet',
     refill_lnd_balance: 'Genopfyld Lightning wallet',
     refill: 'Genopfyld',

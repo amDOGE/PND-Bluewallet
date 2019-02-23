@@ -1,4 +1,3 @@
-/* global alert */
 import React, { Component } from 'react';
 import { Alert, AsyncStorage, ActivityIndicator, Keyboard, Dimensions, View, TextInput, TouchableWithoutFeedback } from 'react-native';
 import {
@@ -73,7 +72,7 @@ export default class WalletsAdd extends Component {
 
     return (
       <SafeBlueArea forceInset={{ horizontal: 'always' }} style={{ flex: 1, paddingTop: 40 }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{ flex: 1 }}>
           <BlueCard>
             <BlueFormLabel>{loc.wallets.add.wallet_name}</BlueFormLabel>
             <View
@@ -140,7 +139,6 @@ export default class WalletsAdd extends Component {
                     height: (width - 60) / 3,
                   }}
                   title={loc.wallets.add.create}
-                  disabled={BlueApp.getWallets().some(wallet => wallet.type === LightningCustodianWallet.type)}
                 />
               </View>
             </View>
@@ -184,9 +182,6 @@ export default class WalletsAdd extends Component {
               {!this.state.isLoading ? (
                 <BlueButton
                   title={loc.wallets.add.create}
-                  buttonStyle={{
-                    width: width / 1.5,
-                  }}
                   onPress={() => {
                     this.setState(
                       { isLoading: true },
@@ -195,16 +190,6 @@ export default class WalletsAdd extends Component {
 
                         if (this.state.activeLightning) {
                           // eslint-disable-next-line
-                          let hasBitcoinWallet = false;
-                          for (let t of BlueApp.getWallets()) {
-                            if (t.type === LightningCustodianWallet.type) {
-                              // already exist
-                              this.setState({ isLoading: false });
-                              return alert('Only 1 Lightning wallet allowed for now');
-                            } else if (t.type !== LightningCustodianWallet.type) {
-                              hasBitcoinWallet = true;
-                            }
-                          }
 
                           this.createLightningWallet = async () => {
                             w = new LightningCustodianWallet();
@@ -233,7 +218,7 @@ export default class WalletsAdd extends Component {
                             this.props.navigation.dismiss();
                           };
 
-                          if (!hasBitcoinWallet) {
+                          if (!BlueApp.getWallets().some(wallet => wallet.type !== LightningCustodianWallet.type)) {
                             Alert.alert(
                               loc.wallets.add.lightning,
                               loc.wallets.createBitcoinWallet,

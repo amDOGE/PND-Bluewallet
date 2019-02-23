@@ -3,14 +3,16 @@ import { AsyncStorage, View, TextInput, Linking } from 'react-native';
 import { AppStorage } from '../../class';
 import { BlueLoading, BlueSpacing20, BlueButton, SafeBlueArea, BlueCard, BlueNavigationStyle, BlueText } from '../../BlueComponents';
 import PropTypes from 'prop-types';
+import { Button } from 'react-native-elements';
 import { LightningCustodianWallet } from '../../class/lightning-custodian-wallet';
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
+let loc = require('../../loc');
 
 export default class LightningSettings extends Component {
   static navigationOptions = () => ({
     ...BlueNavigationStyle(),
-    title: 'Lightning Settings',
+    title: loc.settings.lightning_settings,
   });
 
   constructor(props) {
@@ -52,13 +54,10 @@ export default class LightningSettings extends Component {
     return (
       <SafeBlueArea forceInset={{ horizontal: 'always' }} style={{ flex: 1 }}>
         <BlueCard>
-          <BlueText>
-            To connect to your own LND node please install LndHub and put its URL here in settings. Leave blank to use default LndHub
-            (lndhub.io)
-          </BlueText>
+          <BlueText>{loc.settings.lightning_settings_explain}</BlueText>
         </BlueCard>
 
-        <BlueButton
+        <Button
           icon={{
             name: 'mark-github',
             type: 'octicon',
@@ -69,6 +68,7 @@ export default class LightningSettings extends Component {
             Linking.openURL('https://github.com/BlueWallet/LndHub');
           }}
           title="github.com/BlueWallet/LndHub"
+          color={BlueApp.settings.buttonTextColor}
           buttonStyle={{
             backgroundColor: '#FFFFFF',
           }}
@@ -94,7 +94,7 @@ export default class LightningSettings extends Component {
               value={this.state.URI}
               onChangeText={text => this.setState({ URI: text })}
               numberOfLines={1}
-              style={{ flex: 1, marginHorizontal: 8, minHeight: 33, height: 33 }}
+              style={{ flex: 1, marginHorizontal: 8, minHeight: 36, height: 36 }}
               editable={!this.state.isLoading}
               underlineColorAndroid="transparent"
             />
@@ -105,7 +105,7 @@ export default class LightningSettings extends Component {
             onPress={() => {
               this.save();
             }}
-            title={'Save'}
+            title={loc.settings.save}
           />
         </BlueCard>
       </SafeBlueArea>

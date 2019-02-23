@@ -3,10 +3,6 @@ module.exports = {
     storage_is_encrypted: 'Your storage is encrypted. Password is required to decrypt it',
     enter_password: 'Enter password',
     bad_password: 'Bad pasword, try again',
-    months_ago: 'months ago',
-    days_ago: 'days ago',
-    hours_ago: 'hours ago',
-    minutes_ago: 'minutes ago',
     never: 'never',
     continue: 'Continue',
     ok: 'OK',
@@ -14,9 +10,10 @@ module.exports = {
   wallets: {
     select_wallet: 'Select Wallet',
     options: 'options',
-    createBitcoinWallet: 'In order to use a Lightning wallet, a Bitcoin wallet is needed to fund it. Would you like to continue anyway?',
+    createBitcoinWallet:
+      'You currently do not have a Bitcoin wallet. In order to fund a Lightning wallet, a Bitcoin wallet needs to be created or imported. Would you like to continue anyway?',
     list: {
-      app_name: 'Blue Wallet',
+      app_name: 'BlueWallet',
       title: 'wallets',
       header: 'A wallet represents a pair of a secret (private key) and an address' + 'you can share to receive coins.',
       add: 'Add Wallet',
@@ -163,6 +160,7 @@ module.exports = {
       share: 'share',
       copiedToClipboard: 'Copied to clipboard.',
       label: 'Description',
+      create: 'Create',
       setAmount: 'Receive with amount',
     },
   },
@@ -181,6 +179,11 @@ module.exports = {
     retype_password: 'Re-type password',
     passwords_do_not_match: 'Passwords do not match',
     encrypt_storage: 'Encrypt storage',
+    lightning_settings: 'Lightning Settings',
+    lightning_settings_explain:
+      'To connect to your own LND node please install LndHub' +
+      ' and put its URL here in settings. Leave blank to use default LndHub (lndhub.io)',
+    save: 'save',
     about: 'About',
     language: 'Language',
     currency: 'Currency',
@@ -212,6 +215,7 @@ module.exports = {
     refill: 'Refill',
     withdraw: 'Withdraw',
     expired: 'Expired',
+    placeholder: 'Invoice',
     sameWalletAsInvoiceError: 'You can not pay an invoice with the same wallet used to create it.',
   },
 };

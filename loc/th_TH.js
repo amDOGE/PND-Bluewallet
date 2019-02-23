@@ -3,19 +3,15 @@ module.exports = {
     storage_is_encrypted: 'ที่เก็บข้อมูลของคุณถูกเข้ารหัส. ต้องการรหัสผ่านเพื่อถอดรหัส',
     enter_password: 'กรุณาใส่รหัสผ่าน',
     bad_password: 'รหัสผ่านไม่ถูกต้อง กรุณาใส่รหัสผ่านอีกครั้ง',
-    months_ago: 'เดือนที่แล้ว',
-    days_ago: 'วันที่แล้ว',
-    hours_ago: 'ชั่วโมงที่แล้ว',
-    minutes_ago: 'นาทีที่แล้ว',
     never: 'ไม่เคย',
-    continue: 'Continue',
-    ok: 'OK',
+    continue: 'ต่อไป',
+    ok: 'ตกลง',
   },
   wallets: {
     select_wallet: 'เลือกกระเป๋าสตางค์',
     options: 'ทางเลือก',
-    createBitcoinWallet: 'In order to use a Lightning wallet, a Bitcoin wallet is needed to fund it. Would you like to continue anyway?',
-
+    createBitcoinWallet:
+      'ในการใช้งานกระเป๋าสตางค์ไลท์นิง คุณจำเป็นต้องมีกระเป๋าสตางค์บิตคอยน์. คุณต้องการสร้างกระเป๋าสตางค์บิตคอยน์หรือไม่?',
     list: {
       app_name: 'บูลวอลเล็ต',
       title: 'กระเป๋าสตางค์',
@@ -163,6 +159,7 @@ module.exports = {
       share: 'แชร์',
       copiedToClipboard: 'ก๊อปปี้ไปที่คลิปบอร์ดแล้ว.',
       label: 'คำอธิบาย',
+      create: 'สร้าง',
       setAmount: 'รับด้วยจำนวน',
     },
   },
@@ -181,6 +178,12 @@ module.exports = {
     retype_password: 'ใส่รหัสผ่านอีกครั้ง',
     passwords_do_not_match: 'รหัสผ่านไม่ตรงกัน',
     encrypt_storage: 'เข้ารหัสที่เก็บข้อมูล',
+    lightning_settings: 'การตั้งค่าไลท์นิง',
+    lightning_settings_explain:
+      'กรณีที่ต้องการต่อเชื่อมไปยังไลท์นิงโนดของท่านเอง กรุณาติดตั้ง LndHub ของท่าน' +
+      ' และไส่ URL ที่นี่. ระบบจะใช้ LndHub ของ lndhub.io ในกรณืที่ท่าน ' +
+      ' ไม่ตั้งค่าใดๆ',
+    save: 'บันทึก',
     about: 'เกี่ยวกับ',
     language: 'ภาษา',
     currency: 'เงินตรา',
@@ -203,7 +206,7 @@ module.exports = {
     password_should_not_match: 'รหัสผ่านสำหรับที่เก็บข้อมูลเทียมไม่ควรตรงกับรหัสผ่านที่ใช้กับที่เก็บข้อมูลเทียมจริง',
     retype_password: 'ใส่รหัสผ่านอีกครั้ง ใส่รหัสผ่านอีกครั้ง',
     passwords_do_not_match: 'รหัสผ่านไม่ตรงกัน ',
-    success: 'Success',
+    success: 'สำเร็จ',
   },
   lnd: {
     title: 'จัดการเงิน',
@@ -211,6 +214,7 @@ module.exports = {
     refill_lnd_balance: 'เติมกระเป๋าสตางค์ไลท์นิง',
     refill: 'เติม',
     withdraw: 'ถอน',
+    placeholder: 'Invoice',
     expired: 'หมดอายุแล้ว',
     sameWalletAsInvoiceError: 'คุณไม่สามารถจ่ายใบแจ้งหนี้นี้ด้วยกระเป๋าสตางค์อันเดียวกันกับที่ใช้สร้างมัน.',
   },

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, Platform, ActivityIndicator, View, Clipboard, Animated, TouchableOpacity } from 'react-native';
-import { QRCode as QRSlow } from 'react-native-custom-qr-codes';
-import { BlueSpacing20, SafeBlueArea, BlueText, BlueNavigationStyle } from '../../BlueComponents';
+import { Dimensions, ActivityIndicator, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { BlueSpacing20, SafeBlueArea, BlueText, BlueNavigationStyle, BlueCopyTextToClipboard } from '../../BlueComponents';
 import PropTypes from 'prop-types';
-const QRFast = require('react-native-qrcode');
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
 let loc = require('../../loc');
@@ -34,7 +33,7 @@ export default class WalletXpub extends Component {
       wallet,
       xpub: wallet.getXpub(),
       xpubText: wallet.getXpub(),
-      qrCodeHeight: height > width ? height / 2.5 : width / 2,
+      qrCodeHeight: height > width ? width - 40 : width / 2,
     };
   }
 
@@ -49,16 +48,9 @@ export default class WalletXpub extends Component {
     }, 1000);
   }
 
-  copyToClipboard = () => {
-    this.setState({ xpubText: loc.wallets.xpub.copiedToClipboard }, () => {
-      Clipboard.setString(this.state.xpub);
-      setTimeout(() => this.setState({ xpubText: this.state.xpub }), 1000);
-    });
-  };
-
   onLayout = () => {
     const { height } = Dimensions.get('window');
-    this.setState({ qrCodeHeight: height > width ? height / 2.5 : width / 2 });
+    this.setState({ qrCodeHeight: height > width ? width - 40 : width / 2 });
   };
 
   render() {
@@ -80,27 +72,17 @@ export default class WalletXpub extends Component {
 
           {(() => {
             if (this.state.showQr) {
-              if (Platform.OS === 'ios' || this.state.xpub.length < 54) {
-                return (
-                  <QRSlow
-                    content={this.state.xpub}
-                    color={BlueApp.settings.foregroundColor}
-                    backgroundColor={BlueApp.settings.brandingColor}
-                    logo={require('../../img/qr-code.png')}
-                    size={this.state.qrCodeHeight}
-                    ecl={'Q'}
-                  />
-                );
-              } else {
-                return (
-                  <QRFast
-                    value={this.state.xpub}
-                    fgColor={BlueApp.settings.brandingColor}
-                    bgColor={BlueApp.settings.foregroundColor}
-                    size={this.state.qrCodeHeight}
-                  />
-                );
-              }
+              return (
+                <QRCode
+                  value={this.state.xpub}
+                  logo={require('../../img/qr-code.png')}
+                  size={this.state.qrCodeHeight}
+                  logoSize={90}
+                  color={BlueApp.settings.foregroundColor}
+                  logoBackgroundColor={BlueApp.settings.brandingColor}
+                  ecl={'H'}
+                />
+              );
             } else {
               return (
                 <View>
@@ -110,11 +92,7 @@ export default class WalletXpub extends Component {
             }
           })()}
           <BlueSpacing20 />
-          <TouchableOpacity onPress={this.copyToClipboard}>
-            <Animated.Text style={{ paddingHorizontal: 8, textAlign: 'center' }} numberOfLines={0}>
-              {this.state.xpubText}
-            </Animated.Text>
-          </TouchableOpacity>
+          <BlueCopyTextToClipboard text={this.state.xpubText} />
         </View>
       </SafeBlueArea>
     );

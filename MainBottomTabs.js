@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Settings from './screen/settings/settings';
 import About from './screen/settings/about';
+import ReleaseNotes from './screen/settings/releasenotes';
 import Selftest from './screen/selftest';
 import Language from './screen/settings/language';
 import Currency from './screen/settings/currency';
@@ -35,6 +36,7 @@ import Success from './screen/send/success';
 
 import ManageFunds from './screen/lnd/manageFunds';
 import ScanLndInvoice from './screen/lnd/scanLndInvoice';
+import LappBrowser from './screen/lnd/browser';
 import LNDCreateInvoice from './screen/lnd/lndCreateInvoice';
 import LNDZigZag from './screen/lnd/lndZigZag';
 import LNDViewInvoice from './screen/lnd/lndViewInvoice';
@@ -86,6 +88,10 @@ const WalletsStackNavigator = createStackNavigator(
       screen: About,
       path: 'About',
     },
+    ReleaseNotes: {
+      screen: ReleaseNotes,
+      path: 'ReleaseNotes',
+    },
     Selftest: {
       screen: Selftest,
     },
@@ -104,6 +110,14 @@ const WalletsStackNavigator = createStackNavigator(
     LightningSettings: {
       screen: LightningSettings,
       path: 'LightningSettings',
+    },
+    LNDViewInvoice: {
+      screen: LNDViewInvoice,
+      swipeEnabled: false,
+      gesturesEnabled: false,
+    },
+    LNDViewAdditionalInvoiceInformation: {
+      screen: LNDViewAdditionalInvoiceInformation,
     },
   },
   { headerBackTitleVisible: false },
@@ -152,17 +166,6 @@ const ManageFundsStackNavigator = createStackNavigator({
   },
 });
 
-const LNDViewInvoiceStackNavigator = createStackNavigator({
-  LNDViewInvoice: {
-    screen: LNDViewInvoice,
-    swipeEnabled: false,
-    gesturesEnabled: false,
-  },
-  LNDViewAdditionalInvoiceInformation: {
-    screen: LNDViewAdditionalInvoiceInformation,
-  },
-});
-
 const LNDCreateInvoiceStackNavigator = createStackNavigator({
   LNDCreateInvoice: {
     screen: LNDCreateInvoice,
@@ -183,6 +186,15 @@ const CreateWalletStackNavigator = createStackNavigator({
   },
   ImportWallet: {
     screen: ImportWallet,
+  },
+});
+
+const LightningScanInvoiceStackNavigator = createStackNavigator({
+  ScanLndInvoice: {
+    screen: ScanLndInvoice,
+  },
+  Success: {
+    screen: Success,
   },
 });
 
@@ -242,11 +254,18 @@ const MainBottomTabs = createStackNavigator(
       },
     },
     ScanLndInvoice: {
-      screen: ScanLndInvoice,
+      screen: LightningScanInvoiceStackNavigator,
+      navigationOptions: {
+        header: null,
+      },
     },
     ScanQrAddress: {
       screen: sendScanQrAddress,
     },
+    LappBrowser: {
+      screen: LappBrowser,
+    },
+
     ReorderWallets: {
       screen: ReorderWalletsStackNavigator,
       navigationOptions: {
@@ -255,12 +274,6 @@ const MainBottomTabs = createStackNavigator(
     },
     LNDCreateInvoice: {
       screen: LNDCreateInvoiceStackNavigator,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    LNDViewExistingInvoice: {
-      screen: LNDViewInvoiceStackNavigator,
       navigationOptions: {
         header: null,
       },

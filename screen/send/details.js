@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   View,
   TextInput,
+  StatusBar,
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
@@ -11,19 +12,26 @@ import {
   StyleSheet,
   Platform,
   Slider,
+  AsyncStorage,
   Text,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { BlueNavigationStyle, BlueButton, BlueBitcoinAmount } from '../../BlueComponents';
+import {
+  BlueNavigationStyle,
+  BlueButton,
+  BlueBitcoinAmount,
+  BlueAddressInput,
+  BlueDismissKeyboardInputAccessory,
+  BlueLoading,
+} from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
 import BitcoinBIP70TransactionDecode from '../../bip70/bip70';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
-import { HDLegacyP2PKHWallet, HDSegwitP2SHWallet } from '../../class';
+import { HDLegacyP2PKHWallet, HDSegwitP2SHWallet, LightningCustodianWallet } from '../../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 const bip21 = require('bip21');
-let EV = require('../../events');
 let BigNumber = require('bignumber.js');
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
@@ -38,6 +46,8 @@ export default class SendDetails extends Component {
     title: loc.send.header,
   });
 
+  state = { isLoading: true, fromWallet: undefined };
+
   constructor(props) {
     super(props);
     console.log('props.navigation.state.params=', props.navigation.state.params);
@@ -51,59 +61,79 @@ export default class SendDetails extends Component {
     if (props.navigation.state.params) fromSecret = props.navigation.state.params.fromSecret;
     let fromWallet = null;
 
-    const wallets = BlueApp.getWallets();
+    const wallets = BlueApp.getWallets().filter(wallet => wallet.type !== LightningCustodianWallet.type);
 
-    for (let w of wallets) {
-      if (w.getSecret() === fromSecret) {
-        fromWallet = w;
-        break;
+    if (wallets.length === 0) {
+      alert('Before creating a transaction, you must first add a Bitcoin wallet.');
+      return props.navigation.goBack(null);
+    } else {
+      if (!fromWallet && wallets.length > 0) {
+        fromWallet = wallets[0];
+        fromAddress = fromWallet.getAddress();
+        fromSecret = fromWallet.getSecret();
+      }
+      if (fromWallet === null) return props.navigation.goBack(null);
+      for (let w of wallets) {
+        if (w.getSecret() === fromSecret) {
+          fromWallet = w;
+          break;
+        }
+
+        if (w.getAddress() === fromAddress) {
+          fromWallet = w;
+        }
       }
 
-      if (w.getAddress() === fromAddress) {
-        fromWallet = w;
-      }
+      this.state = {
+        isFeeSelectionModalVisible: false,
+        fromAddress,
+        fromWallet,
+        fromSecret,
+        address,
+        memo,
+        fee: 1,
+        networkTransactionFees: new NetworkTransactionFee(1, 1, 1),
+        feeSliderValue: 1,
+        bip70TransactionExpiration: null,
+        renderWalletSelectionButtonHidden: false,
+      };
     }
-
-    // fallback to first wallet if it exists
-    if (!fromWallet && wallets[0]) fromWallet = wallets[0];
-
-    this.state = {
-      isFeeSelectionModalVisible: false,
-      fromAddress,
-      fromWallet,
-      fromSecret,
-      isLoading: true,
-      address,
-      memo,
-      fee: 1,
-      networkTransactionFees: new NetworkTransactionFee(1, 1, 1),
-      feeSliderValue: 1,
-      bip70TransactionExpiration: null,
-    };
   }
 
-  async componentDidMount() {
-    EV(EV.enum.CREATE_TRANSACTION_NEW_DESTINATION_ADDRESS, data => {
-      this.setState(
-        { isLoading: false },
-        () => {
-          if (btcAddressRx.test(data) || data.indexOf('bc1') === 0) {
+  /**
+   * TODO: refactor this mess, get rid of regexp, use https://github.com/bitcoinjs/bitcoinjs-lib/issues/890 etc etc
+   *
+   * @param data {String} Can be address or `bitcoin:xxxxxxx` uri scheme, or invalid garbage
+   */
+  processAddressData = data => {
+    this.setState(
+      { isLoading: true },
+      () => {
+        if (BitcoinBIP70TransactionDecode.matchesPaymentURL(data)) {
+          this.processBIP70Invoice(data);
+        } else {
+          const dataWithoutSchema = data.replace('bitcoin:', '');
+          if (btcAddressRx.test(dataWithoutSchema) || (dataWithoutSchema.indexOf('bc1') === 0 && dataWithoutSchema.indexOf('?') === -1)) {
             this.setState({
-              address: data,
+              address: dataWithoutSchema,
               bip70TransactionExpiration: null,
               isLoading: false,
             });
           } else {
             let address, options;
             try {
+              if (!data.toLowerCase().startsWith('bitcoin:')) {
+                data = `bitcoin:${data}`;
+              }
               const decoded = bip21.decode(data);
               address = decoded.address;
               options = decoded.options;
-            } catch (Err) {
-              console.log(Err);
+            } catch (error) {
+              console.log(error);
+              this.setState({ isLoading: false });
             }
             console.log(options);
-            if (btcAddressRx.test(address)) {
+            if (btcAddressRx.test(address) || address.indexOf('bc1') === 0) {
               this.setState({
                 address,
                 amount: options.amount,
@@ -111,28 +141,37 @@ export default class SendDetails extends Component {
                 bip70TransactionExpiration: null,
                 isLoading: false,
               });
-            } else if (BitcoinBIP70TransactionDecode.matchesPaymentURL(data)) {
-              this.processBIP70Invoice(data);
             }
           }
-        },
-        true,
-      );
-    });
-    let recommendedFees = await NetworkTransactionFees.recommendedFees().catch(response => {
-      this.setState({
-        fee: response.halfHourFee,
-        networkTransactionFees: response,
-        feeSliderValue: response.halfHourFee,
-        isLoading: false,
-      });
-    });
-    if (recommendedFees) {
+        }
+      },
+      true,
+    );
+  };
+
+  async componentDidMount() {
+    StatusBar.setBarStyle('dark-content');
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    try {
+      const cachedNetworkTransactionFees = JSON.parse(await AsyncStorage.getItem(NetworkTransactionFee.StorageKey));
+
+      if (cachedNetworkTransactionFees && cachedNetworkTransactionFees.hasOwnProperty('halfHourFee')) {
+        this.setState({
+          fee: cachedNetworkTransactionFees.halfHourFee,
+          networkTransactionFees: cachedNetworkTransactionFees,
+          feeSliderValue: cachedNetworkTransactionFees.halfHourFee,
+        });
+      }
+    } catch (_) {}
+
+    let recommendedFees = await NetworkTransactionFees.recommendedFees();
+    if (recommendedFees && recommendedFees.hasOwnProperty('halfHourFee')) {
+      await AsyncStorage.setItem(NetworkTransactionFee.StorageKey, JSON.stringify(recommendedFees));
       this.setState({
         fee: recommendedFees.halfHourFee,
         networkTransactionFees: recommendedFees,
         feeSliderValue: recommendedFees.halfHourFee,
-        isLoading: false,
       });
 
       if (this.props.navigation.state.params.uri) {
@@ -140,28 +179,54 @@ export default class SendDetails extends Component {
           this.processBIP70Invoice(this.props.navigation.state.params.uri);
         } else {
           try {
-            let amount = '';
-            let parsedBitcoinUri = null;
-            let address = '';
-            let memo = '';
-
-            parsedBitcoinUri = bip21.decode(this.props.navigation.state.params.uri);
-            address = parsedBitcoinUri.hasOwnProperty('address') ? parsedBitcoinUri.address : address;
-            if (parsedBitcoinUri.hasOwnProperty('options')) {
-              if (parsedBitcoinUri.options.hasOwnProperty('amount')) {
-                amount = parsedBitcoinUri.options.amount.toString();
-              }
-              if (parsedBitcoinUri.options.hasOwnProperty('label')) {
-                memo = parsedBitcoinUri.options.label || memo;
-              }
-            }
-            this.setState({ address, amount, memo });
+            const { address, amount, memo } = this.decodeBitcoinUri(this.props.navigation.getParam('uri'));
+            this.setState({ address, amount, memo, isLoading: false });
           } catch (error) {
             console.log(error);
+            this.setState({ isLoading: false });
             alert('Error: Unable to decode Bitcoin address');
           }
         }
+      } else {
+        this.setState({ isLoading: false });
       }
+    } else {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ renderWalletSelectionButtonHidden: true });
+  };
+
+  _keyboardDidHide = () => {
+    this.setState({ renderWalletSelectionButtonHidden: false });
+  };
+
+  decodeBitcoinUri(uri) {
+    try {
+      let amount = '';
+      let parsedBitcoinUri = null;
+      let address = '';
+      let memo = '';
+      parsedBitcoinUri = bip21.decode(uri);
+      address = parsedBitcoinUri.hasOwnProperty('address') ? parsedBitcoinUri.address : address;
+      if (parsedBitcoinUri.hasOwnProperty('options')) {
+        if (parsedBitcoinUri.options.hasOwnProperty('amount')) {
+          amount = parsedBitcoinUri.options.amount.toString();
+        }
+        if (parsedBitcoinUri.options.hasOwnProperty('label')) {
+          memo = parsedBitcoinUri.options.label || memo;
+        }
+      }
+      return { address, amount, memo };
+    } catch (_) {
+      return undefined;
     }
   }
 
@@ -242,6 +307,7 @@ export default class SendDetails extends Component {
   }
 
   async createTransaction() {
+    Keyboard.dismiss();
     this.setState({ isLoading: true });
     let error = false;
     let requestedSatPerByte = this.state.fee.toString().replace(/\D/g, '');
@@ -367,9 +433,9 @@ export default class SendDetails extends Component {
   }
 
   onWalletSelect = wallet => {
-    this.setState({ fromAddress: wallet.getAddress(), fromSecret: wallet.getSecret(), fromWallet: wallet }, () =>
-      this.props.navigation.goBack(null),
-    );
+    this.setState({ fromAddress: wallet.getAddress(), fromSecret: wallet.getSecret(), fromWallet: wallet }, () => {
+      this.props.navigation.pop();
+    });
   };
 
   renderFeeSelectionModal = () => {
@@ -377,7 +443,13 @@ export default class SendDetails extends Component {
       <Modal
         isVisible={this.state.isFeeSelectionModalVisible}
         style={styles.bottomModal}
-        onBackdropPress={() => this.setState({ isFeeSelectionModalVisible: false })}
+        onBackdropPress={() => {
+          if (this.state.fee < 1 || this.state.feeSliderValue < 1) {
+            this.setState({ fee: Number(1), feeSliderValue: Number(1) });
+          }
+          Keyboard.dismiss();
+          this.setState({ isFeeSelectionModalVisible: false });
+        }}
       >
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
           <View style={styles.modalContent}>
@@ -388,18 +460,21 @@ export default class SendDetails extends Component {
                   this.textInput = ref;
                 }}
                 value={this.state.fee.toString()}
+                onEndEditing={() => {
+                  if (this.state.fee < 1 || this.state.feeSliderValue < 1) {
+                    this.setState({ fee: Number(1), feeSliderValue: Number(1) });
+                  }
+                }}
                 onChangeText={value => {
                   let newValue = value.replace(/\D/g, '');
-                  if (newValue.length === 0) {
-                    newValue = 1;
-                  }
-                  this.setState({ fee: newValue, feeSliderValue: newValue });
+                  this.setState({ fee: Number(newValue), feeSliderValue: Number(newValue) });
                 }}
                 maxLength={9}
                 editable={!this.state.isLoading}
                 placeholderTextColor="#37c0a1"
                 placeholder={this.state.networkTransactionFees.halfHourFee.toString()}
                 style={{ fontWeight: '600', color: '#37c0a1', marginBottom: 0, marginRight: 4, textAlign: 'right', fontSize: 36 }}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
               <Text
                 style={{
@@ -451,6 +526,7 @@ export default class SendDetails extends Component {
   };
 
   renderWalletSelectionButton = () => {
+    if (this.state.renderWalletSelectionButtonHidden) return;
     return (
       <View style={{ marginBottom: 24, alignItems: 'center' }}>
         {!this.state.isLoading && (
@@ -478,14 +554,13 @@ export default class SendDetails extends Component {
   };
 
   render() {
-    if (!this.state.fromWallet.getAddress) {
+    if (this.state.isLoading || typeof this.state.fromWallet === 'undefined') {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
-          <Text>System error: Source wallet not found (this should never happen)</Text>
+          <BlueLoading />
         </View>
       );
     }
-
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
@@ -495,57 +570,30 @@ export default class SendDetails extends Component {
                 isLoading={this.state.isLoading}
                 amount={this.state.amount}
                 onChangeText={text => this.setState({ amount: text })}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderColor: '#d2d2d2',
-                  borderBottomColor: '#d2d2d2',
-                  borderWidth: 1.0,
-                  borderBottomWidth: 0.5,
-                  backgroundColor: '#f5f5f5',
-                  minHeight: 44,
-                  height: 44,
-                  marginHorizontal: 20,
-                  alignItems: 'center',
-                  marginVertical: 8,
-                  borderRadius: 4,
-                }}
-              >
-                <TextInput
-                  onChangeText={text => {
-                    if (!this.processBIP70Invoice(text)) {
-                      this.setState({ address: text.replace(' ', ''), isLoading: false, bip70TransactionExpiration: null });
-                    } else {
-                      this.setState({ address: text.replace(' ', ''), isLoading: false, bip70TransactionExpiration: null });
+              <BlueAddressInput
+                onChangeText={text => {
+                  if (!this.processBIP70Invoice(text)) {
+                    this.setState({
+                      address: text.trim().replace('bitcoin:', ''),
+                      isLoading: false,
+                      bip70TransactionExpiration: null,
+                    });
+                  } else {
+                    try {
+                      const { address, amount, memo } = this.decodeBitcoinUri(text);
+                      this.setState({ address, amount, memo, isLoading: false, bip70TransactionExpiration: null });
+                    } catch (_) {
+                      this.setState({ address: text.trim(), isLoading: false, bip70TransactionExpiration: null });
                     }
-                  }}
-                  placeholder={loc.send.details.address}
-                  numberOfLines={1}
-                  value={this.state.address}
-                  style={{ flex: 1, marginHorizontal: 8, minHeight: 33 }}
-                  editable={!this.state.isLoading}
-                />
-                <TouchableOpacity
-                  disabled={this.state.isLoading}
-                  onPress={() => this.props.navigation.navigate('ScanQrAddress')}
-                  style={{
-                    width: 75,
-                    height: 36,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    backgroundColor: '#bebebe',
-                    borderRadius: 4,
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
-                    marginHorizontal: 4,
-                  }}
-                >
-                  <Icon name="qrcode" size={22} type="font-awesome" color="#FFFFFF" />
-                  <Text style={{ color: '#FFFFFF' }}>{loc.send.details.scan}</Text>
-                </TouchableOpacity>
-              </View>
+                  }
+                }}
+                onBarScanned={this.processAddressData}
+                address={this.state.address}
+                isLoading={this.state.isLoading}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
+              />
               <View
                 hide={!this.state.showMemoRow}
                 style={{
@@ -570,6 +618,8 @@ export default class SendDetails extends Component {
                   numberOfLines={1}
                   style={{ flex: 1, marginHorizontal: 8, minHeight: 33 }}
                   editable={!this.state.isLoading}
+                  onSubmitEditing={Keyboard.dismiss}
+                  inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
                 />
               </View>
               <TouchableOpacity
@@ -598,6 +648,7 @@ export default class SendDetails extends Component {
               {this.renderFeeSelectionModal()}
             </KeyboardAvoidingView>
           </View>
+          <BlueDismissKeyboardInputAccessory />
           {this.renderWalletSelectionButton()}
         </View>
       </TouchableWithoutFeedback>
@@ -634,8 +685,10 @@ const styles = StyleSheet.create({
 
 SendDetails.propTypes = {
   navigation: PropTypes.shape({
-    goBack: PropTypes.function,
+    pop: PropTypes.func,
+    goBack: PropTypes.func,
     navigate: PropTypes.func,
+    getParam: PropTypes.func,
     state: PropTypes.shape({
       params: PropTypes.shape({
         address: PropTypes.string,

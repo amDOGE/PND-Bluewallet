@@ -1,23 +1,33 @@
-/* global alert */
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View, TouchableOpacity, Clipboard, Dimensions, Share } from 'react-native';
-import { BlueLoading, BlueText, SafeBlueArea, BlueButton, BlueNavigationStyle, BlueSpacing20 } from '../../BlueComponents';
+import { View, Dimensions, Share, ScrollView, BackHandler } from 'react-native';
+import {
+  BlueLoading,
+  BlueText,
+  SafeBlueArea,
+  BlueButton,
+  BlueCopyTextToClipboard,
+  BlueNavigationStyle,
+  BlueSpacing20,
+} from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 const EV = require('../../events');
-const QRFast = require('react-native-qrcode');
 const { width, height } = Dimensions.get('window');
 
 export default class LNDViewInvoice extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    ...BlueNavigationStyle(navigation, true, () => navigation.dismiss()),
-    title: 'Lightning Invoice',
-    headerLeft: null,
-  });
+  static navigationOptions = ({ navigation }) =>
+    navigation.getParam('isModal') === true
+      ? {
+          ...BlueNavigationStyle(navigation, true, () => navigation.dismiss()),
+          title: 'Lightning Invoice',
+          headerLeft: null,
+        }
+      : { ...BlueNavigationStyle(), title: 'Lightning Invoice' };
 
   constructor(props) {
     super(props);
@@ -29,17 +39,21 @@ export default class LNDViewInvoice extends Component {
       isLoading: typeof invoice === 'string',
       addressText: typeof invoice === 'object' && invoice.hasOwnProperty('payment_request') ? invoice.payment_request : invoice,
       isFetchingInvoices: true,
-      qrCodeHeight: height > width ? height / 2.5 : width / 2,
+      qrCodeHeight: height > width ? width - 20 : width / 2,
     };
     this.fetchInvoiceInterval = undefined;
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }
 
   async componentDidMount() {
     this.fetchInvoiceInterval = setInterval(async () => {
       if (this.state.isFetchingInvoices) {
         try {
-          const userInvoices = JSON.stringify(await this.state.fromWallet.getUserInvoices());
-          const updatedUserInvoice = JSON.parse(userInvoices).filter(invoice =>
+          const userInvoices = await this.state.fromWallet.getUserInvoices(20);
+          // fetching only last 20 invoices
+          // for invoice that was created just now - that should be enough (it is basically the last one, so limit=1 would be sufficient)
+          // but that might not work as intended IF user creates 21 invoices, and then tries to check the status of invoice #0, it just wont be updated
+          const updatedUserInvoice = userInvoices.filter(invoice =>
             typeof this.state.invoice === 'object'
               ? invoice.payment_request === this.state.invoice.payment_request
               : invoice.payment_request === this.state.invoice,
@@ -53,7 +67,7 @@ export default class LNDViewInvoice extends Component {
               ReactNativeHapticFeedback.trigger('notificationSuccess', false);
               clearInterval(this.fetchInvoiceInterval);
               this.fetchInvoiceInterval = undefined;
-              EV(EV.enum.TRANSACTIONS_COUNT_CHANGED);
+              EV(EV.enum.REMOTE_TRANSACTIONS_COUNT_CHANGED); // remote because we want to refetch from server tx list and balance
             } else {
               const currentDate = new Date();
               const now = (currentDate.getTime() / 1000) | 0;
@@ -69,11 +83,7 @@ export default class LNDViewInvoice extends Component {
             }
           }
         } catch (error) {
-          clearInterval(this.fetchInvoiceInterval);
-          this.fetchInvoiceInterval = undefined;
           console.log(error);
-          alert(error);
-          this.props.navigation.dismiss();
         }
       }
     }, 3000);
@@ -82,18 +92,17 @@ export default class LNDViewInvoice extends Component {
   componentWillUnmount() {
     clearInterval(this.fetchInvoiceInterval);
     this.fetchInvoiceInterval = undefined;
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }
 
-  copyToClipboard = () => {
-    this.setState({ addressText: loc.receive.details.copiedToClipboard }, () => {
-      Clipboard.setString(this.state.invoice.payment_request);
-      setTimeout(() => this.setState({ addressText: this.state.invoice.payment_request }), 1000);
-    });
-  };
+  handleBackButton() {
+    this.props.navigation.popToTop();
+    return true;
+  }
 
   onLayout = () => {
     const { height } = Dimensions.get('window');
-    this.setState({ qrCodeHeight: height > width ? height / 2.5 : width / 2 });
+    this.setState({ qrCodeHeight: height > width ? width - 20 : width / 2 });
   };
 
   render() {
@@ -164,82 +173,74 @@ export default class LNDViewInvoice extends Component {
         }
       }
     }
-
     // Invoice has not expired, nor has it been paid for.
     return (
       <SafeBlueArea>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            marginTop: 8,
-            paddingHorizontal: 16,
-            justifyContent: 'space-between',
-          }}
-          onLayout={this.onLayout}
-        >
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <QRFast
-              value={typeof this.state.invoice === 'object' ? invoice.payment_request : invoice}
-              fgColor={BlueApp.settings.brandingColor}
-              bgColor={BlueApp.settings.foregroundColor}
-              size={this.state.qrCodeHeight}
+        <ScrollView>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              marginTop: 8,
+              justifyContent: 'space-between',
+            }}
+            onLayout={this.onLayout}
+          >
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16 }}>
+              <QRCode
+                value={typeof this.state.invoice === 'object' ? invoice.payment_request : invoice}
+                logo={require('../../img/qr-code.png')}
+                size={this.state.qrCodeHeight}
+                logoSize={90}
+                color={BlueApp.settings.foregroundColor}
+                logoBackgroundColor={BlueApp.settings.brandingColor}
+              />
+            </View>
+
+            <BlueSpacing20 />
+            {invoice && invoice.amt && <BlueText>Please pay {invoice.amt} sats</BlueText>}
+            {invoice && invoice.hasOwnProperty('description') && invoice.description.length > 0 && (
+              <BlueText>For: {invoice.description}</BlueText>
+            )}
+            <BlueCopyTextToClipboard text={this.state.invoice.payment_request} />
+
+            <BlueButton
+              icon={{
+                name: 'share-alternative',
+                type: 'entypo',
+                color: BlueApp.settings.buttonTextColor,
+              }}
+              onPress={async () => {
+                Share.share({
+                  message: 'lightning:' + invoice.payment_request,
+                });
+              }}
+              title={loc.receive.details.share}
+            />
+            <BlueSpacing20 />
+            <BlueButton
+              backgroundColor="#FFFFFF"
+              icon={{
+                name: 'info',
+                type: 'entypo',
+                color: BlueApp.settings.buttonTextColor,
+              }}
+              onPress={() => this.props.navigation.navigate('LNDViewAdditionalInvoiceInformation', { fromWallet: this.state.fromWallet })}
+              title="Additional Information"
             />
           </View>
-
           <BlueSpacing20 />
-          {invoice && invoice.amt && <BlueText>Please pay {invoice.amt} sats</BlueText>}
-          {invoice && invoice.description && <BlueText>For: {invoice.description}</BlueText>}
-          <TouchableOpacity onPress={this.copyToClipboard}>
-            <Animated.Text style={styles.address} numberOfLines={0}>
-              {this.state.addressText}
-            </Animated.Text>
-          </TouchableOpacity>
-
-          <BlueButton
-            icon={{
-              name: 'share-alternative',
-              type: 'entypo',
-              color: BlueApp.settings.buttonTextColor,
-            }}
-            onPress={async () => {
-              Share.share({
-                message: 'lightning:' + invoice.payment_request,
-              });
-            }}
-            title={loc.receive.details.share}
-          />
-          <BlueButton
-            buttonStyle={{ backgroundColor: 'white' }}
-            icon={{
-              name: 'info',
-              type: 'entypo',
-              color: BlueApp.settings.buttonTextColor,
-            }}
-            onPress={() => this.props.navigation.navigate('LNDViewAdditionalInvoiceInformation', { fromWallet: this.state.fromWallet })}
-            title="Additional Information"
-          />
-        </View>
-        <BlueSpacing20 />
+        </ScrollView>
       </SafeBlueArea>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  address: {
-    marginVertical: 32,
-    fontSize: 15,
-    color: '#9aa0aa',
-    textAlign: 'center',
-  },
-});
-
 LNDViewInvoice.propTypes = {
   navigation: PropTypes.shape({
-    goBack: PropTypes.function,
-    navigate: PropTypes.function,
-    getParam: PropTypes.function,
-    dismiss: PropTypes.function,
+    goBack: PropTypes.func,
+    navigate: PropTypes.func,
+    getParam: PropTypes.func,
+    popToTop: PropTypes.func,
   }),
 };
