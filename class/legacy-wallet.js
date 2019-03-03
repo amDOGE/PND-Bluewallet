@@ -365,64 +365,6 @@ export class LegacyWallet extends AbstractWallet {
     }
   }
 
-  async _broadcastTxBtczen(txhex) {
-    const api = new Frisbee({
-      baseURI: 'https://btczen.com',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    let res = await api.get('/broadcast/' + txhex);
-    console.log('response btczen', res.body);
-    return res.body;
-  }
-
-  async _broadcastTxChainso(txhex) {
-    const api = new Frisbee({
-      baseURI: 'https://chain.so',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    let res = await api.post('/api/v2/send_tx/BTC', {
-      body: { tx_hex: txhex },
-    });
-    return res.body;
-  }
-
-  async _broadcastTxSmartbit(txhex) {
-    const api = new Frisbee({
-      baseURI: 'https://api.smartbit.com.au',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    let res = await api.post('/v1/blockchain/pushtx', {
-      body: { hex: txhex },
-    });
-    return res.body;
-  }
-
-  async _broadcastTxBlockcypher(txhex) {
-    const api = new Frisbee({
-      baseURI: 'https://api.blockcypher.com',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    let res = await api.post('/v1/btc/main/txs/push', { body: { tx: txhex } });
-    // console.log('blockcypher response', res);
-    return res.body;
-  }
-
   /**
    * Takes UTXOs (as presented by blockcypher api), transforms them into
    * format expected by signer module, creates tx and returns signed string txhex.
