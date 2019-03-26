@@ -62,6 +62,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		854972E4A6134C14A1D3A5F9 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47564776A7A3427DB36C087D /* FontAwesome5_Regular.ttf */; };
 		8AC3E4734B39439680A435CE /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3703B10AAB374CF896CCC2EA /* libBVLinearGradient.a */; };
+		8B5E8288C62142E0BA328115 /* libicloudstorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE3DB73457924CFDBFFDA2A8 /* libicloudstorage.a */; };
 		A6E5EEC7A4B54F5A9C9D92FC /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC98DC24A81A463AB8B2E6B1 /* libRNImagePicker.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B058E2132B704E9E874BDB29 /* libRNRandomBytes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 253243E162CE4822BF3A3B7D /* libRNRandomBytes-tvOS.a */; };
@@ -549,6 +550,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = TcpSockets;
 		};
+		B4FB173D2249EB660038A46B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE7D9B8DC043435CB2358245 /* icloudstorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = icloudstorage;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -618,6 +626,7 @@
 		A9166D490AEF4938BD6621CF /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		AB2325650CE04F018697ACFE /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B4FB173F2249EBC80038A46B /* BlueWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BlueWallet.entitlements; path = BlueWallet/BlueWallet.entitlements; sourceTree = "<group>"; };
 		B642AFB13483418CAB6FF25E /* libRCTQRCodeLocalImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTQRCodeLocalImage.a; sourceTree = "<group>"; };
 		B9D9B3A7B2CB4255876B67AF /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BBA99996E6FA4B49ACE0BEFA /* libRNRate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRate.a; sourceTree = "<group>"; };
@@ -639,12 +648,14 @@
 		EAEF0F27730C4742B0F3AB99 /* RNRate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRate.xcodeproj; path = "../node_modules/react-native-rate/ios/RNRate.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		EE7D9B8DC043435CB2358245 /* icloudstorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = icloudstorage.xcodeproj; path = "../node_modules/react-native-icloudstore/icloudstorage.xcodeproj"; sourceTree = "<group>"; };
 		F11DD40F6E9A4F13B3410B94 /* libRNSentry-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSentry-tvOS.a"; sourceTree = "<group>"; };
 		F6F53AFC25FB422485CB22D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F9065403A26440679749C7AA /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		FC63C7054F1C4FDFB7A830E5 /* libRCTPrivacySnapshot.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTPrivacySnapshot.a; sourceTree = "<group>"; };
 		FC98DC24A81A463AB8B2E6B1 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		FD7977067E1A496F94D8B1B7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
+		FE3DB73457924CFDBFFDA2A8 /* libicloudstorage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libicloudstorage.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -697,6 +708,7 @@
 				C98BD93429374073A736EFBD /* libToolTipMenu.a in Frameworks */,
 				16763847ED654C79A4B4BBD5 /* ToolTipMenuTests.xctest in Frameworks */,
 				01AB943FA0794E91B65F0BFE /* libRCTPrivacySnapshot.a in Frameworks */,
+				8B5E8288C62142E0BA328115 /* libicloudstorage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -814,6 +826,7 @@
 		13B07FAE1A68108700A75B9A /* BlueWallet */ = {
 			isa = PBXGroup;
 			children = (
+				B4FB173F2249EBC80038A46B /* BlueWallet.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -937,6 +950,7 @@
 				910283A2A9EB4D00902DE78E /* TcpSockets.xcodeproj */,
 				151034F9C66E464B8A6581DA /* ToolTipMenu.xcodeproj */,
 				CEF75317A8A047AB85BF0FC9 /* RCTPrivacySnapshot.xcodeproj */,
+				EE7D9B8DC043435CB2358245 /* icloudstorage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1023,6 +1037,7 @@
 				90F86BC5194548CA87D729A9 /* libToolTipMenu.a */,
 				8448882949434D41A054C0B2 /* ToolTipMenuTests.xctest */,
 				FC63C7054F1C4FDFB7A830E5 /* libRCTPrivacySnapshot.a */,
+				FE3DB73457924CFDBFFDA2A8 /* libicloudstorage.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1186,6 +1201,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B4FB173A2249EB660038A46B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B4FB173E2249EB660038A46B /* libicloudstorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1277,6 +1300,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = A7W54YZ4WU;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1306,6 +1334,10 @@
 				{
 					ProductGroup = B40FE53921FAD229005D5578 /* Products */;
 					ProjectRef = F9065403A26440679749C7AA /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = B4FB173A2249EB660038A46B /* Products */;
+					ProjectRef = EE7D9B8DC043435CB2358245 /* icloudstorage.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1891,6 +1923,13 @@
 			remoteRef = B47720652202510900DD0E81 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B4FB173E2249EB660038A46B /* libicloudstorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libicloudstorage.a;
+			remoteRef = B4FB173D2249EB660038A46B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2067,12 +2106,14 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = BlueWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2115,12 +2156,14 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = BlueWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2139,6 +2182,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BlueWallet/BlueWallet.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = A7W54YZ4WU;
@@ -2164,6 +2208,7 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = BlueWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2184,6 +2229,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BlueWallet/BlueWallet.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = A7W54YZ4WU;
 				HEADER_SEARCH_PATHS = (
@@ -2208,6 +2254,7 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = BlueWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2259,11 +2306,13 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = "BlueWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2315,11 +2364,13 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = "BlueWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2370,11 +2421,13 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = "BlueWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2425,11 +2478,13 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 					"$(SRCROOT)/../node_modules/react-native-privacy-snapshot/RCTPrivacySnapshot",
+					"$(SRCROOT)/../node_modules/react-native-icloudstore",
 				);
 				INFOPLIST_FILE = "BlueWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

@@ -12,6 +12,8 @@ import {
   BlueNavigationStyle,
 } from '../../BlueComponents';
 import PropTypes from 'prop-types';
+import TransactionMemos from '../../TransactionMemos';
+
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
 let loc = require('../../loc');
@@ -75,6 +77,8 @@ export default class TransactionsDetails extends Component {
 
   async componentDidMount() {
     console.log('transactions/details - componentDidMount');
+    const test = await TransactionMemos.getTransactionMemo(String(this.state.tx.block_height), this.state.tx.hash);
+    console.warn(test);
     this.setState({
       isLoading: false,
     });
