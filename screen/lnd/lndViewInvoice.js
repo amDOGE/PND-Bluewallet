@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Dimensions, ScrollView, BackHandler, InteractionManager } from 'react-native';
+import Animation from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
+import { AppRegistry, StyleSheet, Text, View, Dimensions, ScrollView, BackHandler, InteractionManager } from 'react-native';
 import Share from 'react-native-share';
 import {
   BlueLoading,
@@ -15,11 +17,35 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 import SystemSetting from 'react-native-system-setting';
+import anim from '../../assets/success.json';
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 const EV = require('../../events');
 const { width, height } = Dimensions.get('window');
+
+class Lottieloader extends Component {
+  componentDidMount() {
+    this.animation.play();
+  }
+  render() {
+    return (
+      <View>
+        <Text>Welcome to Lottie Animations :-)</Text>
+        <View>
+          <Animation
+            ref={animation => {
+              this.animation = animation;
+            }}
+            loop={true}
+            source={anim}
+          />
+        </View>
+
+      </View>
+    );
+  }
+}
 
 export default class LNDViewInvoice extends Component {
   static navigationOptions = ({ navigation }) =>
@@ -48,6 +74,7 @@ export default class LNDViewInvoice extends Component {
   }
 
   async componentDidMount() {
+    this.animation.play();
     this.fetchInvoiceInterval = setInterval(async () => {
       if (this.state.isFetchingInvoices) {
         try {
@@ -142,25 +169,18 @@ export default class LNDViewInvoice extends Component {
           </SafeBlueArea>
         );
       }
-
+  
       if (invoice.ispaid || invoice.type === 'paid_invoice') {
+
+
         return (
           <SafeBlueArea style={{ flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <View
-                style={{
-                  backgroundColor: '#ccddf9',
-                  width: 120,
-                  height: 120,
-                  borderRadius: 60,
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                  marginTop: 43,
-                  marginBottom: 53,
-                }}
-              >
-                <Icon name="check" size={50} type="font-awesome" color="#0f5cc0" />
-              </View>
+             <View>
+              <Text>Welcome to Lottie Animations :-)</Text>
+              <Lottieloader />
+            </View>
+              
               <BlueText>{loc.lndViewInvoice.has_been_paid}</BlueText>
               {invoice.payment_preimage && typeof invoice.payment_preimage === 'string' && (
                 <View style={{ position: 'absolute', bottom: 0 }}>
@@ -291,6 +311,9 @@ export default class LNDViewInvoice extends Component {
     );
   }
 }
+
+
+AppRegistry.registerComponent('Lottieloader', () => Lottieloader);
 
 LNDViewInvoice.propTypes = {
   navigation: PropTypes.shape({
