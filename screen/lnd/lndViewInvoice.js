@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Animation from 'lottie-react-native';
 import LottieView from 'lottie-react-native';
 import { AppRegistry, StyleSheet, Text, View, Dimensions, ScrollView, BackHandler, InteractionManager } from 'react-native';
 import Share from 'react-native-share';
@@ -32,13 +31,13 @@ class Lottieloader extends Component {
     return (
       <View>
         <Text>Welcome to Lottie Animations :-)</Text>
-        <View>
-          <Animation
+        <View style={{width: 400,height: 400, backgroundColor: 'blue'}}>
+          <LottieView
+            source={anim}
             ref={animation => {
               this.animation = animation;
             }}
             loop={true}
-            source={anim}
           />
         </View>
 
