@@ -51,8 +51,6 @@ target 'BlueWallet' do
     # React Native requirements
     
     sharedPods
- 	pod 'SentryReactNative', :path => '../node_modules/react-native-sentry'
-    
 end
 
 target 'BlueWalletTests' do
