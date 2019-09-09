@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LottieView from 'lottie-react-native';
-import { AppRegistry, StyleSheet, Text, View, Dimensions, ScrollView, BackHandler, InteractionManager } from 'react-native';
+import { AppRegistry, Text, View, Dimensions, ScrollView, BackHandler, InteractionManager } from 'react-native';
 import Share from 'react-native-share';
 import {
   BlueLoading,
@@ -21,29 +21,6 @@ let BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 const EV = require('../../events');
 const { width, height } = Dimensions.get('window');
-import anim from '../../assets/success.json';
-
-class Lottieloader extends Component {
-  componentDidMount() {
-    this.animation.play();
-  }
-  render() {
-    return (
-      <View>
-        <Text>Welcome to Lottie Animations 2</Text>
-        <View style={{width: 300,height: 300, backgroundColor: 'blue'}}>
-          <LottieView
-            ref={animation => {
-              this.animation = animation;
-            }}
-            loop={false}
-            source={anim}
-          />
-        </View>
-      </View>
-    );
-  }
-}
 
 export default class LNDViewInvoice extends Component {
   static navigationOptions = ({ navigation }) =>
@@ -135,6 +112,7 @@ export default class LNDViewInvoice extends Component {
   };
 
   render() {
+    return           <LottieView source={require('../../assets/success.json')} autoPlay loop />;
     if (this.state.isLoading) {
       return <BlueLoading />;
     }
@@ -173,11 +151,6 @@ export default class LNDViewInvoice extends Component {
         return (
           <SafeBlueArea style={{ flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-             <View>
-              <Text>Welcome to Lottie Animations 1</Text>
-              <Lottieloader />
-            </View>
-              
               <BlueText>{loc.lndViewInvoice.has_been_paid}</BlueText>
               {invoice.payment_preimage && typeof invoice.payment_preimage === 'string' && (
                 <View style={{ position: 'absolute', bottom: 0 }}>
