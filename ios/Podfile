@@ -50,10 +50,8 @@ target 'BlueWallet' do
     # React Native requirements
     
     sharedPods
- 	pod 'SentryReactNative', :path => '../node_modules/react-native-sentry'
     
     
-  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
 end
 

@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* BlueWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BlueWalletTests.m */; };
 		01AB943FA0794E91B65F0BFE /* libRCTPrivacySnapshot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63C7054F1C4FDFB7A830E5 /* libRCTPrivacySnapshot.a */; };
