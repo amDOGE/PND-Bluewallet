@@ -16,12 +16,12 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 import SystemSetting from 'react-native-system-setting';
-import anim from '../../assets/success.json';
 /** @type {AppStorage} */
 let BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 const EV = require('../../events');
 const { width, height } = Dimensions.get('window');
+import anim from '../../assets/success.json';
 
 class Lottieloader extends Component {
   componentDidMount() {
@@ -30,17 +30,16 @@ class Lottieloader extends Component {
   render() {
     return (
       <View>
-        <Text>Welcome to Lottie Animations :-)</Text>
-        <View style={{width: 400,height: 400, backgroundColor: 'blue'}}>
+        <Text>Welcome to Lottie Animations 2</Text>
+        <View style={{width: 300,height: 300, backgroundColor: 'blue'}}>
           <LottieView
-            source={anim}
             ref={animation => {
               this.animation = animation;
             }}
-            loop={true}
+            loop={false}
+            source={anim}
           />
         </View>
-
       </View>
     );
   }
@@ -73,7 +72,6 @@ export default class LNDViewInvoice extends Component {
   }
 
   async componentDidMount() {
-    this.animation.play();
     this.fetchInvoiceInterval = setInterval(async () => {
       if (this.state.isFetchingInvoices) {
         try {
@@ -176,7 +174,7 @@ export default class LNDViewInvoice extends Component {
           <SafeBlueArea style={{ flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
              <View>
-              <Text>Welcome to Lottie Animations :-)</Text>
+              <Text>Welcome to Lottie Animations 1</Text>
               <Lottieloader />
             </View>
               
