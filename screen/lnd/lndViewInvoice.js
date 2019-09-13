@@ -112,7 +112,6 @@ export default class LNDViewInvoice extends Component {
   };
 
   render() {
-    return           <LottieView source={require('../../assets/success.json')} autoPlay loop />;
     if (this.state.isLoading) {
       return <BlueLoading />;
     }
@@ -151,9 +150,12 @@ export default class LNDViewInvoice extends Component {
         return (
           <SafeBlueArea style={{ flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <LottieView source={require('../../assets/success.json')} autoPlay loop={false} />
+            </View>
+            <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
               <BlueText>{loc.lndViewInvoice.has_been_paid}</BlueText>
               {invoice.payment_preimage && typeof invoice.payment_preimage === 'string' && (
-                <View style={{ position: 'absolute', bottom: 0 }}>
+                <View style={{ position: 'absolute', bottom: 24 }}>
                   <BlueButton
                     backgroundColor="#FFFFFF"
                     icon={{

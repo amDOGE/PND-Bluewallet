@@ -21,7 +21,7 @@ PODS:
   - BVLinearGradient (2.5.4):
     - React
   - DoubleConversion (1.1.6)
-  - EFQRCode (5.0.0):
+  - EFQRCode (5.0.1):
     - swift_qrcodejs (~> 1.1.1)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -327,11 +327,11 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8cbc5155c978f2e43098818c91d206d07aae6d30
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  EFQRCode: 07437cfbce3a1e497397a4f3d766c980d8972608
+  EFQRCode: 239efec4dd406d9c635dd937525fc40960ce2e9f
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  lottie-ios: c38c3178ae8c4a8f200661aa5f80b9f1ca7f56b3
-  lottie-react-native: 86aeee2caa9250e4c8027ac75711a59c6679e532
+  lottie-ios: 06e0b54aab85ba128e332687d7f4ac4861a7a7ae
+  lottie-react-native: c911f78e11d4b22e74989cd8a4987a392bd1ac70
   RCTSystemSetting: 9279ff44c49bb4fb0a5d335a0851852c8f3eda99
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
@@ -374,6 +374,6 @@ SPEC CHECKSUMS:
   ToolTipMenu: c158702a26154d892bc9e6eaa7d7382f0f1ee16e
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 30fd3385fdc79c8e74bd927636edff8aed09dcbb
+PODFILE CHECKSUM: d13b4ca1b29def4e479f4769b24bba7cc7aa519b
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.6.2
