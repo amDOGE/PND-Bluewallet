@@ -61,7 +61,7 @@ export default class About extends Component {
               onPress={() => {
                 Linking.openURL('https://github.com/BlueWallet/BlueWallet');
               }}
-              title="github.com/BlueWallet/BlueWallet"
+              title="BlueWallet on GitHub"
             />
             <BlueSpacing20 />
 
@@ -143,10 +143,10 @@ export default class About extends Component {
             />
             <BlueTextCentered />
             <BlueTextCentered>
-              {DeviceInfo.getApplicationName()} ver {DeviceInfo.getVersion()} (build {DeviceInfo.getBuildNumber()})
+              {DeviceInfo.getApplicationNameSync()} ver {DeviceInfo.getVersionSync()} (build {DeviceInfo.getBuildNumberSync()})
             </BlueTextCentered>
-            <BlueTextCentered>{new Date(DeviceInfo.getBuildNumber() * 1000).toGMTString()}</BlueTextCentered>
-            <BlueTextCentered>{DeviceInfo.getBundleId()}</BlueTextCentered>
+            <BlueTextCentered>{new Date(DeviceInfo.getBuildNumberSync() * 1000).toGMTString()}</BlueTextCentered>
+            <BlueTextCentered>{DeviceInfo.getBundleIdSync()}</BlueTextCentered>
             <BlueTextCentered>
               w, h = {width}, {height}
             </BlueTextCentered>
