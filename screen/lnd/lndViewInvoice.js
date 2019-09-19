@@ -150,7 +150,7 @@ export default class LNDViewInvoice extends Component {
         return (
           <SafeBlueArea style={{ flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <LottieView source={require('../../assets/success.json')} autoPlay loop={false} />
+              <LottieView style={{ width: 400, height: 400 }} source={require('../../assets/bluenice.json')} autoPlay loop={false} />
             </View>
             <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
               <BlueText>{loc.lndViewInvoice.has_been_paid}</BlueText>
