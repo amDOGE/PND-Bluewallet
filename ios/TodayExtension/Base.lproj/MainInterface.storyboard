@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Today View Controller-->
+        <scene sceneID="cwh-vc-ff4">
+            <objects>
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="BlueWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitcoin Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaf-Pc-Y9i">
+                                <rect key="frame" x="16" y="8" width="101" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcB-MD-aJf">
+                                <rect key="frame" x="278" y="11" width="26" height="15"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Updated:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vU4-uK-6ow">
+                                <rect key="frame" x="190" y="11" width="80" height="15"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEQ-e6-Puo">
+                                <rect key="frame" x="16" y="44" width="288" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="bEQ-e6-Puo" firstAttribute="top" secondItem="bcB-MD-aJf" secondAttribute="bottom" constant="18" id="1f5-GV-hSd"/>
+                            <constraint firstItem="bEQ-e6-Puo" firstAttribute="top" secondItem="vU4-uK-6ow" secondAttribute="bottom" constant="18" id="4ac-Dp-uZX"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bEQ-e6-Puo" secondAttribute="bottom" constant="20" id="DbK-dm-efr"/>
+                            <constraint firstItem="vU4-uK-6ow" firstAttribute="centerY" secondItem="aaf-Pc-Y9i" secondAttribute="centerY" id="Fj9-8p-MBj"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="bEQ-e6-Puo" secondAttribute="trailing" constant="16" id="FjE-dD-xcB"/>
+                            <constraint firstItem="bEQ-e6-Puo" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="16" id="UXB-9b-0cy"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="bcB-MD-aJf" secondAttribute="trailing" constant="16" id="VDy-cT-X5K"/>
+                            <constraint firstItem="bEQ-e6-Puo" firstAttribute="top" secondItem="aaf-Pc-Y9i" secondAttribute="bottom" constant="15" id="Xgk-WC-X0e"/>
+                            <constraint firstItem="aaf-Pc-Y9i" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="16" id="a1b-Yq-aZb"/>
+                            <constraint firstItem="aaf-Pc-Y9i" firstAttribute="top" secondItem="S3S-Oj-5AN" secondAttribute="top" constant="8" id="aIo-h1-w4F"/>
+                            <constraint firstItem="bcB-MD-aJf" firstAttribute="leading" secondItem="vU4-uK-6ow" secondAttribute="trailing" constant="8" id="bYa-38-dMw"/>
+                            <constraint firstItem="bcB-MD-aJf" firstAttribute="firstBaseline" secondItem="vU4-uK-6ow" secondAttribute="firstBaseline" id="c6Q-ym-K3Q"/>
+                            <constraint firstItem="vU4-uK-6ow" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aaf-Pc-Y9i" secondAttribute="trailing" constant="73" id="xFR-Fr-DQK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="100"/>
+                    <connections>
+                        <outlet property="lastUpdatedDate" destination="bcB-MD-aJf" id="A9U-MB-qJq"/>
+                        <outlet property="priceLabel" destination="bEQ-e6-Puo" id="0IP-Yg-dWr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="96.428571428571431"/>
+        </scene>
+    </scenes>
+</document>
