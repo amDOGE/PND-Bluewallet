@@ -19,6 +19,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* BlueWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BlueWalletTests.m */; };
+		32002D9D236FAA9F00B93396 /* TodayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32002D9C236FAA9F00B93396 /* TodayDataStore.swift */; };
 		3208E93922F63279007F5A27 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3208E93822F63279007F5A27 /* AppCenter-Config.plist */; };
 		3271B0AB236E2E0700DA766F /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3271B0AA236E2E0700DA766F /* NotificationCenter.framework */; };
 		3271B0AE236E2E0700DA766F /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3271B0AD236E2E0700DA766F /* TodayViewController.swift */; };
@@ -155,6 +156,7 @@
 		2D02E4901E0B4A5D006451C7 /* BlueWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BlueWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FCC2CD6FF4448229D0CE0F3 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		32002D9C236FAA9F00B93396 /* TodayDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataStore.swift; sourceTree = "<group>"; };
 		3208E93822F63279007F5A27 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		3271B0A9236E2E0700DA766F /* BlueWallet - Bitcoin Price.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "BlueWallet - Bitcoin Price.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3271B0AA236E2E0700DA766F /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -377,6 +379,7 @@
 				3271B0AD236E2E0700DA766F /* TodayViewController.swift */,
 				3271B0AF236E2E0700DA766F /* MainInterface.storyboard */,
 				3271B0B2236E2E0700DA766F /* Info.plist */,
+				32002D9C236FAA9F00B93396 /* TodayDataStore.swift */,
 			);
 			path = TodayExtension;
 			sourceTree = "<group>";
@@ -712,8 +715,7 @@
 					};
 					3271B0A8236E2E0700DA766F = {
 						CreatedOnToolsVersion = 11.2;
-						DevelopmentTeam = A7W54YZ4WU;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					B40D4E2F225841EC00428FCC = {
 						CreatedOnToolsVersion = 10.2;
@@ -1041,6 +1043,7 @@
 				3271B0BB236E329400DA766F /* API.swift in Sources */,
 				3271B0AE236E2E0700DA766F /* TodayViewController.swift in Sources */,
 				32A5F95D236E49E600443927 /* APIResponse.swift in Sources */,
+				32002D9D236FAA9F00B93396 /* TodayDataStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1518,9 +1521,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = A7W54YZ4WU;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -1529,6 +1532,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.bluewallet.bluewallet.TodayExtension;
 				PRODUCT_NAME = "BlueWallet - Bitcoin Price";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1547,7 +1551,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
@@ -1558,6 +1562,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.bluewallet.bluewallet.TodayExtension;
 				PRODUCT_NAME = "BlueWallet - Bitcoin Price";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
