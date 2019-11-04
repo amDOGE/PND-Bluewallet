@@ -43,7 +43,7 @@ export default class LNDViewInvoice extends Component {
       qrCodeHeight: height > width ? width - 20 : width / 2,
     };
     this.fetchInvoiceInterval = undefined;
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 
   async componentDidMount() {
@@ -90,16 +90,16 @@ export default class LNDViewInvoice extends Component {
     }, 3000);
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     clearInterval(this.fetchInvoiceInterval);
     this.fetchInvoiceInterval = undefined;
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   }
 
-  handleBackButton() {
+  handleBackButton = () => {
     this.props.navigation.goBack(null);
     return true;
-  }
+  };
 
   onLayout = () => {
     const { height } = Dimensions.get('window');
@@ -151,8 +151,8 @@ export default class LNDViewInvoice extends Component {
                   borderRadius: 60,
                   alignSelf: 'center',
                   justifyContent: 'center',
-                  marginTop: 43,
-                  marginBottom: 53,
+                  marginTop: -100,
+                  marginBottom: 30,
                 }}
               >
                 <Icon name="check" size={50} type="font-awesome" color="#0f5cc0" />
@@ -188,8 +188,8 @@ export default class LNDViewInvoice extends Component {
                   borderRadius: 60,
                   alignSelf: 'center',
                   justifyContent: 'center',
-                  marginTop: 43,
-                  marginBottom: 53,
+                  marginTop: -100,
+                  marginBottom: 30,
                 }}
               >
                 <Icon name="times" size={50} type="font-awesome" color="#0f5cc0" />
