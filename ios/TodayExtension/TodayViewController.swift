@@ -13,6 +13,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
   
   @IBOutlet weak var lastUpdatedDate: UILabel!
   @IBOutlet weak var priceLabel: UILabel!
+  
+  @IBOutlet weak var lastPriceArrowImage: UIImageView!
+  @IBOutlet weak var lastPrice: UILabel!
+  @IBOutlet weak var lastPriceFromLabel: UILabel!
+  private var lastPriceNumber: NSNumber?
+  
   private let numberFormatter = NumberFormatter()
   private let isoDateFormatter = ISO8601DateFormatter()
   private let dateFormatter = DateFormatter()
@@ -20,23 +26,41 @@ class TodayViewController: UIViewController, NCWidgetProviding {
   override func viewDidLoad() {
     super.viewDidLoad()
     numberFormatter.numberStyle = .decimal
+    numberFormatter.maximumFractionDigits = 2
+    numberFormatter.minimumFractionDigits = 2
     dateFormatter.timeStyle = .short
     dateFormatter.dateStyle = .short
-    
+    setLastPriceOutletsHidden(isHidden: true)
     if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate() {
-      processRateAndLastUpdate(todayStore: lastStoredTodayStore)
+      lastPriceNumber = processRateAndLastUpdate(todayStore: lastStoredTodayStore)
+    } else {
+      setLastPriceOutletsHidden(isHidden: true)
     }
   }
   
-  func processRateAndLastUpdate(todayStore: TodayDataStore) {
-    if let rateNumber = numberFormatter.number(from: todayStore.rate) {
-      numberFormatter.numberStyle = .currency
-      priceLabel.text  = numberFormatter.string(from: rateNumber)
-    }
+  func setLastPriceOutletsHidden(isHidden: Bool) {
+    lastPrice.isHidden = isHidden
+    lastPriceFromLabel.isHidden = isHidden
+    lastPriceArrowImage.isHidden = isHidden
+  }
+  
+  func processRateAndLastUpdate(todayStore: TodayDataStore) -> NSNumber? {
+    numberFormatter.numberStyle = .decimal
+    guard let rateNumber = numberFormatter.number(from: todayStore.rate), let dateFormatted = isoDateFormatter.date(from: todayStore.lastUpdate) else { return numberFormatter.number(from: todayStore.rate) }
     
-    if let dateFormatted = isoDateFormatter.date(from: todayStore.lastUpdate) {
-      lastUpdatedDate.text = dateFormatter.string(from: dateFormatted)
-    }
+    numberFormatter.numberStyle = .currency
+    priceLabel.text  = numberFormatter.string(from: rateNumber)
+    lastUpdatedDate.text = dateFormatter.string(from: dateFormatted)
+    return rateNumber
+  }
+  
+  func processStoredRateAndLastUpdate(todayStore: TodayDataStore) -> NSNumber? {
+    numberFormatter.numberStyle = .decimal
+    guard let lastPriceNumber = numberFormatter.number(from: todayStore.rate) else { return numberFormatter.number(from: todayStore.rate) }
+    
+    numberFormatter.numberStyle = .currency
+    lastPrice.text = numberFormatter.string(from: lastPriceNumber)
+    return lastPriceNumber
   }
   
   func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
@@ -47,7 +71,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     // If there's an update, use NCUpdateResult.NewData
     
     API.fetchPrice(completion: { (result, error) in
-      DispatchQueue.main.async { [weak self] in
+      DispatchQueue.main.async { [unowned self] in
         guard let result = result else {
           completionHandler(.failed)
           return
@@ -64,7 +88,23 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate {
           completionHandler(.noData)
         } else {
-          self?.processRateAndLastUpdate(todayStore: todayStore)
+          let newRate = self.processRateAndLastUpdate(todayStore: todayStore)
+          let priceRiceAndLastUpdate = TodayData.getPriceRateAndLastUpdate()
+          let lastPriceNumber = self.processStoredRateAndLastUpdate(todayStore: priceRiceAndLastUpdate ?? todayStore)
+          if let newRate = newRate, let lastPriceNumber = lastPriceNumber {
+            self.lastPriceNumber = newRate
+    
+            if newRate.doubleValue > lastPriceNumber.doubleValue  {
+              self.lastPriceArrowImage.image = UIImage(systemName: "arrow.up")
+              self.setLastPriceOutletsHidden(isHidden: false)
+            } else if newRate.doubleValue == lastPriceNumber.doubleValue {
+              self.setLastPriceOutletsHidden(isHidden: true)
+            } else {
+              self.lastPriceArrowImage.image = UIImage(systemName: "arrow.down")
+              self.setLastPriceOutletsHidden(isHidden: false)
+            }
+          }
+        
           TodayData.savePriceRateAndLastUpdate(rate: todayStore.rate, lastUpdate: todayStore.lastUpdate)
           completionHandler(.newData)
         }
