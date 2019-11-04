@@ -19,6 +19,7 @@ class TodayData {
   
   static func savePriceRateAndLastUpdate(rate: String, lastUpdate: String) {    
     UserDefaults.standard.setValue(["rate": rate, "lastUpdate": lastUpdate], forKey: TodayDataStoreKey)
+    UserDefaults.standard.synchronize()
   }
   
   static func getPriceRateAndLastUpdate() -> TodayDataStore? {
