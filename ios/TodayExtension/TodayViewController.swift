@@ -16,12 +16,27 @@ class TodayViewController: UIViewController, NCWidgetProviding {
   private let numberFormatter = NumberFormatter()
   private let isoDateFormatter = ISO8601DateFormatter()
   private let dateFormatter = DateFormatter()
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     numberFormatter.numberStyle = .decimal
     dateFormatter.timeStyle = .short
     dateFormatter.dateStyle = .short
+    
+    if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate() {
+      processRateAndLastUpdate(todayStore: lastStoredTodayStore)
+    }
+  }
+  
+  func processRateAndLastUpdate(todayStore: TodayDataStore) {
+    if let rateNumber = numberFormatter.number(from: todayStore.rate) {
+      numberFormatter.numberStyle = .currency
+      priceLabel.text  = numberFormatter.string(from: rateNumber)
+    }
+    
+    if let dateFormatted = isoDateFormatter.date(from: todayStore.lastUpdate) {
+      lastUpdatedDate.text = dateFormatter.string(from: dateFormatted)
+    }
   }
   
   func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
@@ -31,24 +46,28 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     // If there's no update required, use NCUpdateResult.NoData
     // If there's an update, use NCUpdateResult.NewData
     
-    API.fetchPrice(completion: { (result) in
+    API.fetchPrice(completion: { (result, error) in
       DispatchQueue.main.async { [weak self] in
+        guard let result = result else {
+          completionHandler(.failed)
+          return
+        }
+        
         guard let rateString = result.bpi?.uSD?.rate,
           let lastUpdatedString = result.time?.updatedISO
           else {
             return
         }
         
-        if let rateNumber = self?.numberFormatter.number(from: rateString) {
-          self?.numberFormatter.numberStyle = .currency
-          self?.priceLabel.text  = self?.numberFormatter.string(from: rateNumber)
-        }
+        let todayStore = TodayDataStore(rate: rateString, lastUpdate: lastUpdatedString)
         
-        if let dateFormatted = self?.isoDateFormatter.date(from: lastUpdatedString) {
-          self?.lastUpdatedDate.text = self?.dateFormatter.string(from: dateFormatted)
+        if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate {
+          completionHandler(.noData)
+        } else {
+          self?.processRateAndLastUpdate(todayStore: todayStore)
+          TodayData.savePriceRateAndLastUpdate(rate: todayStore.rate, lastUpdate: todayStore.lastUpdate)
+          completionHandler(.newData)
         }
-        
-        completionHandler(NCUpdateResult.newData)
       }
     })
   }
