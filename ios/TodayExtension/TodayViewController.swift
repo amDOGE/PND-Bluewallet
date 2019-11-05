@@ -11,6 +11,8 @@ import NotificationCenter
 
 class TodayViewController: UIViewController, NCWidgetProviding {
   
+  
+  @IBOutlet weak var currencyLabel: UILabel!
   @IBOutlet weak var lastUpdatedDate: UILabel!
   @IBOutlet weak var priceLabel: UILabel!
   
@@ -69,23 +71,26 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     // If an error is encountered, use NCUpdateResult.Failed
     // If there's no update required, use NCUpdateResult.NoData
     // If there's an update, use NCUpdateResult.NewData
-    
-    API.fetchPrice(completion: { (result, error) in
+    let userPreferredCurrency = API.getUserPreferredCurrency();
+    self.numberFormatter.currencyCode = userPreferredCurrency
+    self.numberFormatter.locale = Locale(identifier: API.getUserPreferredCurrencyLocale())
+    self.currencyLabel.text = userPreferredCurrency
+    API.fetchPrice(currency: userPreferredCurrency, completion: { (result, error) in
       DispatchQueue.main.async { [unowned self] in
         guard let result = result else {
           completionHandler(.failed)
           return
         }
         
-        guard let rateString = result.bpi?.uSD?.rate,
-          let lastUpdatedString = result.time?.updatedISO
+        guard let bpi = result["bpi"] as? Dictionary<String, Any>, let userPreferredCurrency = bpi[userPreferredCurrency] as? Dictionary<String, Any>, let rateString = userPreferredCurrency["rate"] as? String,
+          let time = result["time"] as? Dictionary<String, Any>, let lastUpdatedString = time["updatedISO"] as? String
           else {
             return
         }
         
         let todayStore = TodayDataStore(rate: rateString, lastUpdate: lastUpdatedString)
         
-        if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate {
+        if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate, rateString == lastStoredTodayStore.rate {
           completionHandler(.noData)
         } else {
           let newRate = self.processRateAndLastUpdate(todayStore: todayStore)

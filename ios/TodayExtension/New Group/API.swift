@@ -10,18 +10,37 @@ import Foundation
 
 class API {
       
-  static func fetchPrice(currency: String = "USD", completion: @escaping ((APIResponse?, Error?) -> Void)) {
+  static func fetchPrice(currency: String, completion: @escaping ((Dictionary<String, Any>?, Error?) -> Void)) {
     guard let url = URL(string: "https://api.coindesk.com/v1/bpi/currentPrice/\(currency).json") else {return}
-    let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-    guard let dataResponse = data,
-          let responseDecoded = try? JSONDecoder().decode(APIResponse.self, from: dataResponse),
-          error == nil else {
-              print(error?.localizedDescription ?? "Response Error")
-              completion(nil, error)
-              return }
-      completion(responseDecoded, nil)
+    
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+       guard let dataResponse = data,
+        let json = try? JSONSerialization.jsonObject(with: dataResponse, options: .mutableContainers) as? Dictionary<String, Any>,
+        error == nil else {
+          print(error?.localizedDescription ?? "Response Error")
+          completion(nil, error)
+          return }
+      
+      completion(json, nil)
+    }.resume()
+  }
+  
+  static func getUserPreferredCurrency() -> String {
+    guard let userDefaults = UserDefaults(suiteName: "group.io.bluewallet.bluewallet"),
+      let preferredCurrency = userDefaults.value(forKey: "preferredCurrency") as? String
+      else {
+        return "USD"
     }
-    task.resume()
+    return preferredCurrency
+  }
+  
+  static func getUserPreferredCurrencyLocale() -> String {
+    guard let userDefaults = UserDefaults(suiteName: "group.io.bluewallet.bluewallet"),
+      let preferredCurrency = userDefaults.value(forKey: "preferredCurrencyLocale") as? String
+      else {
+        return "en_US"
+    }
+    return preferredCurrency
   }
   
 }
