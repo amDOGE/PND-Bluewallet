@@ -28,5 +28,8 @@ class TodayData {
     }
     return TodayDataStore(rate: rate, lastUpdate: lastUpdate)
    }
+  
+  
+   
    
 }
