@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, AppState, Clipboard, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { Linking, DeviceEventEmitter, AppState, Clipboard, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
@@ -10,8 +10,10 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import url from 'url';
 import { AppStorage, LightningCustodianWallet } from './class';
 import { Chain } from './models/bitcoinUnits';
-
+import QuickActions from 'react-native-quick-actions';
 import * as Sentry from '@sentry/react-native';
+import WalletGradient from './class/walletGradient';
+import OnAppLaunch from './class/onAppLaunch';
 
 if (process.env.NODE_ENV !== 'development') {
   Sentry.init({
@@ -36,7 +38,7 @@ export default class App extends React.Component {
     clipboardContent: '',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     Linking.getInitialURL()
       .then(url => {
         if (this.hasSchema(url)) {
@@ -46,7 +48,28 @@ export default class App extends React.Component {
       .catch(console.error);
     Linking.addEventListener('url', this.handleOpenURL);
     AppState.addEventListener('change', this._handleAppStateChange);
+    QuickActions.popInitialAction().then(this.walletQuickActions);
+    DeviceEventEmitter.addListener('quickActionShortcut', this.walletQuickActions);
+    const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
+    if (!isViewAllWalletsEnabled) {
+      const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
+      const walletIndex = this.state.wallets.findIndex(wallet => wallet.getID() === selectedDefaultWallet.getID());
+      this.handleClick(walletIndex);
+    }
   }
+
+  walletQuickActions = data => {
+    const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1])
+    this.navigator.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WalletTransactions',
+        params: {
+          wallet,
+          headerColor: WalletGradient.headerColorFor(wallet.type),
+        },
+      }),
+    );
+  };
 
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
