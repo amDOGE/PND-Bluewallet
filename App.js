@@ -39,20 +39,15 @@ export default class App extends React.Component {
   };
 
   async componentDidMount() {
-    Linking.getInitialURL()
-      .then(url => {
-        if (this.hasSchema(url)) {
-          this.handleOpenURL({ url });
-        }
-      })
-      .catch(console.error);
     Linking.addEventListener('url', this.handleOpenURL);
     AppState.addEventListener('change', this._handleAppStateChange);
+    QuickActions.popInitialAction().then(this.popInitialAction);
     DeviceEventEmitter.addListener('quickActionShortcut', this.walletQuickActions);
-    const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
-    if (!isViewAllWalletsEnabled) {
-      const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
-      const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === selectedDefaultWallet.getID());
+  }
+
+  popInitialAction = async data => {
+    if (data) {
+      const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
       this.navigator.dispatch(
         NavigationActions.navigate({
           routeName: 'WalletTransactions',
@@ -63,12 +58,32 @@ export default class App extends React.Component {
         }),
       );
     } else {
-      QuickActions.popInitialAction().then(this.walletQuickActions);
+      const url = await Linking.getInitialURL();
+      if (url) {
+        if (this.hasSchema(url)) {
+          this.handleOpenURL({ url });
+        }
+      } else {
+        const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
+        if (!isViewAllWalletsEnabled) {
+          const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
+          const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === selectedDefaultWallet.getID());
+          this.navigator.dispatch(
+            NavigationActions.navigate({
+              routeName: 'WalletTransactions',
+              params: {
+                wallet,
+                headerColor: WalletGradient.headerColorFor(wallet.type),
+              },
+            }),
+          );
+        }
+      }
     }
-  }
+  };
 
   walletQuickActions = data => {
-    const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1])
+    const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
     this.navigator.dispatch(
       NavigationActions.navigate({
         routeName: 'WalletTransactions',
