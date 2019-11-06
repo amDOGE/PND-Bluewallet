@@ -246,6 +246,7 @@ export class AppStorage {
             this.tx_metadata = data.tx_metadata;
           }
         }
+        DeviceQuickActions.setQuickActions(this.wallets);
         WatchConnectivity.init();
         WatchConnectivity.shared && (await WatchConnectivity.shared.sendWalletsToWatch());
         return true;

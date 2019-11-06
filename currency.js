@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from './class';
 import { FiatUnit } from './models/fiatUnit';
 import DefaultPreference from 'react-native-default-preference';
+import DeviceQuickActions from './class/quickActions';
 let BigNumber = require('bignumber.js');
 let preferredFiatCurrency = FiatUnit.USD;
 let exchangeRates = {};
@@ -23,6 +24,7 @@ async function setPrefferedCurrency(item) {
   await DefaultPreference.setName('group.io.bluewallet.bluewallet');
   await DefaultPreference.set('preferredCurrency', item.endPointKey);
   await DefaultPreference.set('preferredCurrencyLocale', item.locale.replace('-', '_'));
+  DeviceQuickActions.setQuickActions();
 }
 
 async function getPreferredCurrency() {
