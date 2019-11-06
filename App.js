@@ -48,13 +48,22 @@ export default class App extends React.Component {
       .catch(console.error);
     Linking.addEventListener('url', this.handleOpenURL);
     AppState.addEventListener('change', this._handleAppStateChange);
-    QuickActions.popInitialAction().then(this.walletQuickActions);
     DeviceEventEmitter.addListener('quickActionShortcut', this.walletQuickActions);
     const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
     if (!isViewAllWalletsEnabled) {
       const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
-      const walletIndex = this.state.wallets.findIndex(wallet => wallet.getID() === selectedDefaultWallet.getID());
-      this.handleClick(walletIndex);
+      const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === selectedDefaultWallet.getID());
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'WalletTransactions',
+          params: {
+            wallet,
+            headerColor: WalletGradient.headerColorFor(wallet.type),
+          },
+        }),
+      );
+    } else {
+      QuickActions.popInitialAction().then(this.walletQuickActions);
     }
   }
 
