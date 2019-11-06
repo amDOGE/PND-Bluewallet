@@ -12,6 +12,7 @@ import {
 } from './';
 import { LightningCustodianWallet } from './lightning-custodian-wallet';
 import WatchConnectivity from '../WatchConnectivity';
+import DeviceQuickActions from './quickActions';
 const encryption = require('../encryption');
 
 export class AppStorage {
@@ -137,6 +138,7 @@ export class AppStorage {
     this.cachedPassword = password;
     await this.setItem('data', data);
     await this.setItem(AppStorage.FLAG_ENCRYPTED, '1');
+    DeviceQuickActions.clearShortcutItems();
   }
 
   /**
@@ -320,6 +322,7 @@ export class AppStorage {
     }
     WatchConnectivity.init();
     WatchConnectivity.shared && WatchConnectivity.shared.sendWalletsToWatch();
+    DeviceQuickActions.setQuickActions(this.wallets);
     return this.setItem('data', JSON.stringify(data));
   }
 

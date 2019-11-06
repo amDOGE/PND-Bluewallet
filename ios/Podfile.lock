@@ -145,6 +145,8 @@ PODS:
     - React
   - RNHandoff (0.0.3):
     - React
+  - RNQuickAction (0.3.12):
+    - React
   - RNRate (1.0.1):
     - React
   - RNSecureKeyStore (1.0.0):
@@ -212,6 +214,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNHandoff (from `../node_modules/react-native-handoff`)
+  - RNQuickAction (from `../node_modules/react-native-quick-actions`)
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNSecureKeyStore (from `../node_modules/react-native-secure-key-store/ios`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -317,6 +320,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNHandoff:
     :path: "../node_modules/react-native-handoff"
+  RNQuickAction:
+    :path: "../node_modules/react-native-quick-actions"
   RNRate:
     :path: "../node_modules/react-native-rate/ios"
   RNSecureKeyStore:
@@ -384,6 +389,7 @@ SPEC CHECKSUMS:
   RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNHandoff: d3b0754cca3a6bcd9b25f544f733f7f033ccf5fa
+  RNQuickAction: eca9a5dd04b5cdf8a0dd32d8be8844dc33aba2bd
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
   RNSecureKeyStore: f1ad870e53806453039f650720d2845c678d89c8
   RNSentry: 2803ba8c8129dcf26b79e9b4d8c80168be6e4390
