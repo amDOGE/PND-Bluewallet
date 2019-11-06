@@ -82,7 +82,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
           return
         }
         
-        guard let bpi = result["bpi"] as? Dictionary<String, Any>, let userPreferredCurrency = bpi[userPreferredCurrency] as? Dictionary<String, Any>, let rateString = userPreferredCurrency["rate"] as? String,
+        guard let bpi = result["bpi"] as? Dictionary<String, Any>, let preferredCurrency = bpi[userPreferredCurrency] as? Dictionary<String, Any>, let rateString = preferredCurrency["rate"] as? String,
           let time = result["time"] as? Dictionary<String, Any>, let lastUpdatedString = time["updatedISO"] as? String
           else {
             return
@@ -90,15 +90,15 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         let todayStore = TodayDataStore(rate: rateString, lastUpdate: lastUpdatedString)
         
-        if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate, rateString == lastStoredTodayStore.rate {
+        if let lastStoredTodayStore = TodayData.getPriceRateAndLastUpdate(), lastStoredTodayStore.lastUpdate == todayStore.lastUpdate, rateString == lastStoredTodayStore.rate, API.getLastSelectedCurrency() == userPreferredCurrency {
           completionHandler(.noData)
         } else {
           let newRate = self.processRateAndLastUpdate(todayStore: todayStore)
           let priceRiceAndLastUpdate = TodayData.getPriceRateAndLastUpdate()
           let lastPriceNumber = self.processStoredRateAndLastUpdate(todayStore: priceRiceAndLastUpdate ?? todayStore)
-          if let newRate = newRate, let lastPriceNumber = lastPriceNumber {
+          if let newRate = newRate, let lastPriceNumber = lastPriceNumber, API.getLastSelectedCurrency() == userPreferredCurrency {
             self.lastPriceNumber = newRate
-    
+            
             if newRate.doubleValue > lastPriceNumber.doubleValue  {
               self.lastPriceArrowImage.image = UIImage(systemName: "arrow.up")
               self.setLastPriceOutletsHidden(isHidden: false)
@@ -108,9 +108,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
               self.lastPriceArrowImage.image = UIImage(systemName: "arrow.down")
               self.setLastPriceOutletsHidden(isHidden: false)
             }
+          } else {
+            self.setLastPriceOutletsHidden(isHidden: true)
           }
         
           TodayData.savePriceRateAndLastUpdate(rate: todayStore.rate, lastUpdate: todayStore.lastUpdate)
+          API.saveNewSelectedCurrency()
           completionHandler(.newData)
         }
       }
