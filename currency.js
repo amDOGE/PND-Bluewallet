@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from './class';
 import { FiatUnit } from './models/fiatUnit';
 import DefaultPreference from 'react-native-default-preference';
+import DeviceQuickActions from './class/quickActions';
 let BigNumber = require('bignumber.js');
 let preferredFiatCurrency = FiatUnit.USD;
 let exchangeRates = {};
@@ -23,6 +24,7 @@ async function setPrefferedCurrency(item) {
   await DefaultPreference.setName('group.io.bluewallet.bluewallet');
   await DefaultPreference.set('preferredCurrency', item.endPointKey);
   await DefaultPreference.set('preferredCurrencyLocale', item.locale.replace('-', '_'));
+  DeviceQuickActions.setQuickActions();
 }
 
 async function getPreferredCurrency() {
@@ -64,6 +66,7 @@ async function updateExchangeRate() {
   exchangeRates['BTC_' + preferredFiatCurrency.endPointKey] = json.bpi[preferredFiatCurrency.endPointKey].rate_float * 1;
   await AsyncStorage.setItem(AppStorage.EXCHANGE_RATES, JSON.stringify(exchangeRates));
   await AsyncStorage.setItem(AppStorage.PREFERRED_CURRENCY, JSON.stringify(preferredFiatCurrency));
+  DeviceQuickActions.setQuickActions();
 }
 
 let interval = false;
@@ -78,7 +81,10 @@ async function startUpdater() {
 }
 
 function satoshiToLocalCurrency(satoshi) {
-  if (!exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]) return '...';
+  if (!exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]) {
+    startUpdater();
+    return '...';
+  }
 
   let b = new BigNumber(satoshi);
   b = b

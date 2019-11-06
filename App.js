@@ -47,13 +47,15 @@ export default class App extends React.Component {
 
   popInitialAction = async data => {
     if (data) {
+      // eslint-disable-next-line no-unused-expressions
+      this.navigator.dismiss;
       const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
       this.navigator.dispatch(
         NavigationActions.navigate({
+          key: `WalletTransactions-${wallet.getID()}`,
           routeName: 'WalletTransactions',
           params: {
             wallet,
-            headerColor: WalletGradient.headerColorFor(wallet.type),
           },
         }),
       );
@@ -66,14 +68,16 @@ export default class App extends React.Component {
       } else {
         const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
         if (!isViewAllWalletsEnabled) {
+          // eslint-disable-next-line no-unused-expressions
+          this.navigator.dismiss;
           const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
           const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === selectedDefaultWallet.getID());
           this.navigator.dispatch(
             NavigationActions.navigate({
               routeName: 'WalletTransactions',
+              key: `WalletTransactions-${wallet.getID()}`,
               params: {
                 wallet,
-                headerColor: WalletGradient.headerColorFor(wallet.type),
               },
             }),
           );
@@ -84,12 +88,14 @@ export default class App extends React.Component {
 
   walletQuickActions = data => {
     const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
+    // eslint-disable-next-line no-unused-expressions
+    this.navigator.dismiss;
     this.navigator.dispatch(
       NavigationActions.navigate({
         routeName: 'WalletTransactions',
+        key: `WalletTransactions-${wallet.getID()}`,
         params: {
           wallet,
-          headerColor: WalletGradient.headerColorFor(wallet.type),
         },
       }),
     );
