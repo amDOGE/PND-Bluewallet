@@ -9,12 +9,12 @@
 import Foundation
 
 class API {
-      
+  
   static func fetchPrice(currency: String, completion: @escaping ((Dictionary<String, Any>?, Error?) -> Void)) {
     guard let url = URL(string: "https://api.coindesk.com/v1/bpi/currentPrice/\(currency).json") else {return}
     
     URLSession.shared.dataTask(with: url) { (data, response, error) in
-       guard let dataResponse = data,
+      guard let dataResponse = data,
         let json = try? JSONSerialization.jsonObject(with: dataResponse, options: .mutableContainers) as? Dictionary<String, Any>,
         error == nil else {
           print(error?.localizedDescription ?? "Response Error")
@@ -41,6 +41,19 @@ class API {
         return "en_US"
     }
     return preferredCurrency
+  }
+  
+  static func getLastSelectedCurrency() -> String {
+    guard let dataStore = UserDefaults.standard.value(forKey: "currency") as? String else {
+      return "USD"
+    }
+    
+    UserDefaults.standard.setValue(API.getUserPreferredCurrency(), forKey: "currency")
+    return dataStore
+  }
+  
+  static func saveNewSelectedCurrency() {
+    UserDefaults.standard.setValue(API.getUserPreferredCurrency(), forKey: "currency")
   }
   
 }
