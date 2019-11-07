@@ -66,6 +66,7 @@ async function updateExchangeRate() {
   exchangeRates['BTC_' + preferredFiatCurrency.endPointKey] = json.bpi[preferredFiatCurrency.endPointKey].rate_float * 1;
   await AsyncStorage.setItem(AppStorage.EXCHANGE_RATES, JSON.stringify(exchangeRates));
   await AsyncStorage.setItem(AppStorage.PREFERRED_CURRENCY, JSON.stringify(preferredFiatCurrency));
+  DeviceQuickActions.setQuickActions();
 }
 
 let interval = false;
@@ -80,7 +81,10 @@ async function startUpdater() {
 }
 
 function satoshiToLocalCurrency(satoshi) {
-  if (!exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]) return '...';
+  if (!exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]) {
+    startUpdater();
+    return '...';
+  }
 
   let b = new BigNumber(satoshi);
   b = b
