@@ -71,7 +71,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     numberFormatter.numberStyle = .currency
     priceLabel.text  = numberFormatter.string(from: newPriceNumber)
-    
+    lastUpdatedDate.text = dateFormatter.string(from: cachedDateFormatted)
     lastPrice.text = numberFormatter.string(from: cachedPriceNumber)
     
     self.lastPriceNumber = newPriceNumber
