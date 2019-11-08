@@ -5,7 +5,6 @@ import { Icon } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
-import WalletGradient from '../../class/walletGradient';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -135,7 +134,7 @@ export default class WalletsList extends Component {
     if (wallet) {
       this.props.navigation.navigate('WalletTransactions', {
         wallet: wallet,
-        headerColor: WalletGradient.headerColorFor(wallet.type),
+        key: `WalletTransactions-${wallet.getID()}`,
       });
     } else {
       // if its out of index - this must be last card with incentive to create wallet

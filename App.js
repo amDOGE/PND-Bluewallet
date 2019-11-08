@@ -55,7 +55,6 @@ export default class App extends React.Component {
           routeName: 'WalletTransactions',
           params: {
             wallet,
-            headerColor: WalletGradient.headerColorFor(wallet.type),
           },
         }),
       );
@@ -77,7 +76,6 @@ export default class App extends React.Component {
               key: `WalletTransactions-${wallet.getID()}`,
               params: {
                 wallet,
-                headerColor: WalletGradient.headerColorFor(wallet.type),
               },
             }),
           );
@@ -95,7 +93,6 @@ export default class App extends React.Component {
         key: `WalletTransactions-${wallet.getID()}`,
         params: {
           wallet,
-          headerColor: WalletGradient.headerColorFor(wallet.type),
         },
       }),
     );
