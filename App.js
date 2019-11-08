@@ -47,7 +47,8 @@ export default class App extends React.Component {
 
   popInitialAction = async data => {
     if (data) {
-      this.navigator.dismiss();
+      // eslint-disable-next-line no-unused-expressions
+      this.navigator.dismiss;
       const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
       this.navigator.dispatch(
         NavigationActions.navigate({
@@ -67,7 +68,8 @@ export default class App extends React.Component {
       } else {
         const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
         if (!isViewAllWalletsEnabled) {
-          this.navigator.dismiss();
+          // eslint-disable-next-line no-unused-expressions
+          this.navigator.dismiss;
           const selectedDefaultWallet = await OnAppLaunch.getSelectedDefaultWallet();
           const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === selectedDefaultWallet.getID());
           this.navigator.dispatch(
@@ -86,7 +88,8 @@ export default class App extends React.Component {
 
   walletQuickActions = data => {
     const wallet = BlueApp.getWallets().find(wallet => wallet.getID() === data.userInfo.url.split('wallet/')[1]);
-    this.navigator.dismiss();
+    // eslint-disable-next-line no-unused-expressions
+    this.navigator.dismiss;
     this.navigator.dispatch(
       NavigationActions.navigate({
         routeName: 'WalletTransactions',
