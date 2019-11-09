@@ -257,6 +257,7 @@ export default class WalletsList extends Component {
         >
           <BlueHeaderDefaultMain leftText={loc.wallets.list.title} onNewWalletPress={() => this.props.navigation.navigate('AddWallet')} />
           <WalletsCarousel
+            removeClippedSubviews={false}
             data={this.state.wallets}
             handleClick={index => {
               this.handleClick(index);
