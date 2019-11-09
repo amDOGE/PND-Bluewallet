@@ -27,16 +27,23 @@ class API {
   
   static func getUserPreferredCurrency() -> String {
     guard let userDefaults = UserDefaults(suiteName: "group.io.bluewallet.bluewallet"),
-      let preferredCurrency = userDefaults.value(forKey: "preferredCurrency") as? String
+      let preferredCurrency = userDefaults.string(forKey: "preferredCurrency")
       else {
         return "USD"
     }
+    
+    if preferredCurrency != API.getLastSelectedCurrency() {
+      UserDefaults.standard.removeObject(forKey: TodayData.TodayCachedDataStoreKey)
+      UserDefaults.standard.removeObject(forKey: TodayData.TodayDataStoreKey)
+      UserDefaults.standard.synchronize()
+    }
+    
     return preferredCurrency
   }
   
   static func getUserPreferredCurrencyLocale() -> String {
     guard let userDefaults = UserDefaults(suiteName: "group.io.bluewallet.bluewallet"),
-      let preferredCurrency = userDefaults.value(forKey: "preferredCurrencyLocale") as? String
+      let preferredCurrency = userDefaults.string(forKey: "preferredCurrencyLocale")
       else {
         return "en_US"
     }
@@ -44,11 +51,10 @@ class API {
   }
   
   static func getLastSelectedCurrency() -> String {
-    guard let dataStore = UserDefaults.standard.value(forKey: "currency") as? String else {
+    guard let dataStore = UserDefaults.standard.string(forKey: "currency") else {
       return "USD"
     }
     
-    UserDefaults.standard.setValue(API.getUserPreferredCurrency(), forKey: "currency")
     return dataStore
   }
   

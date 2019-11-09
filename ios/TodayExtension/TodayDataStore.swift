@@ -11,6 +11,46 @@ import Foundation
 struct TodayDataStore {
   let rate: String
   let lastUpdate: String
+  
+  var formattedDate: String? {
+    let isoDateFormatter = ISO8601DateFormatter()
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeStyle = .short
+    dateFormatter.dateStyle = .short
+    
+    if let date = isoDateFormatter.date(from: lastUpdate) {
+      return dateFormatter.string(from: date)
+    }
+    return nil
+  }
+  
+  var rateDoubleValue: Double? {
+    let rateDigits = rate.replacingOccurrences(of: ",", with: "");
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .decimal
+    numberFormatter.maximumFractionDigits = 2
+    numberFormatter.minimumFractionDigits = 2
+    
+    if let rateDoubleValue =  numberFormatter.number(from: rateDigits) {
+      return rateDoubleValue.doubleValue
+    }
+    
+    return nil
+  }
+  
+  var formattedRate: String? {
+    let rateDigits = rate.replacingOccurrences(of: ",", with: "");
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .decimal
+    numberFormatter.maximumFractionDigits = 2
+    numberFormatter.minimumFractionDigits = 2
+    if let rateNumber = numberFormatter.number(from: rateDigits) {
+      numberFormatter.numberStyle = .currency
+      numberFormatter.locale = Locale(identifier: API.getUserPreferredCurrencyLocale())
+      return numberFormatter.string(from: rateNumber);
+    }
+    return nil
+  }
 }
 
 class TodayData {
@@ -28,7 +68,7 @@ class TodayData {
       return nil
     }
     return TodayDataStore(rate: rate, lastUpdate: lastUpdate)
-   }
+  }
   
   static func saveCachePriceRateAndLastUpdate(rate: String, lastUpdate: String) {
     UserDefaults.standard.setValue(["rate": rate, "lastUpdate": lastUpdate], forKey: TodayCachedDataStoreKey)
@@ -36,13 +76,14 @@ class TodayData {
   }
   
   static func getCachedPriceRateAndLastUpdate() -> TodayDataStore? {
-    guard let dataStore = UserDefaults.standard.value(forKey: TodayCachedDataStoreKey) as? [String: String], let rate = dataStore["rate"], let lastUpdate = dataStore["lastUpdate"] else {
+    guard let dataStore = UserDefaults.standard.value(forKey: TodayCachedDataStoreKey) as? [String: String], var rate = dataStore["rate"], let lastUpdate = dataStore["lastUpdate"] else {
       return nil
     }
+    rate = rate.replacingOccurrences(of: ",", with: "");
     return TodayDataStore(rate: rate, lastUpdate: lastUpdate)
-   }
+  }
   
   
-   
-   
+  
+  
 }
