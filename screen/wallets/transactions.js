@@ -355,31 +355,28 @@ export default class WalletTransactions extends Component {
   };
 
   onWalletSelect = async wallet => {
-    NavigationService.navigate('WalletTransactions', {
-      key: `WalletTransactions-${wallet.getID()}`,
-    });
-    /** @type {LightningCustodianWallet} */
-    let toAddress = false;
-    if (this.state.wallet.refill_addressess.length > 0) {
-      toAddress = this.state.wallet.refill_addressess[0];
-    } else {
-      try {
-        await this.state.wallet.fetchBtcAddress();
-        toAddress = this.state.wallet.refill_addressess[0];
-      } catch (Err) {
-        return alert(Err.message);
-      }
-    }
-
     if (wallet) {
+      NavigationService.navigate('WalletTransactions', {
+        key: `WalletTransactions-${wallet.getID()}`,
+      });
+      /** @type {LightningCustodianWallet} */
+      let toAddress = false;
+      if (this.state.wallet.refill_addressess.length > 0) {
+        toAddress = this.state.wallet.refill_addressess[0];
+      } else {
+        try {
+          await this.state.wallet.fetchBtcAddress();
+          toAddress = this.state.wallet.refill_addressess[0];
+        } catch (Err) {
+          return alert(Err.message);
+        }
+      }
       this.props.navigation.navigate('SendDetails', {
         memo: loc.lnd.refill_lnd_balance,
         fromSecret: wallet.getSecret(),
         address: toAddress,
         fromWallet: wallet,
       });
-    } else {
-      return alert('Internal error');
     }
   };
 
