@@ -112,7 +112,7 @@
     "react-native-rate": "1.1.7",
     "react-native-secure-key-store": "git+https://github.com/marcosrdz/react-native-secure-key-store.git",
     "react-native-share": "2.0.0",
-    "react-native-snap-carousel": "3.8.0",
+    "react-native-snap-carousel": "3.8.4",
     "react-native-sortable-list": "0.0.23",
     "react-native-svg": "9.5.1",
     "react-native-tcp": "git+https://github.com/aprock/react-native-tcp.git",
