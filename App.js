@@ -12,7 +12,6 @@ import { AppStorage, LightningCustodianWallet } from './class';
 import { Chain } from './models/bitcoinUnits';
 import QuickActions from 'react-native-quick-actions';
 import * as Sentry from '@sentry/react-native';
-import WalletGradient from './class/walletGradient';
 import OnAppLaunch from './class/onAppLaunch';
 
 if (process.env.NODE_ENV !== 'development') {

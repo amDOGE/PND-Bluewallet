@@ -246,7 +246,7 @@ export class AppStorage {
             this.tx_metadata = data.tx_metadata;
           }
         }
-        DeviceQuickActions.setQuickActions(this.wallets);
+        await DeviceQuickActions.setQuickActions(this.wallets);
         WatchConnectivity.init();
         WatchConnectivity.shared && (await WatchConnectivity.shared.sendWalletsToWatch());
         return true;
@@ -323,7 +323,7 @@ export class AppStorage {
     }
     WatchConnectivity.init();
     WatchConnectivity.shared && WatchConnectivity.shared.sendWalletsToWatch();
-    DeviceQuickActions.setQuickActions(this.wallets);
+    await DeviceQuickActions.setQuickActions(this.wallets);
     return this.setItem('data', JSON.stringify(data));
   }
 
