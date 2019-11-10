@@ -1,3 +1,4 @@
+/* global alert */
 import QuickActions from 'react-native-quick-actions';
 
 export default class DeviceQuickActions {
@@ -11,21 +12,25 @@ export default class DeviceQuickActions {
         if (!wallets) {
           wallets = BlueApp.getWallets();
         }
-        if (supported && error === null) {
-          let shortcutItems = [];
-          for (const wallet of wallets) {
-            shortcutItems.push({
-              type: 'Wallets', // Required
-              title: wallet.getLabel(), // Optional, if empty, `type` will be used instead
-              subtitle: wallet.hideBalance
-                ? ''
-                : `${loc.formatBalance(Number(wallet.getBalance()), wallet.getPreferredBalanceUnit(), true)}`,
-              userInfo: {
-                url: `bluewallet://wallet/${wallet.getID()}`, // Provide any custom data like deep linking URL
-              },
-            });
+        if (error) {
+          alert(error);
+        } else {
+          if (supported) {
+            let shortcutItems = [];
+            for (const wallet of wallets) {
+              shortcutItems.push({
+                type: 'Wallets', // Required
+                title: wallet.getLabel(), // Optional, if empty, `type` will be used instead
+                subtitle: wallet.hideBalance
+                  ? ''
+                  : `${loc.formatBalance(Number(wallet.getBalance()), wallet.getPreferredBalanceUnit(), true)}`,
+                userInfo: {
+                  url: `bluewallet://wallet/${wallet.getID()}`, // Provide any custom data like deep linking URL
+                },
+              });
+            }
+            QuickActions.setShortcutItems(shortcutItems);
           }
-          QuickActions.setShortcutItems(shortcutItems);
         }
       });
     }

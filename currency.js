@@ -24,7 +24,7 @@ async function setPrefferedCurrency(item) {
   await DefaultPreference.setName('group.io.bluewallet.bluewallet');
   await DefaultPreference.set('preferredCurrency', item.endPointKey);
   await DefaultPreference.set('preferredCurrencyLocale', item.locale.replace('-', '_'));
-  DeviceQuickActions.setQuickActions();
+  await DeviceQuickActions.setQuickActions();
 }
 
 async function getPreferredCurrency() {
@@ -66,7 +66,7 @@ async function updateExchangeRate() {
   exchangeRates['BTC_' + preferredFiatCurrency.endPointKey] = json.bpi[preferredFiatCurrency.endPointKey].rate_float * 1;
   await AsyncStorage.setItem(AppStorage.EXCHANGE_RATES, JSON.stringify(exchangeRates));
   await AsyncStorage.setItem(AppStorage.PREFERRED_CURRENCY, JSON.stringify(preferredFiatCurrency));
-  DeviceQuickActions.setQuickActions();
+  await DeviceQuickActions.setQuickActions();
 }
 
 let interval = false;
