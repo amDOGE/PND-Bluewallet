@@ -8,6 +8,7 @@ import {
   BlueNavigationStyle,
   BlueHeaderDefaultSub,
   BlueListItem,
+  BlueSpacing20,
 } from '../../BlueComponents';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from '../../class';
@@ -60,8 +61,11 @@ export const Settings = () => {
     <BlueLoading />
   ) : (
     <SafeBlueArea forceInset={{ horizontal: 'always' }} style={{ flex: 1 }}>
-      <BlueHeaderDefaultSub leftText={loc.settings.header} rightComponent={null} />
       <ScrollView>
+        <BlueHeaderDefaultSub leftText="merchant" rightComponent={null} />
+        <BlueListItem title="Connect to BTCPay Server" onPress={() => navigate('BTCPayServerOnboarding')} component={TouchableOpacity} />
+        <BlueSpacing20 />
+        <BlueHeaderDefaultSub leftText={loc.settings.header} rightComponent={null} />
         {BlueApp.getWallets().length > 1 && (
           <BlueListItem component={TouchableOpacity} onPress={() => navigate('DefaultView')} title="On Launch" />
         )}
