@@ -8,6 +8,8 @@ import { name as appName } from './app.json';
 import App from './App';
 import LottieView from 'lottie-react-native';
 import UnlockWith from './UnlockWith.js';
+const b = require('btcpay')
+
 
 /** @type {AppStorage} */
 const A = require('./analytics');
