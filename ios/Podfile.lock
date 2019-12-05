@@ -64,7 +64,7 @@ PODS:
     - React-cxxreact (= 0.60.5)
     - React-jsi (= 0.60.5)
   - React-jsinspector (0.60.5)
-  - react-native-biometrics (2.0.0):
+  - react-native-biometrics (2.1.1):
     - React
   - react-native-blur (0.8.0):
     - React
@@ -79,6 +79,8 @@ PODS:
   - react-native-haptic-feedback (1.7.1):
     - React
   - react-native-image-picker (1.1.0):
+    - React
+  - react-native-netinfo (4.6.1):
     - React
   - react-native-randombytes (3.5.3):
     - React
@@ -171,6 +173,7 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -247,6 +250,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-haptic-feedback"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-slider:
@@ -328,11 +333,12 @@ SPEC CHECKSUMS:
   React-jsi: 4d8c9efb6312a9725b18d6fc818ffc103f60fec2
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
-  react-native-biometrics: c892904948a32295b128f633bcc11eda020645c5
+  react-native-biometrics: 35cbcfed43e7fa86d341320fee7fe10642ec460b
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-camera: 203091b4bf99d48b788a0682ad573e8718724893
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
+  react-native-netinfo: 16c6408c311572f17f9ffc3fa12614489307b6cf
   react-native-randombytes: 991545e6eaaf700b4ee384c291ef3d572e0b2ca8
   react-native-slider: 6d83f7b8076a84e965a43fbdcfcf9dac19cea42e
   react-native-webview: f72ac4078e115dfa741cc588acb1cca25566457d
