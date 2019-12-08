@@ -1,7 +1,6 @@
 import React from 'react';
 import { Linking, DeviceEventEmitter, AppState, Clipboard, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import NetInfo from '@react-native-community/netinfo';
 import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import MainBottomTabs from './MainBottomTabs';
@@ -14,6 +13,7 @@ import { Chain } from './models/bitcoinUnits';
 import QuickActions from 'react-native-quick-actions';
 import * as Sentry from '@sentry/react-native';
 import OnAppLaunch from './class/onAppLaunch';
+import {NetworkActivityModal} from './screen/networkActivityModal';
 const A = require('./analytics');
 const NetworkStatusContext = React.createContext('networkStatus');
 
@@ -36,7 +36,6 @@ export default class App extends React.Component {
   state = {
     appState: AppState.currentState,
     isClipboardContentModalVisible: false,
-    networkState: { isInternetReachable: true },
     clipboardContentModalAddressType: bitcoinModalString,
     clipboardContent: '',
   };
@@ -46,10 +45,6 @@ export default class App extends React.Component {
     AppState.addEventListener('change', this._handleAppStateChange);
     QuickActions.popInitialAction().then(this.popInitialAction);
     DeviceEventEmitter.addListener('quickActionShortcut', this.walletQuickActions);
-    this.unsubscribe = NetInfo.addEventListener(state => {
-      console.warn(state);
-      this.setState({ networkState: state });
-    });
   }
 
   popInitialAction = async data => {
@@ -113,7 +108,6 @@ export default class App extends React.Component {
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleOpenURL);
     AppState.removeEventListener('change', this._handleAppStateChange);
-    this.unsubscribe();
   }
 
   _handleAppStateChange = async nextAppState => {
@@ -311,22 +305,6 @@ export default class App extends React.Component {
     }
   };
 
-  renderNetworkActivityModal = () => {
-    return (
-      <Modal
-        onModalShow={() => ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false })}
-        isVisible={!this.state.networkState.isInternetReachable}
-        style={styles.bottomModal}
-      >
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
-          <View style={styles.networkActivityModalContent}>
-            <BlueTextCentered>Reconnecting to Bitcoin network...</BlueTextCentered>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
-    );
-  };
-
   renderClipboardContentModal = () => {
     return (
       <Modal
@@ -377,7 +355,7 @@ export default class App extends React.Component {
             }}
           />
           {this.renderClipboardContentModal()}
-          {this.renderNetworkActivityModal()}
+          <NetworkActivityModal />
         </View>
       </NetworkStatusContext.Provider>
     );
