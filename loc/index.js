@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from '../class';
 import { BitcoinUnit } from '../models/bitcoinUnits';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Language from '../screen/settings/language';
 const dayjs = require('dayjs');
 const currency = require('../currency');
 const BigNumber = require('bignumber.js');
@@ -129,7 +130,10 @@ strings = new Localization({
   zar_afr: require('./ZAR_Afr.js'),
 });
 
-strings.saveLanguage = lang => AsyncStorage.setItem(AppStorage.LANG, lang);
+strings.saveLanguage = lang => {
+  console.warn(lang)
+  AsyncStorage.setItem(AppStorage.LANG, lang)
+};
 
 strings.transactionTimeToReadable = time => {
   if (time === 0) {
