@@ -202,13 +202,12 @@ export default class Selftest extends Component {
       }
 
       //
-
-      let crypted = encryption.encrypt('data', 'password');
+      const data2encrypt = 'really long data string';
+      let crypted = encryption.encrypt(data2encrypt, 'password');
       let decrypted = encryption.decrypt(crypted, 'password');
 
-      if (decrypted !== 'data' && crypted && decrypted) {
-        errorMessage += 'encryption lib is not ok; ';
-        isOk = false;
+      if (decrypted !== data2encrypt && crypted && decrypted) {
+        throw new Error('encryption lib is not ok');
       }
 
       //
@@ -263,7 +262,7 @@ export default class Selftest extends Component {
         await hd3.fetchBalance();
         if (hd3.getBalance() !== 26000) throw new Error('Could not fetch HD balance');
         await hd3.fetchTransactions();
-        if (hd3.transactions.length !== 1) throw new Error('Could not fetch HD transactions');
+        if (hd3.getTransactions().length !== 1) throw new Error('Could not fetch HD transactions');
 
         //
 

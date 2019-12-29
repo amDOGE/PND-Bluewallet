@@ -1,3 +1,38 @@
+v4.9.0
+======
+
+* ADD: Native segwit (BIP84) are now default wallets
+* ADD: Toggle to turn off RBF when creating a transaction
+* ADD: Scroll to end of wallets list when adding a wallet
+* FIX: Default LN invoice expiry is now 24h instead of 1h
+* FIX: Speeded up lighnint wallets
+* FIX: Force Light theme mode even if system is in dark mode
+* FIX: Hide Manage Funds button if wallet doesn't allow onchain refill.
+* FIX: LN Scan to receive is more visible
+* FIX: Quick actions not appearing on non-3d touch devices.
+* FIX: Dont show clipboard modal when biometrics  is dismissed
+
+v4.8.1
+======
+
+* FIX: Updated biometrics
+* FIX: Import QR Code from screenshot not working
+
+v4.8.0
+======
+
+* ADD: Today Extension and Quick Actions
+* ADD: Send max option on advanced menu
+* ADD: Add Onchain address view for Lightning
+* FIX: Allow textfield to be visible above keyboard
+* FIX: lapp browser when typing URL without https scheme it doesnt work
+* ADD: Value and memo to the success screen fix logic for both sent and receive
+* FIX: layout for small devices with flexbox
+* FIX: Dont allow zero invoices to enable create invoice button
+* FIX: Change create button on Receive LN payment should be create invoice
+* FIX: Update for watch
+
+
 v4.7.1
 ======
 
@@ -16,25 +51,3 @@ v4.7.0
 * FIX: Now able to use biometrics with encrypted storage (not for unlocking)
 * FIX: LApp marketplace address is now editable
 * FIX: single address watch-only wallet Receive button crash
-
-v4.6.0
-======
-
-* ADD: Optional biometrics unlock (this does not exclude full encryption)
-* ADD: Cryptoadvance HW wallet support (for BIP84) via PSBT and QR codes
-* ADD: LN Refill with external wallet
-* ADD: Default into wallet on launch
-* FIX: NaN when sending onchain
-* FIX: zero on send success screen
-* FIX: Time shown for top-most transaction
-* FIX: minor issue with scanQrWif
-* FIX: typo on NL language
-* FIX: better wallet export QR readability
-* FIX: RBF tx memo porting
-* REF: better initial HD rescan
-
-v4.5.2
-======
-
-* FIX: NaN when sending onchain
-* FIX: RBF tx memo porting

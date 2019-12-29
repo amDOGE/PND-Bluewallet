@@ -34,6 +34,7 @@ export default class UnlockWith extends Component {
     }
     this.setState({ isAuthenticating: true }, async () => {
       if (await Biometric.unlockWithBiometrics()) {
+        this.setState({ isAuthenticating: false });
         await BlueApp.startAndDecrypt();
         return this.props.onSuccessfullyAuthenticated();
       }
@@ -60,13 +61,14 @@ export default class UnlockWith extends Component {
           </View>
           <View style={{ flex: 0.2, justifyContent: 'flex-end', marginBottom: 58 }}>
             <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-              {this.state.biometricType === Biometric.TouchID && !this.state.isStorageEncrypted && (
-                <>
-                  <TouchableOpacity disabled={this.state.isAuthenticating} onPress={this.unlockWithBiometrics}>
-                    <Image source={require('./img/fingerprint.png')} style={{ width: 64, height: 64 }} />
-                  </TouchableOpacity>
-                </>
-              )}
+              {(this.state.biometricType === Biometric.TouchID || this.state.biometricType === Biometric.Biometrics) &&
+                !this.state.isStorageEncrypted && (
+                  <>
+                    <TouchableOpacity disabled={this.state.isAuthenticating} onPress={this.unlockWithBiometrics}>
+                      <Image source={require('./img/fingerprint.png')} style={{ width: 64, height: 64 }} />
+                    </TouchableOpacity>
+                  </>
+                )}
               {this.state.biometricType === Biometric.FaceID && !this.state.isStorageEncrypted && (
                 <>
                   <TouchableOpacity disabled={this.state.isAuthenticating} onPress={this.unlockWithBiometrics}>

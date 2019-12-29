@@ -11,7 +11,6 @@ import UnlockWith from './UnlockWith.js';
 const b = require('btcpay')
 
 
-/** @type {AppStorage} */
 const A = require('./analytics');
 
 if (!Error.captureStackTrace) {

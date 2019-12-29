@@ -10,19 +10,12 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
-#import <AppCenterReactNative.h>
-#import <AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeCrashes.h>
+#import "RNQuickActionManager.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
-  
+{ 
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -47,6 +40,10 @@
 
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(UIApplicationExtensionPointIdentifier)extensionPointIdentifier {
   return NO;
+}
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL succeeded)) completionHandler {
+  [RNQuickActionManager onQuickActionPress:shortcutItem completionHandler:completionHandler];
 }
 
 @end

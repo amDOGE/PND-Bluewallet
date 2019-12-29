@@ -9,9 +9,11 @@ import {
   SegwitP2SHWallet,
   SegwitBech32Wallet,
   HDSegwitBech32Wallet,
+  PlaceholderWallet,
+  LightningCustodianWallet,
 } from './';
-import { LightningCustodianWallet } from './lightning-custodian-wallet';
 import WatchConnectivity from '../WatchConnectivity';
+import DeviceQuickActions from './quickActions';
 const encryption = require('../encryption');
 
 export class AppStorage {
@@ -137,6 +139,8 @@ export class AppStorage {
     this.cachedPassword = password;
     await this.setItem('data', data);
     await this.setItem(AppStorage.FLAG_ENCRYPTED, '1');
+    DeviceQuickActions.clearShortcutItems();
+    DeviceQuickActions.removeAllWallets();
   }
 
   /**
@@ -189,6 +193,8 @@ export class AppStorage {
           let tempObj = JSON.parse(key);
           let unserializedWallet;
           switch (tempObj.type) {
+            case PlaceholderWallet.type:
+              continue;
             case SegwitBech32Wallet.type:
               unserializedWallet = SegwitBech32Wallet.fromJson(key);
               break;
@@ -250,7 +256,9 @@ export class AppStorage {
           await this.fetchWalletTransactions();
           await this.saveToDisk();
         };
-        await WatchConnectivity.shared.sendWalletsToWatch(this.wallets);
+        await WatchConnectivity.shared.sendWalletsToWatch();
+        DeviceQuickActions.setWallets(this.wallets);
+        DeviceQuickActions.setQuickActions();
         return true;
       } else {
         return false; // failed loading data or loading/decryptin data
@@ -293,7 +301,7 @@ export class AppStorage {
   async saveToDisk() {
     let walletsToSave = [];
     for (let key of this.wallets) {
-      if (typeof key === 'boolean') continue;
+      if (typeof key === 'boolean' || key.type === PlaceholderWallet.type) continue;
       if (key.prepareForSerialization) key.prepareForSerialization();
       walletsToSave.push(JSON.stringify({ ...key, type: key.type }));
     }
@@ -326,7 +334,9 @@ export class AppStorage {
     }
     WatchConnectivity.shared.wallets = this.wallets;
     WatchConnectivity.shared.tx_metadata = this.tx_metadata;
-    await WatchConnectivity.shared.sendWalletsToWatch();
+    WatchConnectivity.shared.sendWalletsToWatch();
+    DeviceQuickActions.setWallets(this.wallets);
+    DeviceQuickActions.setQuickActions();
     return this.setItem('data', JSON.stringify(data));
   }
 
@@ -342,13 +352,13 @@ export class AppStorage {
     console.log('fetchWalletBalances for wallet#', index);
     if (index || index === 0) {
       let c = 0;
-      for (let wallet of this.wallets) {
+      for (let wallet of this.wallets.filter(wallet => wallet.type !== PlaceholderWallet.type)) {
         if (c++ === index) {
           await wallet.fetchBalance();
         }
       }
     } else {
-      for (let wallet of this.wallets) {
+      for (let wallet of this.wallets.filter(wallet => wallet.type !== PlaceholderWallet.type)) {
         await wallet.fetchBalance();
       }
     }
@@ -368,7 +378,7 @@ export class AppStorage {
     console.log('fetchWalletTransactions for wallet#', index);
     if (index || index === 0) {
       let c = 0;
-      for (let wallet of this.wallets) {
+      for (let wallet of this.wallets.filter(wallet => wallet.type !== PlaceholderWallet.type)) {
         if (c++ === index) {
           await wallet.fetchTransactions();
           if (wallet.fetchPendingTransactions) {
@@ -448,7 +458,7 @@ export class AppStorage {
   getBalance() {
     let finalBalance = 0;
     for (let wal of this.wallets) {
-      finalBalance += wal.balance;
+      finalBalance += wal.getBalance();
     }
     return finalBalance;
   }
