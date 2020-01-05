@@ -1,8 +1,23 @@
+/* global alert */
 import React from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { BlueButton, SafeBlueArea, BlueSpacing20, BlueSpacing40 } from '../../../../../BlueComponents';
+import nodejs from 'nodejs-mobile-react-native';
+import BTCPayServerBridge, { BTCPayServerBridgeMessages } from '../../../../../class/btcpayserver';
 
 const Onboarding = () => {
+  const pairWithServer = () => {
+    nodejs.start('main.js');
+    nodejs.channel.addListener(
+      'message',
+      msg => {
+        console.warn(msg);
+      },
+      this,
+    );
+    BTCPayServerBridge.generatePrivateKey();
+  };
+
   return (
     <SafeBlueArea>
       <View style={styles.root}>
@@ -20,7 +35,7 @@ const Onboarding = () => {
             </View>
           </View>
           <BlueSpacing20 />
-          <BlueButton title="Connect" />
+          <BlueButton onPress={pairWithServer} title="Connect" />
           <BlueSpacing40 />
         </View>
       </View>
