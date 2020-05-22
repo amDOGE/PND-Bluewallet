@@ -92,8 +92,8 @@ export default class AztecoRedeem extends Component {
 
   onWalletSelect = wallet => {
     this.setState({ fromWallet: wallet }, () => {
-      this.renderNavigationHeader();
-      this.props.navigation.goBack();
+      this.props.navigation.pop();
+      console.warn(wallet)
     });
   };
 

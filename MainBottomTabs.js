@@ -297,6 +297,18 @@ const HandleOffchainAndOnChainStackNavigator = createStackNavigator(
   { headerBackTitleVisible: false },
 );
 
+const AztecoRedeemStackNavigator = createStackNavigator({
+  AztecoRedeem: {
+    screen: AztecoRedeem,
+  },
+  SelectWallet: {
+    screen: SelectWallet,
+    navigationOptions: {
+      headerLeft: null,
+    },
+  },
+})
+
 const MainBottomTabs = createStackNavigator(
   {
     Wallets: {
@@ -339,15 +351,18 @@ const MainBottomTabs = createStackNavigator(
       },
     },
 
-    AztecoRedeem: {
-      screen: AztecoRedeem,
-    },
-
     ReceiveDetails: {
       screen: receiveDetails,
     },
 
     //
+
+    AztecoRedeem: {
+      screen: AztecoRedeemStackNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
 
     // LND:
 
