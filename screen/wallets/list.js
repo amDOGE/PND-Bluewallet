@@ -35,6 +35,9 @@ export default class WalletsList extends Component {
     // here, when we receive TRANSACTIONS_COUNT_CHANGED we do not query
     // remote server, we just redraw the screen
     EV(EV.enum.TRANSACTIONS_COUNT_CHANGED, this.redrawScreen);
+
+    // here, when we receive REMOTE_TRANSACTIONS_COUNT_CHANGED we fetch TXs and balance for current wallet
+    EV(EV.enum.REMOTE_TRANSACTIONS_COUNT_CHANGED, this.refreshTransactions.bind(this), true);
   }
 
   componentDidMount() {

@@ -27,7 +27,7 @@ class DeeplinkSchemaMatch {
    * navigation dictionary required by react-navigation
    *
    * @param event {{url: string}} URL deeplink as passed to app, e.g. `bitcoin:bc1qh6tf004ty7z7un2v5ntu4mkf630545gvhs45u7?amount=666&label=Yo`
-   * @param completionHandler {function} Returns {routeName: string, params: object}
+   * @param completionHandler {function} Callback that returns {routeName: string, params: object}
    */
   static navigationRouteFor(event, completionHandler) {
     if (event.url === null) {
@@ -103,9 +103,23 @@ class DeeplinkSchemaMatch {
           safelloStateToken,
         },
       });
+    } else if (event.url.startsWith('https://azte.co')) {
+      let urlObject = url.parse(event.url, true); // eslint-disable-line
+      if (urlObject.query.c1 && urlObject.query.c2 && urlObject.query.c3 && urlObject.query.c4) {
+        completionHandler({
+          routeName: 'AztecoRedeem',
+          params: {
+            uri: event.url,
+            c1: urlObject.query.c1,
+            c2: urlObject.query.c2,
+            c3: urlObject.query.c3,
+            c4: urlObject.query.c4,
+          },
+        });
+      }
     } else {
       let urlObject = url.parse(event.url, true); // eslint-disable-line
-      console.log('parsed', urlObject);
+      console.log('parsed', event.url, 'into', urlObject);
       (async () => {
         if (urlObject.protocol === 'bluewallet:' || urlObject.protocol === 'lapp:' || urlObject.protocol === 'blue:') {
           switch (urlObject.host) {

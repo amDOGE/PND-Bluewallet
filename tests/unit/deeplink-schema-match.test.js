@@ -1,6 +1,9 @@
 /* global describe, it */
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
+import Azteco from '../../class/azteco';
 const assert = require('assert');
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
 describe('unit - DeepLinkSchemaMatch', function() {
   it('hasSchema', () => {
@@ -72,6 +75,11 @@ describe('unit - DeepLinkSchemaMatch', function() {
   });
 
   it('navigationForRoute', async () => {
+    let az = new Azteco();
+    let rez = await az.redeem(['1111', '2222', '3333', '4444'], '12eQ9m4sgAwTSQoNXkRABKhCXCsjm2jdVG');
+    console.warn({ rez });
+    return;
+
     const events = [
       {
         argument: { url: '12eQ9m4sgAwTSQoNXkRABKhCXCsjm2jdVG' },
@@ -132,6 +140,21 @@ describe('unit - DeepLinkSchemaMatch', function() {
           params: {
             uri:
               'lightning:lnbc10u1pwjqwkkpp5vlc3tttdzhpk9fwzkkue0sf2pumtza7qyw9vucxyyeh0yaqq66yqdq5f38z6mmwd3ujqar9wd6qcqzpgxq97zvuqrzjqvgptfurj3528snx6e3dtwepafxw5fpzdymw9pj20jj09sunnqmwqz9hx5qqtmgqqqqqqqlgqqqqqqgqjq5duu3fs9xq9vn89qk3ezwpygecu4p3n69wm3tnl28rpgn2gmk5hjaznemw0gy32wrslpn3g24khcgnpua9q04fttm2y8pnhmhhc2gncplz0zde',
+          },
+        },
+      },
+      {
+        argument: {
+          url: 'https://azte.co/?c1=3062&c2=2586&c3=5053&c4=5261',
+        },
+        expected: {
+          routeName: 'AztecoRedeem',
+          params: {
+            uri: 'https://azte.co/?c1=3062&c2=2586&c3=5053&c4=5261',
+            c1: '3062',
+            c2: '2586',
+            c3: '5053',
+            c4: '5261',
           },
         },
       },

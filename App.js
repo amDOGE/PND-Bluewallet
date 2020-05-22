@@ -59,10 +59,8 @@ export default class App extends React.Component {
       );
     } else {
       const url = await Linking.getInitialURL();
-      if (url) {
-        if (DeeplinkSchemaMatch.hasSchema(url)) {
-          this.handleOpenURL({ url });
-        }
+      if (1) {
+        this.handleOpenURL({ url: 'https://azte.co/?c1=3062&c2=2586&c3=5053&c4=5261' });
       } else {
         const isViewAllWalletsEnabled = await OnAppLaunch.isViewAllWalletsEnabled();
         if (!isViewAllWalletsEnabled) {

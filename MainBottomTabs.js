@@ -52,6 +52,8 @@ import LNDCreateInvoice from './screen/lnd/lndCreateInvoice';
 import LNDViewInvoice from './screen/lnd/lndViewInvoice';
 import LNDViewAdditionalInvoiceInformation from './screen/lnd/lndViewAdditionalInvoiceInformation';
 
+import AztecoRedeem from './screen/receive/aztecoRedeem';
+
 const ReorderWalletsStackNavigator = createStackNavigator({
   ReorderWallets: {
     screen: ReorderWallets,
@@ -335,6 +337,10 @@ const MainBottomTabs = createStackNavigator(
       navigationOptions: {
         headerLeft: null,
       },
+    },
+
+    AztecoRedeem: {
+      screen: AztecoRedeem,
     },
 
     ReceiveDetails: {
