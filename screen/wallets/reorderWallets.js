@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, ActivityIndicator, Image, Text, StyleSheet } from 'react-native';
 import { SafeBlueArea, BlueNavigationStyle } from '../../BlueComponents';
 import SortableList from 'react-native-sortable-list';
@@ -15,6 +15,7 @@ const loc = require('../../loc/');
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
     paddingTop: 20,
   },
   root: {
@@ -65,54 +66,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class ReorderWallets extends Component {
-  static navigationOptions = ({ navigation, route }) => ({
-    ...BlueNavigationStyle(
-      navigation,
-      true,
-      route.params && route.params.customCloseButtonFunction ? route.params.customCloseButtonFunction : undefined,
-    ),
-    headerTitle: loc.wallets.reorder.title,
-    headerLeft: null,
-  });
+const ReorderWallets = () => {
+  const sortableList = useRef();
+  const [hasMovedARow, setHasMovedARow] = useState(false);
+  const [data, setData] = useState([]);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      data: [],
-      hasMovedARow: false,
-    };
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      customCloseButtonFunction: async () => {
-        if (this.sortableList.state.data.length === this.state.data.length && this.state.hasMovedARow) {
-          const newWalletsOrderArray = [];
-          this.sortableList.state.order.forEach(element => {
-            newWalletsOrderArray.push(this.state.data[element]);
-          });
-          BlueApp.wallets = newWalletsOrderArray;
-          await BlueApp.saveToDisk();
+  useEffect(() => {
+    const wallets = BlueApp.getWallets().filter(wallet => wallet.type !== PlaceholderWallet.type)
+    setData(wallets);
+    return () => {
+      console.warn(data);
+      console.warn(sortableList.current.state.data);
+      if (sortableList.current.state.data.length === data.length && hasMovedARow) {
+        const newWalletsOrderArray = [];
+        sortableList.current.state.order.forEach(element => {
+          newWalletsOrderArray.push(data[element]);
+        });
+        BlueApp.wallets = newWalletsOrderArray;
+        BlueApp.saveToDisk().then(_success =>
           setTimeout(function () {
             EV(EV.enum.WALLETS_COUNT_CHANGED);
-          }, 500); // adds some animaton
-          this.props.navigation.goBack();
-        } else {
-          this.props.navigation.goBack();
-        }
-      },
-    });
+          }, 500),
+        );
+      }
+    };
+  }, []);
 
-    const wallets = BlueApp.getWallets().filter(wallet => wallet.type !== PlaceholderWallet.type);
-    this.setState({
-      data: wallets,
-      isLoading: false,
-    });
-  }
-
-  _renderItem = (item, _active) => {
+  const renderItem = (item, _active) => {
     if (!item.data) {
       return;
     }
@@ -130,10 +110,10 @@ export default class ReorderWallets extends Component {
 
           <Text style={styles.transparentText} />
           <Text numberOfLines={1} style={styles.label}>
-            {item.getLabel()}
+            {item.label}
           </Text>
           <Text numberOfLines={1} adjustsFontSizeToFit style={styles.balance}>
-            {loc.formatBalance(Number(item.getBalance()), item.getPreferredBalanceUnit(), true)}
+            {loc.formatBalance(Number(item.balance), item.preferredBalanceUnit, true)}
           </Text>
           <Text style={styles.transparentText} />
           <Text numberOfLines={1} style={styles.latestTxLabel}>
@@ -147,37 +127,47 @@ export default class ReorderWallets extends Component {
     );
   };
 
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.loading}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
+  const onChangeOrder = () => {
+    ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
+    setHasMovedARow(true);
+  };
 
-    return (
-      <SafeBlueArea>
-        <SortableList
-          ref={ref => (this.sortableList = ref)}
-          style={styles.root}
-          data={this.state.data}
-          renderRow={this._renderItem}
-          onChangeOrder={() => {
-            ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
-            this.setState({ hasMovedARow: true });
-          }}
-          onActivateRow={() => {
-            ReactNativeHapticFeedback.trigger('selection', { ignoreAndroidSystemSettings: false });
-          }}
-          onReleaseRow={() => {
-            ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
-          }}
-        />
-      </SafeBlueArea>
-    );
-  }
-}
+  const onActivateRow = () => {
+    ReactNativeHapticFeedback.trigger('selection', { ignoreAndroidSystemSettings: false });
+  };
+
+  const onReleaseRow = () => {
+    ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+  };
+
+  return Array.isArray(data) && data.length < 1 ? (
+    <View style={styles.loading}>
+      <ActivityIndicator />
+    </View>
+  ) : (
+    <SafeBlueArea>
+      <SortableList
+        ref={sortableList}
+        style={styles.root}
+        data={data}
+        renderRow={renderItem}
+        onChangeOrder={onChangeOrder}
+        onActivateRow={onActivateRow}
+        onReleaseRow={onReleaseRow}
+      />
+    </SafeBlueArea>
+  );
+};
+
+ReorderWallets.navigationOptions = ({ navigation, route }) => ({
+  ...BlueNavigationStyle(
+    navigation,
+    true,
+    route.params && route.params.customCloseButtonFunction ? route.params.customCloseButtonFunction : undefined,
+  ),
+  headerTitle: loc.wallets.reorder.title,
+  headerLeft: null,
+});
 
 ReorderWallets.propTypes = {
   navigation: PropTypes.shape({
@@ -186,3 +176,5 @@ ReorderWallets.propTypes = {
     goBack: PropTypes.func,
   }),
 };
+
+export default ReorderWallets;
