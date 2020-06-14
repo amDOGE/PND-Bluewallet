@@ -388,6 +388,13 @@ export default class WalletsAdd extends Component {
                   this.props.navigation.navigate('ImportWallet');
                 }}
               />
+              <BlueButtonLink
+                style={styles.import}
+                title="Generate entropy"
+                onPress={() => {
+                  this.props.navigation.navigate('Entropy');
+                }}
+              />
             </View>
           </KeyboardAvoidingView>
         </ScrollView>

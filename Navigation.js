@@ -32,6 +32,7 @@ import HodlHodl from './screen/wallets/hodlHodl';
 import Marketplace from './screen/wallets/marketplace';
 import ReorderWallets from './screen/wallets/reorderWallets';
 import SelectWallet from './screen/wallets/selectWallet';
+import Entropy from './screen/wallets/entropy';
 
 import TransactionDetails from './screen/transactions/details';
 import TransactionStatus from './screen/transactions/transactionStatus';
@@ -151,6 +152,7 @@ const AddWalletRoot = () => (
     <AddWalletStack.Screen name="ImportWallet" component={ImportWallet} options={ImportWallet.navigationOptions} />
     <AddWalletStack.Screen name="PleaseBackup" component={PleaseBackup} options={PleaseBackup.navigationOptions} />
     <AddWalletStack.Screen name="PleaseBackupLNDHub" component={PleaseBackupLNDHub} options={PleaseBackupLNDHub.navigationOptions} />
+    <AddWalletStack.Screen name="Entropy" component={Entropy} options={Entropy.navigationOptions} />
   </AddWalletStack.Navigator>
 );
 
