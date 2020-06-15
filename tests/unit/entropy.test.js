@@ -1,7 +1,7 @@
 /* global it, describe */
 import assert from 'assert';
 
-import { eReducer, entropyToHex, getEntropy } from '../../screen/wallets/entropy';
+import { eReducer, entropyToHex, getEntropy, convertToBuffer } from '../../screen/wallets/entropy';
 
 describe('Entropy reducer and format', () => {
   it('handles push and pop correctly', () => {
@@ -84,5 +84,57 @@ describe('getEntropy function', () => {
     assert.deepEqual(getEntropy(0, 3), { value: 0, bits: 1 });
     assert.deepEqual(getEntropy(1, 3), { value: 1, bits: 1 });
     assert.deepEqual(getEntropy(2, 3), null);
+  });
+});
+
+describe('convertToBuffer function', () => {
+  it('zero bits', () => {
+    const state = eReducer(undefined, { type: null });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([]));
+  });
+
+  it('8 zero bits', () => {
+    const state = eReducer(undefined, { type: 'push', value: 0, bits: 8 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([0]));
+  });
+
+  it('8 filled bits', () => {
+    const state = eReducer(undefined, { type: 'push', value: 0b11111111, bits: 8 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([0b11111111]));
+  });
+
+  it('9 zero bits', () => {
+    const state = eReducer(undefined, { type: 'push', value: 0, bits: 9 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([0]));
+  });
+
+  it('9 filled bits', () => {
+    const state = eReducer(undefined, { type: 'push', value: 0b111111111, bits: 9 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([0b11111111]));
+  });
+
+  it('9 bits', () => {
+    const state = eReducer(undefined, { type: 'push', value: 0b111100111, bits: 9 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([0b11100111]));
+  });
+
+  it('3 bytes', () => {
+    let state = eReducer(undefined, { type: 'push', value: 1, bits: 8 });
+    state = eReducer(state, { type: 'push', value: 2, bits: 8 });
+    state = eReducer(state, { type: 'push', value: 3, bits: 8 });
+    assert.deepEqual(convertToBuffer(state), Buffer.from([1, 2, 3]));
+  });
+
+  it('256 bits or 32bytes', () => {
+    let state = eReducer(undefined, { type: null }); // get init state
+
+    // eslint-disable-next-line no-unused-vars
+    for (const i of [...Array(256)]) {
+      state = eReducer(state, { type: 'push', value: 1, bits: 1 });
+    }
+
+    const bytes = [...Array(32)].map(() => 255);
+
+    assert.deepEqual(convertToBuffer(state), Buffer.from(bytes));
   });
 });

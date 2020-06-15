@@ -3,8 +3,9 @@ import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, View, ScrollView, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import bigInt from 'big-integer';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Icon } from 'react-native-elements';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { SafeBlueArea, BlueNavigationStyle } from '../../BlueComponents';
 
@@ -59,6 +60,20 @@ export const getEntropy = (number, base) => {
     bits -= 1;
   }
   return null;
+};
+
+// cut entropy to bytes, convert to Buffer
+export const convertToBuffer = ({ entropy, bits }) => {
+  if (bits < 8) return Buffer.from([]);
+  const bytes = Math.floor(bits / 8);
+  let arr = entropy.toArray(256).value; // split number into bytes
+  if (arr.length > bytes) {
+    arr.shift();
+  } else if (arr.length < bytes) {
+    const zeros = [...Array(bytes - arr.length)].map(() => 0);
+    arr = [...zeros, ...arr];
+  }
+  return Buffer.from(arr);
 };
 
 const coinStyles = StyleSheet.create({
@@ -214,7 +229,7 @@ const buttonsStyles = StyleSheet.create({
   },
 });
 
-const Buttons = ({ pop }) => (
+const Buttons = ({ pop, save }) => (
   <View style={buttonsStyles.root}>
     <TouchableOpacity onPress={pop}>
       <View style={buttonsStyles.body}>
@@ -226,7 +241,7 @@ const Buttons = ({ pop }) => (
         </View>
       </View>
     </TouchableOpacity>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={save}>
       <View style={buttonsStyles.body}>
         <View style={buttonsStyles.row}>
           <View style={buttonsStyles.icon}>
@@ -241,6 +256,7 @@ const Buttons = ({ pop }) => (
 
 Buttons.propTypes = {
   pop: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -257,9 +273,16 @@ const Tab = createMaterialTopTabNavigator();
 
 const Entropy = () => {
   const [entropy, dispatch] = useReducer(eReducer, initialState);
+  const { onGenerated } = useRoute().params;
+  const navigation = useNavigation();
 
   const push = v => v && dispatch({ type: 'push', value: v.value, bits: v.bits });
   const pop = () => dispatch({ type: 'pop' });
+  const save = () => {
+    navigation.pop();
+    const buf = convertToBuffer(entropy);
+    onGenerated(buf);
+  };
 
   const hex = entropyToHex(entropy);
   let bits = entropy.bits.toString();
@@ -319,7 +342,7 @@ const Entropy = () => {
           {props => <Dice {...props} sides={20} push={push} />}
         </Tab.Screen>
       </Tab.Navigator>
-      <Buttons pop={pop} save={() => alert('save')} />
+      <Buttons pop={pop} save={save} />
     </SafeBlueArea>
   );
 };

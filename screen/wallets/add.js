@@ -390,9 +390,9 @@ export default class WalletsAdd extends Component {
               />
               <BlueButtonLink
                 style={styles.import}
-                title="Generate entropy"
+                title={this.state.entropy ? `${this.state.entropy.length} bytes of entropy` : 'Generate entropy'}
                 onPress={() => {
-                  this.props.navigation.navigate('Entropy');
+                  this.props.navigation.navigate('Entropy', { onGenerated: entropy => this.setState({ entropy }) });
                 }}
               />
             </View>
