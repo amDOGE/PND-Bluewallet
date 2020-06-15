@@ -69,8 +69,9 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
     return ret;
   }
 
-  async generate() {
-    const buf = await randomBytes(32);
+  async generate(user = Buffer.from([])) {
+    const random = await randomBytes(user.length < 32 ? 32 - user.length : 0);
+    const buf = Buffer.concat([user, random], 32);
     this.secret = bip39.entropyToMnemonic(buf.toString('hex'));
   }
 

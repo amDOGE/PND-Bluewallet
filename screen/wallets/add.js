@@ -359,7 +359,7 @@ export default class WalletsAdd extends Component {
                           w.setLabel(this.state.label || loc.wallets.details.title);
                         }
                         if (this.state.activeBitcoin) {
-                          await w.generate();
+                          await w.generate(this.state.entropy);
                           BlueApp.wallets.push(w);
                           await BlueApp.saveToDisk();
                           EV(EV.enum.WALLETS_COUNT_CHANGED);
@@ -390,7 +390,7 @@ export default class WalletsAdd extends Component {
               />
               <BlueButtonLink
                 style={styles.import}
-                title={this.state.entropy ? `${this.state.entropy.length} bytes of entropy` : 'Generate entropy'}
+                title={this.state.entropy ? `${this.state.entropy.length} bytes of user-generated entropy` : 'Generate entropy'}
                 onPress={() => {
                   this.props.navigation.navigate('Entropy', { onGenerated: entropy => this.setState({ entropy }) });
                 }}
