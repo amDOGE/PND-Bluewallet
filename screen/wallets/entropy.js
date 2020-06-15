@@ -67,6 +67,7 @@ const coinStyles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    backgroundColor: 'white',
   },
   coin: {
     flex: 0.33,
@@ -106,6 +107,9 @@ Coin.propTypes = {
 const width4 = Dimensions.get('window').width / 4;
 const diceStyles = StyleSheet.create({
   root: {
+    backgroundColor: 'white',
+  },
+  container: {
     alignItems: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -153,7 +157,7 @@ const Dice = ({ push, sides }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={diceStyles.root}>
+    <ScrollView style={diceStyles.root} contentContainerStyle={diceStyles.container}>
       {[...Array(sides)].map((_, i) => (
         <TouchableOpacity key={i} onPress={() => push(getEntropy(i, sides))}>
           <View style={diceStyles.diceRoot}>
@@ -330,7 +334,6 @@ Entropy.propTypes = {
 Entropy.navigationOptions = () => ({
   ...BlueNavigationStyle(),
   title: 'Entropy',
-  // gestureEnabled: false, TODO
 });
 
 export default Entropy;
