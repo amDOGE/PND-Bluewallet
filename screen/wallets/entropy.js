@@ -17,14 +17,14 @@ const initialState = { entropy: bigInt(0), bits: 0, items: [] };
 export const eReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'push': {
-      if (state.bits === ENTROPY_LIMIT) return state;
       let { value, bits } = action;
       if (value >= 2 ** bits) {
         throw new TypeError("Can't push value exceeding size in bits");
       }
+      if (state.bits === ENTROPY_LIMIT) return state;
       if (state.bits + bits > ENTROPY_LIMIT) {
+        value = bigInt(value).shiftRight(bits + state.bits - ENTROPY_LIMIT);
         bits = ENTROPY_LIMIT - state.bits;
-        value = bigInt(value).shiftRight(bits);
       }
       const entropy = state.entropy.shiftLeft(bits).plus(value);
       const items = [...state.items, bits];

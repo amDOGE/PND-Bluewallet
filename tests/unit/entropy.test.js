@@ -58,9 +58,9 @@ describe('Entropy reducer and format', () => {
   });
 
   it('handles 256 bits limit', () => {
-    let state = eReducer(undefined, { type: 'push', value: 0, bits: 255 });
-    state = eReducer(state, { type: 'push', value: 0b11, bits: 2 });
-    assert.equal(entropyToHex(state), '0x0000000000000000000000000000000000000000000000000000000000000001');
+    let state = eReducer(undefined, { type: 'push', value: 0, bits: 254 });
+    state = eReducer(state, { type: 'push', value: 0b101, bits: 3 });
+    assert.equal(entropyToHex(state), '0x0000000000000000000000000000000000000000000000000000000000000002');
   });
 
   it('Throws error if you try to push value exceeding size in bits', () => {
