@@ -232,6 +232,7 @@ module.exports = {
     refill: 'Γέμισμα πορτοφολιού',
     withdraw: 'Ανάληψη',
     expired: 'Έληξε',
+    exchange: 'Exchange',
     placeholder: 'Τιμολόγιο',
     sameWalletAsInvoiceError: 'Δεν μπορείς να εξοφλήσεις ένα τιμολόγιο από το ίδιο πορτοφόλι με το οποίο δημιουργήθηκε.',
   },

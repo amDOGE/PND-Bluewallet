@@ -229,6 +229,7 @@ module.exports = {
     refill: 'Dopuni',
     withdraw: 'Isprazni',
     placeholder: 'Invoice',
+    exchange: 'Exchange',
     expired: 'Isteklo',
     sameWalletAsInvoiceError: 'Buraz! Ne možeš platiti račun s istim voletom s kojim si račun stvorio, ono.',
   },

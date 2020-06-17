@@ -200,6 +200,7 @@ export default class WalletsList extends Component {
         await BlueApp.fetchWalletTransactions();
         const end = +new Date();
         console.log('fetch all wallet txs took', (end - start) / 1000, 'sec');
+        await BlueApp.saveToDisk();
       } catch (error) {
         console.log(error);
       }
@@ -435,7 +436,7 @@ export default class WalletsList extends Component {
       return (
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate('HodlHodl', { fromWallet: this.state.wallet });
+            this.props.navigation.navigate('HodlHodlRoot', { params: { wallet: this.state.wallet }, screen: 'HodlHodl' });
           }}
           style={styles.ltRoot}
         >

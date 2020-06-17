@@ -233,6 +233,7 @@ module.exports = {
     withdraw: 'Nosta',
     expired: 'Erääntynyt',
     placeholder: 'Lasku',
+    exchange: 'Exchange',
     sameWalletAsInvoiceError: 'Et voi maksaa laskua samalla lompakolla, jolla se on luotu.',
   },
   pleasebackup: {
