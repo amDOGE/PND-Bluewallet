@@ -397,7 +397,7 @@ export default class WalletsAdd extends Component {
                       : loc.wallets.add.entropy_provide
                   }
                   onPress={() => {
-                    this.props.navigation.navigate('Entropy', { onGenerated: entropy => this.setState({ entropy }) });
+                    this.props.navigation.navigate('ProvideEntropy', { onGenerated: entropy => this.setState({ entropy }) });
                   }}
                 />
               )}

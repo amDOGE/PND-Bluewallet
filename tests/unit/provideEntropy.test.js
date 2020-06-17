@@ -1,7 +1,7 @@
 /* global it, describe */
 import assert from 'assert';
 
-import { eReducer, entropyToHex, getEntropy, convertToBuffer } from '../../screen/wallets/entropy';
+import { eReducer, entropyToHex, getEntropy, convertToBuffer } from '../../screen/wallets/provideEntropy';
 
 describe('Entropy reducer and format', () => {
   it('handles push and pop correctly', () => {

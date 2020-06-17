@@ -125,7 +125,6 @@ Coin.propTypes = {
   push: PropTypes.func.isRequired,
 };
 
-const width4 = Dimensions.get('window').width / 4;
 const diceStyles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
@@ -138,7 +137,7 @@ const diceStyles = StyleSheet.create({
     paddingBottom: 100,
   },
   diceRoot: {
-    width: width4,
+    width: Dimensions.get('window').width / 4,
     aspectRatio: 1,
   },
   dice: {
