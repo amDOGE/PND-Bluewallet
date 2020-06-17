@@ -11,13 +11,20 @@ import { SafeBlueArea, BlueNavigationStyle } from '../../BlueComponents';
 const loc = require('../../loc');
 const BlueApp = require('../../BlueApp');
 
+const ENTROPY_LIMIT = 256;
+
 const initialState = { entropy: bigInt(0), bits: 0, items: [] };
 export const eReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'push': {
-      const { value, bits } = action;
+      if (state.bits === ENTROPY_LIMIT) return state;
+      let { value, bits } = action;
       if (value >= 2 ** bits) {
         throw new TypeError("Can't push value exceeding size in bits");
+      }
+      if (state.bits + bits > ENTROPY_LIMIT) {
+        bits = ENTROPY_LIMIT - state.bits;
+        value = bigInt(value).shiftRight(bits);
       }
       const entropy = state.entropy.shiftLeft(bits).plus(value);
       const items = [...state.items, bits];
