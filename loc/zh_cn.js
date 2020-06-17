@@ -46,6 +46,8 @@ module.exports = {
       coming_soon: '即将来临',
       lightning: '闪电',
       bitcoin: '比特币',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: '钱包',
@@ -240,5 +242,10 @@ module.exports = {
     for: 'For:',
     additional_info: 'Additional Information',
     open_direct_channel: 'Open direct channel with this node:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

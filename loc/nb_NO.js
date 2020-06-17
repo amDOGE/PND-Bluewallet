@@ -48,6 +48,8 @@ module.exports = {
       coming_soon: 'Kommer snart',
       lightning: 'Lightning',
       bitcoin: 'Bitcoin',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: 'Lommebok',
@@ -245,5 +247,10 @@ module.exports = {
     for: 'For:',
     additional_info: 'Additional Information',
     open_direct_channel: 'Open direct channel with this node:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

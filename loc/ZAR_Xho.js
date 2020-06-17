@@ -48,6 +48,8 @@
       coming_soon: 'Kuza ngokukhawuleza',
       lightning: 'Umbane',
       bitcoin: 'Bitcoin',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: 'Ingxowa',
@@ -248,5 +250,10 @@
     for: 'For:',
     additional_info: 'Additional Information',
     open_direct_channel: 'Open direct channel with this node:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

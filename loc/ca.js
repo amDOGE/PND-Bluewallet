@@ -48,6 +48,8 @@ module.exports = {
       coming_soon: 'Pròximament',
       lightning: 'Lightning',
       bitcoin: 'Bitcoin',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: 'Detalls del moneder',
@@ -245,5 +247,10 @@ module.exports = {
     for: 'Per:',
     additional_info: 'Informació addicional',
     open_direct_channel: 'Obrir un canal directe amb aquest node:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

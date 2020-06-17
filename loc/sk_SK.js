@@ -48,6 +48,8 @@ module.exports = {
       coming_soon: 'Už čoskoro',
       lightning: 'Lightning',
       bitcoin: 'Bitcoin',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: 'Peňaženka',
@@ -244,5 +246,10 @@ module.exports = {
     for: 'Za:',
     additional_info: 'Doplňujúce informácie',
     open_direct_channel: 'Otvoriť priamy kanál s týmto uzlom:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

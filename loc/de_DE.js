@@ -49,6 +49,8 @@ module.exports = {
       coming_soon: 'Demnächst verfügbar',
       lightning: 'Lightning',
       bitcoin: 'Bitcoin',
+      entropy_provide: 'Provide entropy via dice rolls',
+      entropy_generated: 'bytes of generated entropy',
     },
     details: {
       title: 'Wallet',
@@ -249,5 +251,10 @@ module.exports = {
     for: 'für:',
     additional_info: 'Additional Information',
     open_direct_channel: 'Direkten Kanal zu diesem Knoten eröffnen:',
+  },
+  entropy: {
+    title: 'Entropy',
+    save: 'Save',
+    undo: 'Undo',
   },
 };

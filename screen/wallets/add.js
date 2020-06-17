@@ -388,13 +388,19 @@ export default class WalletsAdd extends Component {
                   this.props.navigation.navigate('ImportWallet');
                 }}
               />
-              <BlueButtonLink
-                style={styles.import}
-                title={this.state.entropy ? `${this.state.entropy.length} bytes of user-generated entropy` : 'Generate entropy'}
-                onPress={() => {
-                  this.props.navigation.navigate('Entropy', { onGenerated: entropy => this.setState({ entropy }) });
-                }}
-              />
+              {this.state.isAdvancedOptionsEnabled && (
+                <BlueButtonLink
+                  style={styles.import}
+                  title={
+                    this.state.entropy
+                      ? this.state.entropy.length + ' ' + loc.wallets.add.entropy_generated
+                      : loc.wallets.add.entropy_provide
+                  }
+                  onPress={() => {
+                    this.props.navigation.navigate('Entropy', { onGenerated: entropy => this.setState({ entropy }) });
+                  }}
+                />
+              )}
             </View>
           </KeyboardAvoidingView>
         </ScrollView>

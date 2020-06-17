@@ -1,4 +1,3 @@
-/* global alert */
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, View, ScrollView, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
@@ -9,7 +8,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { SafeBlueArea, BlueNavigationStyle } from '../../BlueComponents';
 
-// const loc = require('../../loc');
+const loc = require('../../loc');
 const BlueApp = require('../../BlueApp');
 
 const initialState = { entropy: bigInt(0), bits: 0, items: [] };
@@ -226,6 +225,10 @@ const buttonsStyles = StyleSheet.create({
     fontWeight: '500',
     left: 5,
     backgroundColor: 'transparent',
+    paddingRight: 20,
+  },
+  labelRight: {
+    paddingRight: 20,
   },
 });
 
@@ -237,7 +240,7 @@ const Buttons = ({ pop, save }) => (
           <View style={buttonsStyles.icon}>
             <Icon name="undo" size={16} type="font-awesome" color={BlueApp.settings.buttonAlternativeTextColor} />
           </View>
-          <Text style={buttonsStyles.label}>Undo</Text>
+          <Text style={buttonsStyles.label}>{loc.entropy.undo}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -247,7 +250,7 @@ const Buttons = ({ pop, save }) => (
           <View style={buttonsStyles.icon}>
             <Icon name="arrow-down" size={16} type="font-awesome" color={BlueApp.settings.buttonAlternativeTextColor} />
           </View>
-          <Text style={buttonsStyles.label}>Save</Text>
+          <Text style={[buttonsStyles.label, buttonsStyles.labelRight]}>{loc.entropy.save}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -295,7 +298,7 @@ const Entropy = () => {
           {bits} bits: {hex}
         </Text>
       </View>
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName="D6">
         <Tab.Screen
           name="Coin"
           options={{
@@ -356,7 +359,7 @@ Entropy.propTypes = {
 
 Entropy.navigationOptions = () => ({
   ...BlueNavigationStyle(),
-  title: 'Entropy',
+  title: loc.entropy.title,
 });
 
 export default Entropy;
