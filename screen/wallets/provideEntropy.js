@@ -82,40 +82,16 @@ export const convertToBuffer = ({ entropy, bits }) => {
   return Buffer.from(arr);
 };
 
-const coinStyles = StyleSheet.create({
-  root: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: 'white',
-  },
-  coin: {
-    flex: 0.33,
-    justifyContent: 'center',
-    alignItems: 'center',
-    aspectRatio: 1,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'grey',
-    margin: 10,
-  },
-  coinImage: {
-    flex: 0.9,
-    aspectRatio: 1,
-  },
-});
-
 const Coin = ({ push }) => (
-  <View style={coinStyles.root}>
+  <View style={styles.coinRoot}>
     <TouchableOpacity onPress={() => push(getEntropy(0, 2))}>
-      <View style={coinStyles.coin}>
-        <Image style={coinStyles.coinImage} source={require('../../img/coin1.png')} />
+      <View style={styles.coinBody}>
+        <Image style={styles.coinImage} source={require('../../img/coin1.png')} />
       </View>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => push(getEntropy(1, 2))}>
-      <View style={coinStyles.coin}>
-        <Image style={coinStyles.coinImage} source={require('../../img/coin2.png')} />
+      <View style={styles.coinBody}>
+        <Image style={styles.coinImage} source={require('../../img/coin2.png')} />
       </View>
     </TouchableOpacity>
   </View>
@@ -124,39 +100,6 @@ const Coin = ({ push }) => (
 Coin.propTypes = {
   push: PropTypes.func.isRequired,
 };
-
-const diceStyles = StyleSheet.create({
-  root: {
-    backgroundColor: 'white',
-  },
-  container: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    paddingBottom: 100,
-  },
-  diceRoot: {
-    width: Dimensions.get('window').width / 4,
-    aspectRatio: 1,
-  },
-  dice: {
-    margin: 3,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'grey',
-    justifyContent: 'center',
-    alignItems: 'center',
-    aspectRatio: 1,
-  },
-  icon: {
-    margin: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    aspectRatio: 1,
-    color: 'grey',
-  },
-});
 
 const Dice = ({ push, sides }) => {
   const diceIcon = i => {
@@ -177,14 +120,14 @@ const Dice = ({ push, sides }) => {
   };
 
   return (
-    <ScrollView style={diceStyles.root} contentContainerStyle={diceStyles.container}>
+    <ScrollView style={styles.diceScroll} contentContainerStyle={styles.diceContainer}>
       {[...Array(sides)].map((_, i) => (
         <TouchableOpacity key={i} onPress={() => push(getEntropy(i, sides))}>
-          <View style={diceStyles.diceRoot}>
+          <View style={styles.diceRoot}>
             {sides === 6 ? (
-              <Icon style={diceStyles.icon} name={diceIcon(i + 1)} size={70} color="grey" type="font-awesome-5" />
+              <Icon style={styles.diceIcon} name={diceIcon(i + 1)} size={70} color="grey" type="font-awesome-5" />
             ) : (
-              <View style={diceStyles.dice}>
+              <View style={styles.dice}>
                 <Text>{i + 1}</Text>
               </View>
             )}
@@ -200,63 +143,25 @@ Dice.propTypes = {
   push: PropTypes.func.isRequired,
 };
 
-const buttonsStyles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    bottom: 30,
-    borderRadius: 30,
-    minHeight: 48,
-    overflow: 'hidden',
-  },
-  body: {
-    flex: 1,
-    minWidth: 130,
-    backgroundColor: BlueApp.settings.buttonBackgroundColor,
-  },
-  row: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
-  icon: {
-    minWidth: 30,
-    minHeight: 30,
-    left: 5,
-    backgroundColor: 'transparent',
-    transform: [{ rotate: '-45deg' }],
-    alignItems: 'center',
-    marginBottom: -11,
-  },
-  label: {
-    color: BlueApp.settings.buttonAlternativeTextColor,
-    fontWeight: '500',
-    left: 5,
-    backgroundColor: 'transparent',
-    paddingRight: 20,
-  },
-  labelRight: {
-    paddingRight: 20,
-  },
-});
-
 const Buttons = ({ pop, save }) => (
-  <View style={buttonsStyles.root}>
+  <View style={styles.buttonsRoot}>
     <TouchableOpacity onPress={pop}>
-      <View style={buttonsStyles.body}>
-        <View style={buttonsStyles.row}>
-          <View style={buttonsStyles.icon}>
+      <View style={styles.buttonsBody}>
+        <View style={styles.buttonsRow}>
+          <View style={styles.buttonsIcon}>
             <Icon name="undo" size={16} type="font-awesome" color={BlueApp.settings.buttonAlternativeTextColor} />
           </View>
-          <Text style={buttonsStyles.label}>{loc.entropy.undo}</Text>
+          <Text style={styles.buttonsLabel}>{loc.entropy.undo}</Text>
         </View>
       </View>
     </TouchableOpacity>
     <TouchableOpacity onPress={save}>
-      <View style={buttonsStyles.body}>
-        <View style={buttonsStyles.row}>
-          <View style={buttonsStyles.icon}>
+      <View style={styles.buttonsBody}>
+        <View style={styles.buttonsRow}>
+          <View style={styles.buttonsIcon}>
             <Icon name="arrow-down" size={16} type="font-awesome" color={BlueApp.settings.buttonAlternativeTextColor} />
           </View>
-          <Text style={[buttonsStyles.label, buttonsStyles.labelRight]}>{loc.entropy.save}</Text>
+          <Text style={[styles.buttonsLabel, styles.buttonsLabelRight]}>{loc.entropy.save}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -267,16 +172,6 @@ Buttons.propTypes = {
   pop: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
 };
-
-const styles = StyleSheet.create({
-  entropy: {
-    padding: 5,
-  },
-  entropyText: {
-    fontSize: 15,
-    fontFamily: 'Courier',
-  },
-});
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -366,6 +261,107 @@ Entropy.propTypes = {
 Entropy.navigationOptions = () => ({
   ...BlueNavigationStyle(),
   title: loc.entropy.title,
+});
+
+const styles = StyleSheet.create({
+  entropy: {
+    padding: 5,
+  },
+  entropyText: {
+    fontSize: 15,
+    fontFamily: 'Courier',
+  },
+  coinRoot: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    backgroundColor: 'white',
+  },
+  coinBody: {
+    flex: 0.33,
+    justifyContent: 'center',
+    alignItems: 'center',
+    aspectRatio: 1,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'grey',
+    margin: 10,
+  },
+  coinImage: {
+    flex: 0.9,
+    aspectRatio: 1,
+  },
+  diceScroll: {
+    backgroundColor: 'white',
+  },
+  diceContainer: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    paddingBottom: 100,
+  },
+  diceRoot: {
+    width: Dimensions.get('window').width / 4,
+    aspectRatio: 1,
+  },
+  dice: {
+    margin: 3,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'grey',
+    justifyContent: 'center',
+    alignItems: 'center',
+    aspectRatio: 1,
+  },
+  diceIcon: {
+    margin: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    aspectRatio: 1,
+    color: 'grey',
+  },
+  buttonsRoot: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    bottom: 30,
+    borderRadius: 30,
+    minHeight: 48,
+    overflow: 'hidden',
+  },
+  buttonsBody: {
+    flex: 1,
+    minWidth: 130,
+    backgroundColor: BlueApp.settings.buttonBackgroundColor,
+  },
+  buttonsRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonsIcon: {
+    minWidth: 30,
+    minHeight: 30,
+    left: 5,
+    backgroundColor: 'transparent',
+    transform: [{ rotate: '-45deg' }],
+    alignItems: 'center',
+    marginBottom: -11,
+  },
+  buttonsLabel: {
+    color: BlueApp.settings.buttonAlternativeTextColor,
+    fontWeight: '500',
+    left: 5,
+    backgroundColor: 'transparent',
+    paddingRight: 20,
+  },
+  buttonsLabelRight: {
+    paddingRight: 20,
+  },
 });
 
 export default Entropy;
