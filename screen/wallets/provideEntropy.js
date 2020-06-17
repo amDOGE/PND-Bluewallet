@@ -1,12 +1,11 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, View, ScrollView, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import bigInt from 'big-integer';
 import { Icon } from 'react-native-elements';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import { SafeBlueArea, BlueNavigationStyle } from '../../BlueComponents';
+import { SafeBlueArea, BlueNavigationStyle, BlueTabs } from '../../BlueComponents';
 
 const loc = require('../../loc');
 const BlueApp = require('../../BlueApp');
@@ -173,12 +172,11 @@ Buttons.propTypes = {
   save: PropTypes.func.isRequired,
 };
 
-const Tab = createMaterialTopTabNavigator();
-
 const Entropy = () => {
   const [entropy, dispatch] = useReducer(eReducer, initialState);
   const { onGenerated } = useRoute().params;
   const navigation = useNavigation();
+  const [tab, setTab] = useState(1);
 
   const push = v => v && dispatch({ type: 'push', value: v.value, bits: v.bits });
   const pop = () => dispatch({ type: 'pop' });
@@ -199,53 +197,39 @@ const Entropy = () => {
           {bits} bits: {hex}
         </Text>
       </View>
-      <Tab.Navigator initialRouteName="D6">
-        <Tab.Screen
-          name="Coin"
-          options={{
-            // eslint-disable-next-line react/prop-types
-            tabBarLabel: ({ focused }) => (
-              <Icon
-                name="toll"
-                type="material"
-                color={focused ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
-              />
-            ),
-          }}
-        >
-          {props => <Coin {...props} push={push} />}
-        </Tab.Screen>
-        <Tab.Screen
-          name="D6"
-          options={{
-            // eslint-disable-next-line react/prop-types
-            tabBarLabel: ({ focused }) => (
-              <Icon
-                name="dice"
-                type="font-awesome-5"
-                color={focused ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
-              />
-            ),
-          }}
-        >
-          {props => <Dice {...props} sides={6} push={push} />}
-        </Tab.Screen>
-        <Tab.Screen
-          name="D20"
-          options={{
-            // eslint-disable-next-line react/prop-types
-            tabBarLabel: ({ focused }) => (
-              <Icon
-                name="dice-d20"
-                type="font-awesome-5"
-                color={focused ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
-              />
-            ),
-          }}
-        >
-          {props => <Dice {...props} sides={20} push={push} />}
-        </Tab.Screen>
-      </Tab.Navigator>
+
+      <BlueTabs
+        active={tab}
+        onSwitch={setTab}
+        tabs={[
+          ({ active }) => (
+            <Icon
+              name="toll"
+              type="material"
+              color={active ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
+            />
+          ),
+          ({ active }) => (
+            <Icon
+              name="dice"
+              type="font-awesome-5"
+              color={active ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
+            />
+          ),
+          ({ active }) => (
+            <Icon
+              name="dice-d20"
+              type="font-awesome-5"
+              color={active ? BlueApp.settings.buttonAlternativeTextColor : BlueApp.settings.buttonBackgroundColor}
+            />
+          ),
+        ]}
+      />
+
+      {tab === 0 && <Coin push={push} />}
+      {tab === 1 && <Dice sides={6} push={push} />}
+      {tab === 2 && <Dice sides={20} push={push} />}
+
       <Buttons pop={pop} save={save} />
     </SafeBlueArea>
   );
