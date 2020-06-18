@@ -195,9 +195,7 @@ const Entropy = () => {
     <SafeBlueArea>
       <TouchableOpacity onPress={() => setShow(!show)}>
         <View style={styles.entropy}>
-          <Text style={styles.entropyText}>
-            {bits} bits{show && ': ' + hex}
-          </Text>
+          <Text style={styles.entropyText}>{show ? hex : `${bits} bits`}</Text>
         </View>
       </TouchableOpacity>
 
@@ -253,10 +251,13 @@ Entropy.navigationOptions = () => ({
 const styles = StyleSheet.create({
   entropy: {
     padding: 5,
-    backgroundColor: '#fafafa',
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#f2f2f2',
     borderRadius: 9,
     minHeight: 49,
     paddingHorizontal: 8,
+    justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
   },
