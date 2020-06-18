@@ -177,6 +177,7 @@ const Entropy = () => {
   const { onGenerated } = useRoute().params;
   const navigation = useNavigation();
   const [tab, setTab] = useState(1);
+  const [show, setShow] = useState(false);
 
   const push = v => v && dispatch({ type: 'push', value: v.value, bits: v.bits });
   const pop = () => dispatch({ type: 'pop' });
@@ -192,11 +193,13 @@ const Entropy = () => {
 
   return (
     <SafeBlueArea>
-      <View style={styles.entropy}>
-        <Text style={styles.entropyText}>
-          {bits} bits: {hex}
-        </Text>
-      </View>
+      <TouchableOpacity onPress={() => setShow(!show)}>
+        <View style={styles.entropy}>
+          <Text style={styles.entropyText}>
+            {bits} bits{show && ': ' + hex}
+          </Text>
+        </View>
+      </TouchableOpacity>
 
       <BlueTabs
         active={tab}
@@ -250,6 +253,12 @@ Entropy.navigationOptions = () => ({
 const styles = StyleSheet.create({
   entropy: {
     padding: 5,
+    backgroundColor: '#fafafa',
+    borderRadius: 9,
+    minHeight: 49,
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   entropyText: {
     fontSize: 15,
