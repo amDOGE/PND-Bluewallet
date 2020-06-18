@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, View, ScrollView, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import bigInt from 'big-integer';
+import BigInteger from 'bigi';
 import { Icon } from 'react-native-elements';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -12,7 +12,7 @@ const BlueApp = require('../../BlueApp');
 
 const ENTROPY_LIMIT = 256;
 
-const initialState = { entropy: bigInt(0), bits: 0, items: [] };
+const initialState = { entropy: BigInteger('0'), bits: 0, items: [] };
 export const eReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'push': {
@@ -20,12 +20,15 @@ export const eReducer = (state = initialState, action) => {
       if (value >= 2 ** bits) {
         throw new TypeError("Can't push value exceeding size in bits");
       }
+      let valueStr = typeof value === 'string' ? value : value.toString();
       if (state.bits === ENTROPY_LIMIT) return state;
       if (state.bits + bits > ENTROPY_LIMIT) {
-        value = bigInt(value).shiftRight(bits + state.bits - ENTROPY_LIMIT);
+        valueStr = BigInteger(valueStr)
+          .shiftRight(bits + state.bits - ENTROPY_LIMIT)
+          .toString();
         bits = ENTROPY_LIMIT - state.bits;
       }
-      const entropy = state.entropy.shiftLeft(bits).plus(value);
+      const entropy = state.entropy.shiftLeft(bits).add(BigInteger(valueStr));
       const items = [...state.items, bits];
       return { entropy, bits: state.bits + bits, items };
     }
@@ -71,7 +74,7 @@ export const getEntropy = (number, base) => {
 export const convertToBuffer = ({ entropy, bits }) => {
   if (bits < 8) return Buffer.from([]);
   const bytes = Math.floor(bits / 8);
-  let arr = entropy.toArray(256).value; // split number into bytes
+  let arr = entropy.toByteArray(); // split number into bytes
   if (arr.length > bytes) {
     arr.shift();
   } else if (arr.length < bytes) {
