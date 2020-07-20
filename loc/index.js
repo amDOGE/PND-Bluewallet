@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from '../class';
 import { BitcoinUnit } from '../models/bitcoinUnits';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import * as RNLocalize from 'react-native-localize';
+// import * as RNLocalize from 'react-native-localize';
 import { AvailableLanguages } from './languages';
 const dayjs = require('dayjs');
 const currency = require('../blue_modules/currency');
@@ -101,14 +101,14 @@ dayjs.extend(relativeTime);
       dayjs.locale(lang.split('_')[0]);
     }
   } else {
-    const locales = RNLocalize.getLocales();
-    if (Object.keys(AvailableLanguages).some(language => language === locales[0])) {
-      strings.saveLanguage(locales[0].languageCode);
-      strings.setLanguage(locales[0].languageCode);
-    } else {
+  //  const locales = RNLocalize.getLocales();
+   // if (Object.keys(AvailableLanguages).some(language => language === locales[0])) {
+      // strings.saveLanguage(locales[0].languageCode);
+      // strings.setLanguage(locales[0].languageCode);
+  //  } else {
       strings.saveLanguage('en');
       strings.setLanguage('en');
-    }
+   // }
   }
 })();
 

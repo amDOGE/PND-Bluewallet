@@ -4,7 +4,7 @@ import { AppStorage } from '../class';
 import { FiatUnit } from '../models/fiatUnit';
 import DefaultPreference from 'react-native-default-preference';
 import DeviceQuickActions from '../class/quick-actions';
-import * as RNLocalize from 'react-native-localize';
+// import * as RNLocalize from 'react-native-localize';
 const BigNumber = require('bignumber.js');
 let preferredFiatCurrency = FiatUnit.USD;
 const exchangeRates = {};
@@ -47,12 +47,12 @@ async function updateExchangeRate() {
       throw Error('No Preferred Fiat selected');
     }
   } catch (_) {
-    const deviceCurrencies = RNLocalize.getCurrencies();
-    if (Object.keys(FiatUnit).some(unit => unit === deviceCurrencies[0])) {
-      preferredFiatCurrency = FiatUnit[deviceCurrencies[0]];
-    } else {
+    // const deviceCurrencies = RNLocalize.getCurrencies();
+    // if (Object.keys(FiatUnit).some(unit => unit === deviceCurrencies[0])) {
+    //   preferredFiatCurrency = FiatUnit[deviceCurrencies[0]];
+    // } else {
       preferredFiatCurrency = FiatUnit.USD;
-    }
+ //   }//
   }
 
   let json;
