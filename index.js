@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import 'react-native-gesture-handler';
 import './shim.js';
 import { AppRegistry, YellowBox } from 'react-native';
 import App from './App';

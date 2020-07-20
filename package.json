@@ -54,7 +54,8 @@
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
     "setupFiles": [
-      "./tests/setup.js"
+      "./tests/setup.js",
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
     "setupFilesAfterEnv": [
       "./tests/setupAfterEnv.js"
