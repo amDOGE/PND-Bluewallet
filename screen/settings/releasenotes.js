@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 
 const ReleaseNotes = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const notes = require('../../release-notes');
+  const notes = '';
   const { colors } = useTheme();
   const styles = StyleSheet.create({
     root: {
