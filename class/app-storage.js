@@ -15,7 +15,7 @@ import {
   HDLegacyElectrumSeedP2PKHWallet,
   HDSegwitElectrumSeedP2WPKHWallet,
 } from './';
-import WatchConnectivity from '../WatchConnectivity';
+// import WatchConnectivity from '../WatchConnectivity';
 import DeviceQuickActions from './quick-actions';
 const encryption = require('../blue_modules/encryption');
 
@@ -282,13 +282,13 @@ export class AppStorage {
             this.tx_metadata = data.tx_metadata;
           }
         }
-        WatchConnectivity.shared.wallets = this.wallets;
-        WatchConnectivity.shared.tx_metadata = this.tx_metadata;
-        WatchConnectivity.shared.fetchTransactionsFunction = async () => {
-          await this.fetchWalletTransactions();
-          await this.saveToDisk();
-        };
-        await WatchConnectivity.shared.sendWalletsToWatch();
+        // WatchConnectivity.shared.wallets = this.wallets;
+        // WatchConnectivity.shared.tx_metadata = this.tx_metadata;
+        // WatchConnectivity.shared.fetchTransactionsFunction = async () => {
+        //   await this.fetchWalletTransactions();
+        //   await this.saveToDisk();
+        // };
+        // await WatchConnectivity.shared.sendWalletsToWatch();
 
         const isStorageEncrypted = await this.storageIsEncrypted();
         if (isStorageEncrypted) {
@@ -370,9 +370,9 @@ export class AppStorage {
     } else {
       await this.setItem(AppStorage.FLAG_ENCRYPTED, ''); // drop the flag
     }
-    WatchConnectivity.shared.wallets = this.wallets;
-    WatchConnectivity.shared.tx_metadata = this.tx_metadata;
-    WatchConnectivity.shared.sendWalletsToWatch();
+    // WatchConnectivity.shared.wallets = this.wallets;
+    // WatchConnectivity.shared.tx_metadata = this.tx_metadata;
+    // WatchConnectivity.shared.sendWalletsToWatch();
     DeviceQuickActions.setWallets(this.wallets);
     DeviceQuickActions.setQuickActions();
     try {
