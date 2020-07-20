@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import prompt from 'react-native-prompt-android';
+// import prompt from 'react-native-prompt-android';
 
 module.exports = (title, text, isCancelable = true, type = 'secure-text') => {
   if (Platform.OS === 'ios' && type === 'numeric') {
@@ -35,9 +35,9 @@ module.exports = (title, text, isCancelable = true, type = 'secure-text') => {
           },
         ];
 
-    prompt(title, text, buttons, {
-      type: type,
-      cancelable: isCancelable,
-    });
+    // prompt(title, text, buttons, {
+    //   type: type,
+    //   cancelable: isCancelable,
+    // });
   });
 };
