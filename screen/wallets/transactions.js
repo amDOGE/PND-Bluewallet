@@ -35,7 +35,7 @@ import { LightningCustodianWallet, WatchOnlyWallet } from '../../class';
 import Modal from 'react-native-modal';
 import * as NavigationService from '../../NavigationService';
 import HandoffSettings from '../../class/handoff';
-import Handoff from 'react-native-handoff';
+// import Handoff from 'react-native-handoff';
 import { BlueCurrentTheme } from '../../components/themes';
 // import ActionSheet from '../ActionSheet';
 /** @type {AppStorage} */
