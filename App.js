@@ -11,7 +11,7 @@ import * as NavigationService from './NavigationService';
 import { BlueTextCentered, BlueButton, SecondButton } from './BlueComponents';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Chain } from './models/bitcoinUnits';
-import QuickActions from 'react-native-quick-actions';
+// import QuickActions from 'react-native-quick-actions';
 import * as Sentry from '@sentry/react-native';
 import OnAppLaunch from './class/on-app-launch';
 import DeeplinkSchemaMatch from './class/deeplink-schema-match';
@@ -57,7 +57,7 @@ export default class App extends React.Component {
     Linking.addEventListener('url', this.handleOpenURL);
     AppState.addEventListener('change', this._handleAppStateChange);
     DeviceEventEmitter.addListener('quickActionShortcut', this.walletQuickActions);
-    QuickActions.popInitialAction().then(this.popInitialAction);
+    // QuickActions.popInitialAction().then(this.popInitialAction);
     this._handleAppStateChange(undefined);
   };
 
