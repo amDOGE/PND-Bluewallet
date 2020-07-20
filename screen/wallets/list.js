@@ -20,7 +20,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
 import { AppStorage, PlaceholderWallet } from '../../class';
 import WalletImport from '../../class/wallet-import';
-import ActionSheet from '../ActionSheet';
+// import ActionSheet from '../ActionSheet';
 import ImagePicker from 'react-native-image-picker';
 import * as NavigationService from '../../NavigationService';
 import { BlueCurrentTheme } from '../../components/themes';
@@ -459,22 +459,22 @@ export default class WalletsList extends Component {
       if (!isClipboardEmpty) {
         options.push('Copy from Clipboard');
       }
-      ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
-        if (buttonIndex === 1) {
-          this.choosePhoto();
-        } else if (buttonIndex === 2) {
-          this.props.navigation.navigate('ScanQRCodeRoot', {
-            screen: 'ScanQRCode',
-            params: {
-              launchedBy: this.props.route.name,
-              onBarScanned: this.onBarScanned,
-              showFileImportButton: false,
-            },
-          });
-        } else if (buttonIndex === 3) {
-          this.copyFromClipbard();
-        }
-      });
+      // ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
+      //   if (buttonIndex === 1) {
+      //     this.choosePhoto();
+      //   } else if (buttonIndex === 2) {
+      //     this.props.navigation.navigate('ScanQRCodeRoot', {
+      //       screen: 'ScanQRCode',
+      //       params: {
+      //         launchedBy: this.props.route.name,
+      //         onBarScanned: this.onBarScanned,
+      //         showFileImportButton: false,
+      //       },
+      //     });
+      //   } else if (buttonIndex === 3) {
+      //     this.copyFromClipbard();
+      //   }
+      // });
     } else if (Platform.OS === 'android') {
       const buttons = [
         {

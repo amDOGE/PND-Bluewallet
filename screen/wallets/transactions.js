@@ -37,7 +37,7 @@ import * as NavigationService from '../../NavigationService';
 import HandoffSettings from '../../class/handoff';
 import Handoff from 'react-native-handoff';
 import { BlueCurrentTheme } from '../../components/themes';
-import ActionSheet from '../ActionSheet';
+// import ActionSheet from '../ActionSheet';
 /** @type {AppStorage} */
 const BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
@@ -581,19 +581,19 @@ export default class WalletTransactions extends Component {
       if (!isClipboardEmpty) {
         options.push('Copy from Clipboard');
       }
-      ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
-        if (buttonIndex === 1) {
-          this.choosePhoto();
-        } else if (buttonIndex === 2) {
-          this.props.navigation.navigate('ScanQRCode', {
-            launchedBy: this.props.route.name,
-            onBarScanned: this.onBarCodeRead,
-            showFileImportButton: false,
-          });
-        } else if (buttonIndex === 3) {
-          this.copyFromClipbard();
-        }
-      });
+      // ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
+      //   if (buttonIndex === 1) {
+      //     this.choosePhoto();
+      //   } else if (buttonIndex === 2) {
+      //     this.props.navigation.navigate('ScanQRCode', {
+      //       launchedBy: this.props.route.name,
+      //       onBarScanned: this.onBarCodeRead,
+      //       showFileImportButton: false,
+      //     });
+      //   } else if (buttonIndex === 3) {
+      //     this.copyFromClipbard();
+      //   }
+      // });
     } else if (Platform.OS === 'android') {
       const buttons = [
         {
