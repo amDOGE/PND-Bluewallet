@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import { HDSegwitBech32Transaction } from '../../class';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
 import { Icon } from 'react-native-elements';
-import Handoff from 'react-native-handoff';
+// import Handoff from 'react-native-handoff';
 import HandoffSettings from '../../class/handoff';
 import { BlueCurrentTheme } from '../../components/themes';
 /** @type {AppStorage} */
@@ -247,13 +247,13 @@ export default class TransactionsStatus extends Component {
 
     return (
       <SafeBlueArea forceInset={{ horizontal: 'always' }} style={styles.root}>
-        {this.state.isHandOffUseEnabled && (
+        {/* {this.state.isHandOffUseEnabled && (
           <Handoff
             title={`Bitcoin Transaction ${this.state.tx.hash}`}
             type="io.bluewallet.bluewallet"
             url={`https://blockstream.info/tx/${this.state.tx.hash}`}
           />
-        )}
+        )} */}
         <StatusBar barStyle="default" />
         <View style={styles.container}>
           <BlueCard>

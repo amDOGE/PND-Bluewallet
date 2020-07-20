@@ -31,7 +31,7 @@ import { Chain, BitcoinUnit } from '../../models/bitcoinUnits';
 import Modal from 'react-native-modal';
 import HandoffSettings from '../../class/handoff';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
-import Handoff from 'react-native-handoff';
+// import Handoff from 'react-native-handoff';
 import { BlueCurrentTheme } from '../../components/themes';
 /** @type {AppStorage} */
 const BlueApp = require('../../BlueApp');
@@ -287,13 +287,13 @@ const ReceiveDetails = () => {
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" />
-      {isHandOffUseEnabled && address !== undefined && (
+      {/* {isHandOffUseEnabled && address !== undefined && (
         <Handoff
           title={`Bitcoin Transaction ${address}`}
           type="io.bluewallet.bluewallet"
           url={`https://blockstream.info/address/${address}`}
         />
-      )}
+      )} */}
       <ScrollView style={styles.root} contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="always">
         <View style={styles.scrollBody}>
           {isCustom && (

@@ -35,7 +35,7 @@ import { LightningCustodianWallet, WatchOnlyWallet } from '../../class';
 import Modal from 'react-native-modal';
 import * as NavigationService from '../../NavigationService';
 import HandoffSettings from '../../class/handoff';
-import Handoff from 'react-native-handoff';
+// import Handoff from 'react-native-handoff';
 import { BlueCurrentTheme } from '../../components/themes';
 // import ActionSheet from '../ActionSheet';
 /** @type {AppStorage} */
@@ -621,11 +621,11 @@ export default class WalletTransactions extends Component {
           onPress: this.copyFromClipbard,
         });
       }
-      ActionSheet.showActionSheetWithOptions({
-        title: '',
-        message: '',
-        buttons,
-      });
+      // ActionSheet.showActionSheetWithOptions({
+      //   title: '',
+      //   message: '',
+      //   buttons,
+      // });
     }
   };
 
@@ -635,11 +635,11 @@ export default class WalletTransactions extends Component {
       <View style={styles.flex}>
         <StatusBar barStyle="light-content" backgroundColor={WalletGradient.headerColorFor(this.props.route.params.wallet.type)} />
         {this.state.wallet.chain === Chain.ONCHAIN && this.state.isHandOffUseEnabled && (
-          <Handoff
-            title={`Bitcoin Wallet ${this.state.wallet.getLabel()}`}
-            type="io.bluewallet.bluewallet"
-            url={`https://blockpath.com/search/addr?q=${this.state.wallet.getXpub()}`}
-          />
+          // <Handoff
+          //   title={`Bitcoin Wallet ${this.state.wallet.getLabel()}`}
+          //   type="io.bluewallet.bluewallet"
+          //   url={`https://blockpath.com/search/addr?q=${this.state.wallet.getXpub()}`}
+          // />
         )}
         <BlueWalletNavigationHeader
           wallet={this.state.wallet}
