@@ -31,7 +31,7 @@ import * as NavigationService from './NavigationService';
 import WalletGradient from './class/wallet-gradient';
 import ToolTip from 'react-native-tooltip';
 import { BlurView } from '@react-native-community/blur';
-import showPopupMenu from 'react-native-popup-menu-android';
+// import showPopupMenu from 'react-native-popup-menu-android';
 import NetworkTransactionFees, { NetworkTransactionFeeType } from './models/networkTransactionFees';
 import Biometric from './class/biometrics';
 import { encodeUR } from 'bc-ur/dist';
@@ -244,7 +244,7 @@ export class BlueWalletNavigationHeader extends Component {
   };
 
   showAndroidTooltip = () => {
-    showPopupMenu(this.toolTipMenuOptions(), this.handleToolTipSelection, this.walletBalanceText);
+    // showPopupMenu(this.toolTipMenuOptions(), this.handleToolTipSelection, this.walletBalanceText);
   };
 
   handleToolTipSelection = item => {
