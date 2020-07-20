@@ -30,7 +30,7 @@ import { BitcoinUnit } from './models/bitcoinUnits';
 import * as NavigationService from './NavigationService';
 import WalletGradient from './class/wallet-gradient';
 import ToolTip from 'react-native-tooltip';
-import { BlurView } from '@react-native-community/blur';
+// import { BlurView } from '@react-native-community/blur';
 // import showPopupMenu from 'react-native-popup-menu-android';
 import NetworkTransactionFees, { NetworkTransactionFeeType } from './models/networkTransactionFees';
 import Biometric from './class/biometrics';
@@ -528,7 +528,7 @@ export const BluePrivateBalance = () => {
   return Platform.select({
     ios: (
       <View style={{ flexDirection: 'row' }}>
-        <BlurView style={styles.balanceBlur} blurType="light" blurAmount={25} />
+        {/* <BlurView style={styles.balanceBlur} blurType="light" blurAmount={25} /> */}
         <Icon name="eye-slash" type="font-awesome" color="#FFFFFF" />
       </View>
     ),
