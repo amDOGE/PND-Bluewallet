@@ -111,7 +111,7 @@ To participate you need to:
 3. Send join request
 4. After we accept your request you will be able to start translating! That's it!
 
-Transifex automatically creates Pull Request when language reaches 100% translation. We also trigger this by hand before each release, so don't worry if you can't translate everything, every word counts.
+Once in a while, especially before new release, we force Transifex to create Pull Request and update translations. Also don't worry if you can't translate everything, every word counts.
 
 ## RESPONSIBLE DISCLOSURE
 
