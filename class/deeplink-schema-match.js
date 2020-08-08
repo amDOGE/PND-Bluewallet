@@ -1,6 +1,6 @@
 import { AppStorage, LightningCustodianWallet } from './';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import url from 'url';
 import { Chain } from '../models/bitcoinUnits';
 import Azteco from './azteco';
@@ -42,21 +42,21 @@ class DeeplinkSchemaMatch {
     }
 
     if (DeeplinkSchemaMatch.isPossiblyPSBTFile(event.url)) {
-      RNFS.readFile(event.url)
-        .then(file => {
-          if (file) {
-            completionHandler([
-              'SendDetailsRoot',
-              {
-                screen: 'PsbtWithHardwareWallet',
-                params: {
-                  deepLinkPSBT: file,
-                },
-              },
-            ]);
-          }
-        })
-        .catch(e => console.warn(e));
+      // RNFS.readFile(event.url)
+      //   .then(file => {
+      //     if (file) {
+      //       completionHandler([
+      //         'SendDetailsRoot',
+      //         {
+      //           screen: 'PsbtWithHardwareWallet',
+      //           params: {
+      //             deepLinkPSBT: file,
+      //           },
+      //         },
+      //       ]);
+      //     }
+      //   })
+      //   .catch(e => console.warn(e));
       return;
     }
     let isBothBitcoinAndLightning;

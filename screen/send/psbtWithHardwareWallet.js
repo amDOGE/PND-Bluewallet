@@ -31,7 +31,7 @@ import PropTypes from 'prop-types';
 import Share from 'react-native-share';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RNCamera } from 'react-native-camera';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 import { decodeUR, extractSingleWorkload } from 'bc-ur/dist';
 import { Psbt } from 'bitcoinjs-lib';
@@ -325,15 +325,15 @@ export default class PsbtWithHardwareWallet extends Component {
 
   exportPSBT = async () => {
     if (Platform.OS === 'ios') {
-      const filePath = RNFS.TemporaryDirectoryPath + `/${this.fileName}`;
-      await RNFS.writeFile(filePath, this.state.isFirstPSBTAlreadyBase64 ? this.state.psbt : this.state.psbt.toBase64());
-      Share.open({
-        url: 'file://' + filePath,
-      })
-        .catch(error => console.log(error))
-        .finally(() => {
-          RNFS.unlink(filePath);
-        });
+      // const filePath = RNFS.TemporaryDirectoryPath + `/${this.fileName}`;
+      // await RNFS.writeFile(filePath, this.state.isFirstPSBTAlreadyBase64 ? this.state.psbt : this.state.psbt.toBase64());
+      // Share.open({
+      //   url: 'file://' + filePath,
+      // })
+      //   .catch(error => console.log(error))
+      //   .finally(() => {
+      //     RNFS.unlink(filePath);
+      //   });
     } else if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
         title: 'BlueWallet Storage Access Permission',
@@ -345,9 +345,9 @@ export default class PsbtWithHardwareWallet extends Component {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Storage Permission: Granted');
-        const filePath = RNFS.ExternalCachesDirectoryPath + `/${this.fileName}`;
-        await RNFS.writeFile(filePath, this.state.isFirstPSBTAlreadyBase64 ? this.state.psbt : this.state.psbt.toBase64());
-        alert(`This transaction has been saved in ${filePath}`);
+        // const filePath = RNFS.ExternalCachesDirectoryPath + `/${this.fileName}`;
+        // await RNFS.writeFile(filePath, this.state.isFirstPSBTAlreadyBase64 ? this.state.psbt : this.state.psbt.toBase64());
+        // alert(`This transaction has been saved in ${filePath}`);
       } else {
         console.log('Storage Permission: Denied');
       }
@@ -359,13 +359,13 @@ export default class PsbtWithHardwareWallet extends Component {
       const res = await DocumentPicker.pick({
         type: Platform.OS === 'ios' ? ['io.bluewallet.psbt', 'io.bluewallt.psbt.txn'] : [DocumentPicker.types.allFiles],
       });
-      const file = await RNFS.readFile(res.uri);
-      if (file) {
-        this.setState({ isSecondPSBTAlreadyBase64: true }, () => this.onBarCodeRead({ data: file }));
-      } else {
-        this.setState({ isSecondPSBTAlreadyBase64: false });
-        throw new Error();
-      }
+      // const file = await RNFS.readFile(res.uri);
+      // if (file) {
+      //   this.setState({ isSecondPSBTAlreadyBase64: true }, () => this.onBarCodeRead({ data: file }));
+      // } else {
+      //   this.setState({ isSecondPSBTAlreadyBase64: false });
+      //   throw new Error();
+      // }
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
         alert('The selected file does not contain a signed transaction that can be imported.');

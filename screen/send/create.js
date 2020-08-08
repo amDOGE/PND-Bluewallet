@@ -21,7 +21,7 @@ import Privacy from '../../Privacy';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
 import { Icon } from 'react-native-elements';
 import Share from 'react-native-share';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import { BlueCurrentTheme } from '../../components/themes';
 const loc = require('../../loc');
 const currency = require('../../blue_modules/currency');
@@ -52,15 +52,15 @@ export default class SendCreate extends Component {
   exportTXN = async () => {
     const fileName = `${Date.now()}.txn`;
     if (Platform.OS === 'ios') {
-      const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
-      await RNFS.writeFile(filePath, this.state.tx);
-      Share.open({
-        url: 'file://' + filePath,
-      })
-        .catch(error => console.log(error))
-        .finally(() => {
-          RNFS.unlink(filePath);
-        });
+      // const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
+      // await RNFS.writeFile(filePath, this.state.tx);
+      // Share.open({
+      //   url: 'file://' + filePath,
+      // })
+      //   .catch(error => console.log(error))
+      //   .finally(() => {
+      //     RNFS.unlink(filePath);
+      //   });
     } else if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
         title: 'BlueWallet Storage Access Permission',
@@ -72,9 +72,9 @@ export default class SendCreate extends Component {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Storage Permission: Granted');
-        const filePath = RNFS.ExternalCachesDirectoryPath + `/${this.fileName}`;
-        await RNFS.writeFile(filePath, this.state.tx);
-        alert(`This transaction has been saved in ${filePath}`);
+        // const filePath = RNFS.ExternalCachesDirectoryPath + `/${this.fileName}`;
+        // await RNFS.writeFile(filePath, this.state.tx);
+        // alert(`This transaction has been saved in ${filePath}`);
       } else {
         console.log('Storage Permission: Denied');
       }

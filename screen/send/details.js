@@ -38,7 +38,7 @@ import { AppStorage, HDSegwitBech32Wallet, LightningCustodianWallet, WatchOnlyWa
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { BitcoinTransaction } from '../../models/bitcoinTransactionInfo';
 import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 import { BlueCurrentTheme } from '../../components/themes';
 const bitcoin = require('bitcoinjs-lib');
@@ -684,33 +684,33 @@ export default class SendDetails extends Component {
         type: Platform.OS === 'ios' ? ['io.bluewallet.psbt', 'io.bluewallet.psbt.txn'] : [DocumentPicker.types.allFiles],
       });
       if (DeeplinkSchemaMatch.isPossiblyPSBTFile(res.uri)) {
-        const file = await RNFS.readFile(res.uri, 'ascii');
-        const bufferDecoded = Buffer.from(file, 'ascii').toString('base64');
-        if (bufferDecoded) {
-          if (this.state.fromWallet.type === WatchOnlyWallet.type) {
-            // watch-only wallets with enabled HW wallet support have different flow. we have to show PSBT to user as QR code
-            // so he can scan it and sign it. then we have to scan it back from user (via camera and QR code), and ask
-            // user whether he wants to broadcast it.
-            // alternatively, user can export psbt file, sign it externally and then import it
-            this.props.navigation.navigate('PsbtWithHardwareWallet', {
-              memo: this.state.memo,
-              fromWallet: this.state.fromWallet,
-              psbt: file,
-              isFirstPSBTAlreadyBase64: true,
-            });
-            this.setState({ isLoading: false });
-            return;
-          }
-        } else {
-          throw new Error();
-        }
+        // const file = await RNFS.readFile(res.uri, 'ascii');
+        // const bufferDecoded = Buffer.from(file, 'ascii').toString('base64');
+        // if (bufferDecoded) {
+        //   if (this.state.fromWallet.type === WatchOnlyWallet.type) {
+        //     // watch-only wallets with enabled HW wallet support have different flow. we have to show PSBT to user as QR code
+        //     // so he can scan it and sign it. then we have to scan it back from user (via camera and QR code), and ask
+        //     // user whether he wants to broadcast it.
+        //     // alternatively, user can export psbt file, sign it externally and then import it
+        //     this.props.navigation.navigate('PsbtWithHardwareWallet', {
+        //       memo: this.state.memo,
+        //       fromWallet: this.state.fromWallet,
+        //       psbt: file,
+        //       isFirstPSBTAlreadyBase64: true,
+        //     });
+        //     this.setState({ isLoading: false });
+        //     return;
+        //   }
+        // } else {
+        //   throw new Error();
+        // }
       } else if (DeeplinkSchemaMatch.isTXNFile(res.uri)) {
-        const file = await RNFS.readFile(res.uri, 'ascii');
-        this.props.navigation.navigate('PsbtWithHardwareWallet', {
-          memo: this.state.memo,
-          fromWallet: this.state.fromWallet,
-          txhex: file,
-        });
+        // const file = await RNFS.readFile(res.uri, 'ascii');
+        // this.props.navigation.navigate('PsbtWithHardwareWallet', {
+        //   memo: this.state.memo,
+        //   fromWallet: this.state.fromWallet,
+        //   txhex: file,
+        // });
         this.setState({ isLoading: false, isAdvancedTransactionOptionsVisible: false });
         return;
       }
