@@ -10,17 +10,17 @@ import {
   ActivityIndicator,
   InteractionManager,
   FlatList,
+  Dimensions,
   ScrollView,
-  RefreshControl,
   TouchableOpacity,
   StatusBar,
   Linking,
   KeyboardAvoidingView,
   Alert,
-  Clipboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ImagePicker from 'react-native-image-picker';
+import Clipboard from '@react-native-community/clipboard';
 import {
   BlueSendButtonIcon,
   BlueListItem,
@@ -37,13 +37,16 @@ import * as NavigationService from '../../NavigationService';
 import HandoffSettings from '../../class/handoff';
 // import Handoff from 'react-native-handoff';
 import { BlueCurrentTheme } from '../../components/themes';
-// import ActionSheet from '../ActionSheet';
 /** @type {AppStorage} */
+
+import loc from '../../loc';
+import { getSystemName } from 'react-native-device-info';
 const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
 const EV = require('../../blue_modules/events');
 const BlueElectrum = require('../../blue_modules/BlueElectrum');
 const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
+const windowHeight = Dimensions.get('window').height;
+const isDesktop = getSystemName() === 'Mac OS X';
 
 const styles = StyleSheet.create({
   flex: {
@@ -92,9 +95,13 @@ const styles = StyleSheet.create({
     margin: 16,
     justifyContent: 'space-evenly',
   },
-  listHeaderText: {
+  listHeaderTextRow: {
     flex: 1,
-    marginLeft: 16,
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  listHeaderText: {
     marginTop: 8,
     marginBottom: 8,
     fontWeight: 'bold',
@@ -163,12 +170,16 @@ const styles = StyleSheet.create({
   },
   floatButtons: {
     flexDirection: 'row',
-    alignSelf: 'center',
     backgroundColor: 'transparent',
     position: 'absolute',
+    alignSelf: 'center',
     bottom: 30,
     borderRadius: 30,
-    minHeight: 48,
+    width: '60%',
+    maxWidth: 400,
+    flex: 1,
+    height: '6.3%',
+    minHeight: 44,
     overflow: 'hidden',
   },
 });
@@ -210,11 +221,12 @@ export default class WalletTransactions extends Component {
   /**
    * Forcefully fetches TXs and balance for wallet
    */
-  refreshTransactionsFunction() {
+  refreshTransactionsFunction(delay) {
+    delay = delay || 4000;
     const that = this;
     setTimeout(function () {
       that.refreshTransactions();
-    }, 4000); // giving a chance to remote server to propagate
+    }, delay); // giving a chance to remote server to propagate
   }
 
   /**
@@ -272,7 +284,7 @@ export default class WalletTransactions extends Component {
         let noErr = true;
         let smthChanged = false;
         try {
-          await BlueElectrum.ping();
+          // await BlueElectrum.ping();
           await BlueElectrum.waitTillConnected();
           /** @type {LegacyWallet} */
           const wallet = this.state.wallet;
@@ -320,6 +332,7 @@ export default class WalletTransactions extends Component {
   };
 
   renderListHeaderComponent = () => {
+    const style = { opacity: this.state.isLoading ? 0.5 : 1.0 };
     return (
       <View style={styles.flex}>
         <View style={styles.listHeader}>
@@ -343,7 +356,14 @@ export default class WalletTransactions extends Component {
           {this.state.wallet.type === LightningCustodianWallet.type && this.renderMarketplaceButton()}
           {this.state.wallet.type === LightningCustodianWallet.type && Platform.OS === 'ios' && this.renderLappBrowserButton()}
         </View>
-        <Text style={styles.listHeaderText}>{loc.transactions.list.title}</Text>
+        <View style={styles.listHeaderTextRow}>
+          <Text style={styles.listHeaderText}>{loc.transactions.list_title}</Text>
+          {isDesktop && (
+            <TouchableOpacity style={style} onPress={() => this.refreshTransactions()} disabled={this.state.isLoading}>
+              <Icon name="refresh" type="font-awesome" color={BlueCurrentTheme.colors.feeText} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     );
   };
@@ -351,6 +371,7 @@ export default class WalletTransactions extends Component {
   renderManageFundsModal = () => {
     return (
       <Modal
+        deviceHeight={windowHeight}
         isVisible={this.state.isManageFundsModalVisible}
         style={styles.bottomModal}
         onBackdropPress={() => {
@@ -366,7 +387,7 @@ export default class WalletTransactions extends Component {
               onPress={a => {
                 const wallets = [...BlueApp.getWallets().filter(item => item.chain === Chain.ONCHAIN && item.allowSend())];
                 if (wallets.length === 0) {
-                  alert('In order to proceed, please create a Bitcoin wallet to refill with.');
+                  alert(loc.lnd.refill_create);
                 } else {
                   this.setState({ isManageFundsModalVisible: false });
                   this.props.navigation.navigate('SelectWallet', { onWalletSelect: this.onWalletSelect, chainType: Chain.ONCHAIN });
@@ -384,7 +405,7 @@ export default class WalletTransactions extends Component {
                   }),
                 );
               }}
-              title="Refill with External Wallet"
+              title={loc.lnd.refill_external}
             />
 
             <BlueListItem
@@ -397,7 +418,7 @@ export default class WalletTransactions extends Component {
                   });
                 });
               }}
-              title="Refill with bank card"
+              title={loc.lnd.refill_card}
             />
 
             <BlueListItem
@@ -473,7 +494,7 @@ export default class WalletTransactions extends Component {
         }
         style={styles.marketplaceButton2}
       >
-        <Text style={styles.marketpalceText1}>{loc.wallets.list.tap_here_to_buy}</Text>
+        <Text style={styles.marketpalceText1}>{loc.wallets.list_tap_here_to_buy}</Text>
       </TouchableOpacity>
     );
   };
@@ -562,7 +583,7 @@ export default class WalletTransactions extends Component {
             if (!error) {
               this.onBarCodeRead({ data: result });
             } else {
-              alert('The selected image does not contain a QR Code.');
+              alert(loc.send.qr_error_no_qrcode);
             }
           });
         }
@@ -577,9 +598,9 @@ export default class WalletTransactions extends Component {
   sendButtonLongPress = async () => {
     const isClipboardEmpty = (await Clipboard.getString()).replace(' ', '').length === 0;
     if (Platform.OS === 'ios') {
-      const options = [loc.send.details.cancel, 'Choose Photo', 'Scan QR Code'];
+      const options = [loc._.cancel, loc.wallets.list_long_choose, loc.wallets.list_long_scan];
       if (!isClipboardEmpty) {
-        options.push('Copy from Clipboard');
+        options.push(loc.wallets.list_long_clipboard);
       }
       // ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
       //   if (buttonIndex === 1) {
@@ -597,27 +618,30 @@ export default class WalletTransactions extends Component {
     } else if (Platform.OS === 'android') {
       const buttons = [
         {
-          text: loc.send.details.cancel,
+          text: loc._.cancel,
           onPress: () => {},
           style: 'cancel',
         },
         {
-          text: 'Choose Photo',
+          text: loc.wallets.list_long_choose,
           onPress: this.choosePhoto,
         },
         {
-          text: 'Scan QR Code',
+          text: loc.wallets.list_long_scan,
           onPress: () =>
-            this.props.navigation.navigate('ScanQRCode', {
-              launchedBy: this.props.route.name,
-              onBarScanned: this.onBarCodeRead,
-              showFileImportButton: false,
+            this.props.navigation.navigate('ScanQRCodeRoot', {
+              screen: 'ScanQRCode',
+              params: {
+                launchedBy: this.props.route.name,
+                onBarScanned: this.onBarScanned,
+                showFileImportButton: false,
+              },
             }),
         },
       ];
       if (!isClipboardEmpty) {
         buttons.push({
-          text: 'Copy From Clipboard',
+          text: loc.wallets.list_long_clipboard,
           onPress: this.copyFromClipbard,
         });
       }
@@ -645,7 +669,9 @@ export default class WalletTransactions extends Component {
           wallet={this.state.wallet}
           onWalletUnitChange={wallet =>
             InteractionManager.runAfterInteractions(async () => {
-              this.setState({ wallet }, () => InteractionManager.runAfterInteractions(() => BlueApp.saveToDisk()));
+              this.setState({ wallet, itemPriceUnit: wallet.getPreferredBalanceUnit() }, () =>
+                InteractionManager.runAfterInteractions(() => BlueApp.saveToDisk()),
+              );
             })
           }
           onManageFundsPressed={() => {
@@ -689,9 +715,9 @@ export default class WalletTransactions extends Component {
             ListEmptyComponent={
               <ScrollView style={styles.flex} contentContainerStyle={styles.scrollViewContent}>
                 <Text numberOfLines={0} style={styles.emptyTxs}>
-                  {(this.isLightning() && loc.wallets.list.empty_txs1_lightning) || loc.wallets.list.empty_txs1}
+                  {(this.isLightning() && loc.wallets.list_empty_txs1_lightning) || loc.wallets.list_empty_txs1}
                 </Text>
-                {this.isLightning() && <Text style={styles.emptyTxsLightning}>{loc.wallets.list.empty_txs2_lightning}</Text>}
+                {this.isLightning() && <Text style={styles.emptyTxsLightning}>{loc.wallets.list_empty_txs2_lightning}</Text>}
 
                 {!this.isLightning() && (
                   <TouchableOpacity
@@ -702,14 +728,13 @@ export default class WalletTransactions extends Component {
                     }
                     style={styles.buyBitcoin}
                   >
-                    <Text style={styles.buyBitcoinText}>{loc.wallets.list.tap_here_to_buy}</Text>
+                    <Text style={styles.buyBitcoinText}>{loc.wallets.list_tap_here_to_buy}</Text>
                   </TouchableOpacity>
                 )}
               </ScrollView>
             }
-            refreshControl={
-              <RefreshControl onRefresh={() => this.refreshTransactions()} refreshing={this.state.showShowFlatListRefreshControl} />
-            }
+            onRefresh={() => this.refreshTransactions()}
+            refreshing={this.state.showShowFlatListRefreshControl}
             data={this.state.dataSource}
             extraData={this.state.timeElapsed}
             keyExtractor={this._keyExtractor}
@@ -758,8 +783,8 @@ export default class WalletTransactions extends Component {
                           this.navigateToSendScreen();
                         } else {
                           Alert.alert(
-                            'Wallet',
-                            'This wallet is not being used in conjunction with a hardwarde wallet. Would you like to enable hardware wallet use?',
+                            loc.wallets.details_title,
+                            loc.transactions.enable_hw,
                             [
                               {
                                 text: loc._.ok,
@@ -774,7 +799,7 @@ export default class WalletTransactions extends Component {
                                 style: 'default',
                               },
 
-                              { text: loc.send.details.cancel, onPress: () => {}, style: 'cancel' },
+                              { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
                             ],
                             { cancelable: false },
                           );

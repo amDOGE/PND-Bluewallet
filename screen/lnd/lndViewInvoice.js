@@ -16,9 +16,8 @@ import PropTypes from 'prop-types';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
-/** @type {AppStorage} */
+import loc from '../../loc';
 import { BlueCurrentTheme } from '../../components/themes';
-const loc = require('../../loc');
 const EV = require('../../blue_modules/events');
 const { width, height } = Dimensions.get('window');
 
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  qrCodeContainer: { borderWidth: 6, borderRadius: 8, borderColor: '#FFFFFF' },
   valueRoot: {
     flex: 2,
     flexDirection: 'column',
@@ -108,7 +108,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    marginHorizontal: 16,
+    borderWidth: 6,
+    borderRadius: 8,
+    borderColor: '#FFFFFF',
   },
   additionalInfo: {
     backgroundColor: BlueCurrentTheme.colors.brandingColor,
@@ -133,6 +136,7 @@ export default class LNDViewInvoice extends Component {
   }
 
   componentDidMount() {
+    console.log('LNDViewInvoice - componentDidMount');
     this.fetchInvoiceInterval = setInterval(async () => {
       if (this.state.isFetchingInvoices) {
         try {
@@ -194,7 +198,11 @@ export default class LNDViewInvoice extends Component {
 
   render() {
     if (this.state.isLoading) {
-      return <BlueLoading />;
+      return (
+        <View style={styles.root}>
+          <BlueLoading />
+        </View>
+      );
     }
 
     const { invoice } = this.state;
@@ -208,17 +216,19 @@ export default class LNDViewInvoice extends Component {
           <SafeBlueArea style={styles.root}>
             <StatusBar barStyle="default" />
             <View style={styles.center}>
-              <BlueText>Preimage:</BlueText>
+              <BlueText>{loc.lndViewInvoice.preimage}:</BlueText>
               <BlueSpacing20 />
-              <QRCode
-                value={invoice.payment_preimage && typeof invoice.payment_preimage === 'string' ? invoice.payment_preimage : 'none'}
-                logo={require('../../img/qr-code.png')}
-                size={this.state.qrCodeHeight}
-                logoSize={90}
-                color={BlueCurrentTheme.colors.foregroundColor}
-                backgroundColor={BlueCurrentTheme.colors.background}
-                logoBackgroundColor={BlueCurrentTheme.colors.brandingColor}
-              />
+              <View style={styles.qrCodeContainer}>
+                <QRCode
+                  value={invoice.payment_preimage && typeof invoice.payment_preimage === 'string' ? invoice.payment_preimage : 'none'}
+                  logo={require('../../img/qr-code.png')}
+                  size={this.state.qrCodeHeight}
+                  logoSize={90}
+                  color="#000000"
+                  logoBackgroundColor={BlueCurrentTheme.colors.brandingColor}
+                  backgroundColor="#FFFFFF"
+                />
+              </View>
               <BlueSpacing20 />
               <BlueCopyTextToClipboard
                 text={invoice.payment_preimage && typeof invoice.payment_preimage === 'string' ? invoice.payment_preimage : 'none'}
@@ -255,7 +265,7 @@ export default class LNDViewInvoice extends Component {
             <View style={styles.detailsRoot}>
               {invoice.payment_preimage && typeof invoice.payment_preimage === 'string' ? (
                 <TouchableOpacity style={styles.detailsTouch} onPress={() => this.setState({ showPreimageQr: true })}>
-                  <Text style={styles.detailsText}>{loc.send.create.details}</Text>
+                  <Text style={styles.detailsText}>{loc.send.create_details}</Text>
                   <Icon name="angle-right" size={18} type="font-awesome" color={BlueCurrentTheme.colors.alternativeTextColor} />
                 </TouchableOpacity>
               ) : (
@@ -301,9 +311,9 @@ export default class LNDViewInvoice extends Component {
                 logo={require('../../img/qr-code.png')}
                 size={this.state.qrCodeHeight}
                 logoSize={90}
-                color={BlueCurrentTheme.colors.foregroundColor}
+                color="#000000"
                 logoBackgroundColor={BlueCurrentTheme.colors.brandingColor}
-                backgroundColor={BlueCurrentTheme.colors.background}
+                backgroundColor="#FFFFFF"
               />
             </View>
 
@@ -322,7 +332,7 @@ export default class LNDViewInvoice extends Component {
               onPress={() => {
                 Share.open({ message: `lightning:${invoice.payment_request}` }).catch(error => console.log(error));
               }}
-              title={loc.receive.details.share}
+              title={loc.receive.details_share}
             />
             <BlueSpacing20 />
             <BlueButton

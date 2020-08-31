@@ -14,11 +14,28 @@ jest.mock('react-native-secure-key-store', () => {
   };
 });
 
+jest.mock('@react-native-community/push-notification-ios', () => {
+  return {};
+});
+
+jest.mock('react-native-device-info', () => {
+  return {
+    getSystemName: jest.fn(),
+  };
+});
+
 jest.mock('react-native-quick-actions', () => {
   return {
     clearShortcutItems: jest.fn(),
     setQuickActions: jest.fn(),
     isSupported: jest.fn(),
+  };
+});
+
+jest.mock('react-native-image-picker', () => {
+  return {
+    launchCamera: jest.fn(),
+    launchImageLibrary: jest.fn(),
   };
 });
 

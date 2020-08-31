@@ -942,15 +942,24 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
    * Combines 2 PSBTs into final transaction from which you can
    * get HEX and broadcast
    *
-   * @param base64one {string}
-   * @param base64two {string}
+   * @param base64one {string|Psbt}
+   * @param base64two {string|Psbt}
    * @returns {Transaction}
    */
   combinePsbt(base64one, base64two) {
-    const final1 = bitcoin.Psbt.fromBase64(base64one);
-    const final2 = bitcoin.Psbt.fromBase64(base64two);
+    const final1 = typeof base64one === 'string' ? bitcoin.Psbt.fromBase64(base64one) : base64one;
+    const final2 = typeof base64two === 'string' ? bitcoin.Psbt.fromBase64(base64two) : base64two;
     final1.combine(final2);
-    return final1.finalizeAllInputs().extractTransaction();
+
+    let extractedTransaction;
+    try {
+      extractedTransaction = final1.finalizeAllInputs().extractTransaction();
+    } catch (_) {
+      // probably already finalized
+      extractedTransaction = final1.extractTransaction();
+    }
+
+    return extractedTransaction;
   }
 
   /**
@@ -969,20 +978,6 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
     return bitcoin.payments.p2pkh({
       pubkey: hdNode.publicKey,
     }).address;
-  }
-
-  /**
-   * Converts zpub to xpub
-   *
-   * @param {String} zpub
-   * @returns {String} xpub
-   */
-  static _zpubToXpub(zpub) {
-    let data = b58.decode(zpub);
-    data = data.slice(4);
-    data = Buffer.concat([Buffer.from('0488b21e', 'hex'), data]);
-
-    return b58.encode(data);
   }
 
   static _getTransactionsFromHistories(histories) {
@@ -1005,5 +1000,18 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
   async wasEverUsed() {
     const txs = await BlueElectrum.getTransactionsByAddress(this._getExternalAddressByIndex(0));
     return txs.length > 0;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  getAllExternalAddresses() {
+    const ret = [];
+
+    for (let c = 0; c < this.next_free_address_index + this.gap_limit; c++) {
+      ret.push(this._getExternalAddressByIndex(c));
+    }
+
+    return ret;
   }
 }

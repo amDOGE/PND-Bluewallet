@@ -1,5 +1,6 @@
 /* global alert */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   ActivityIndicator,
   View,
@@ -30,23 +31,24 @@ import {
   BlueText,
 } from '../../BlueComponents';
 import Slider from '@react-native-community/slider';
-import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
+import RNFS from 'react-native-fs';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
 import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
 import { AppStorage, HDSegwitBech32Wallet, LightningCustodianWallet, WatchOnlyWallet } from '../../class';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { BitcoinTransaction } from '../../models/bitcoinTransactionInfo';
 import DocumentPicker from 'react-native-document-picker';
 // import RNFS from 'react-native-fs';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
+import loc from '../../loc';
 import { BlueCurrentTheme } from '../../components/themes';
 const bitcoin = require('bitcoinjs-lib');
 const currency = require('../../blue_modules/currency');
 const BigNumber = require('bignumber.js');
 const { width } = Dimensions.get('window');
 const BlueApp: AppStorage = require('../../BlueApp');
-const loc = require('../../loc');
 
 const btcAddressRx = /^[a-zA-Z0-9]{26,35}$/;
 
@@ -239,7 +241,7 @@ export default class SendDetails extends Component {
     const wallets = BlueApp.getWallets().filter(wallet => wallet.type !== LightningCustodianWallet.type);
 
     if (wallets.length === 0) {
-      alert('Before creating a transaction, you must first add a Bitcoin wallet.');
+      alert(loc.send.details_wallet_before_tx);
       return props.navigation.goBack(null);
     } else {
       if (!fromWallet && wallets.length > 0) {
@@ -347,7 +349,7 @@ export default class SendDetails extends Component {
         this.setState({ addresses, memo: initialMemo, isLoading: false, amountUnit: BitcoinUnit.BTC });
       } catch (error) {
         console.log(error);
-        alert('Error: Unable to decode Bitcoin address');
+        alert(loc.send.details_error_decode);
       }
     } else if (this.props.route.params.address) {
       addresses.push(new BitcoinTransaction(this.props.route.params.address));
@@ -386,7 +388,7 @@ export default class SendDetails extends Component {
           } catch (error) {
             console.log(error);
             this.setState({ isLoading: false });
-            alert('Error: Unable to decode Bitcoin address');
+            alert(loc.send.details_error_decode);
           }
         }
       } else {
@@ -436,17 +438,17 @@ export default class SendDetails extends Component {
     const requestedSatPerByte = this.state.fee.toString().replace(/\D/g, '');
     for (const [index, transaction] of this.state.addresses.entries()) {
       if (!transaction.amount || transaction.amount < 0 || parseFloat(transaction.amount) === 0) {
-        error = loc.send.details.amount_field_is_not_valid;
+        error = loc.send.details_amount_field_is_not_valid;
         console.log('validation error');
       } else if (!this.state.fee || !requestedSatPerByte || parseFloat(requestedSatPerByte) < 1) {
-        error = loc.send.details.fee_field_is_not_valid;
+        error = loc.send.details_fee_field_is_not_valid;
         console.log('validation error');
       } else if (!transaction.address) {
-        error = loc.send.details.address_field_is_not_valid;
+        error = loc.send.details_address_field_is_not_valid;
         console.log('validation error');
       } else if (this.state.fromWallet.getBalance() - transaction.amountSats < 0) {
         // first sanity check is that sending amount is not bigger than available balance
-        error = loc.send.details.total_exceeds_balance;
+        error = loc.send.details_total_exceeds_balance;
         console.log('validation error');
       } else if (transaction.address) {
         const address = transaction.address.trim().toLowerCase();
@@ -463,7 +465,7 @@ export default class SendDetails extends Component {
         } catch (err) {
           console.log('validation error');
           console.log(err);
-          error = loc.send.details.address_field_is_not_valid;
+          error = loc.send.details_address_field_is_not_valid;
         }
       }
       if (error) {
@@ -569,8 +571,8 @@ export default class SendDetails extends Component {
     if (this.state.addresses.length > 1 && !wallet.allowBatchSend()) {
       ReactNativeHapticFeedback.trigger('notificationWarning');
       Alert.alert(
-        'Wallet Selection',
-        `The selected wallet does not support sending Bitcoin to multiple recipients. Are you sure to want to select this wallet?`,
+        loc.send.details_wallet_selection,
+        loc.send.details_no_multiple,
         [
           {
             text: loc._.ok,
@@ -584,15 +586,15 @@ export default class SendDetails extends Component {
             },
             style: 'default',
           },
-          { text: loc.send.details.cancel, onPress: () => {}, style: 'cancel' },
+          { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
         ],
         { cancelable: false },
       );
     } else if (this.state.addresses.some(element => element.amount === BitcoinUnit.MAX) && !wallet.allowSendMax()) {
       ReactNativeHapticFeedback.trigger('notificationWarning');
       Alert.alert(
-        'Wallet Selection',
-        `The selected wallet does not support automatic maximum balance calculation. Are you sure to want to select this wallet?`,
+        loc.send.details_wallet_selection,
+        loc.send.details_no_maximum,
         [
           {
             text: loc._.ok,
@@ -606,7 +608,7 @@ export default class SendDetails extends Component {
             },
             style: 'default',
           },
-          { text: loc.send.details.cancel, onPress: () => {}, style: 'cancel' },
+          { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
         ],
         { cancelable: false },
       );
@@ -620,6 +622,7 @@ export default class SendDetails extends Component {
       <Modal
         isVisible={this.state.isFeeSelectionModalVisible}
         style={styles.bottomModal}
+        deviceHeight={Dimensions.get('window').height}
         onBackdropPress={() => {
           if (this.state.fee < 1 || this.state.feeSliderValue < 1) {
             this.setState({ fee: Number(1), feeSliderValue: Number(1) });
@@ -716,7 +719,7 @@ export default class SendDetails extends Component {
       }
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
-        alert('The selected file does not contain a signed transaction that can be imported.');
+        alert(loc.send.details_no_signed_tx);
       }
     }
   };
@@ -726,6 +729,7 @@ export default class SendDetails extends Component {
     return (
       <Modal
         isVisible={this.state.isAdvancedTransactionOptionsVisible}
+        deviceHeight={Dimensions.get('window').height}
         style={styles.bottomModal}
         onBackdropPress={() => {
           Keyboard.dismiss();
@@ -737,7 +741,7 @@ export default class SendDetails extends Component {
             {this.state.fromWallet.allowSendMax() && (
               <BlueListItem
                 disabled={!(this.state.fromWallet.getBalance() > 0) || isSendMaxUsed}
-                title="Use Full Balance"
+                title={loc.send.details_adv_full}
                 hideChevron
                 component={TouchableOpacity}
                 onPress={this.onUseAllPressed}
@@ -745,7 +749,7 @@ export default class SendDetails extends Component {
             )}
             {this.state.fromWallet.type === HDSegwitBech32Wallet.type && (
               <BlueListItem
-                title="Allow Fee Bump"
+                title={loc.send.details_adv_fee_bump}
                 Component={TouchableWithoutFeedback}
                 switch={{ value: this.state.isTransactionReplaceable, onValueChange: this.onReplaceableFeeSwitchValueChanged }}
               />
@@ -753,13 +757,18 @@ export default class SendDetails extends Component {
             {this.state.fromWallet.type === WatchOnlyWallet.type &&
               this.state.fromWallet.isHd() &&
               this.state.fromWallet.getSecret().startsWith('zpub') && (
-                <BlueListItem title="Import Transaction" hideChevron component={TouchableOpacity} onPress={this.importTransaction} />
+                <BlueListItem
+                  title={loc.send.details_adv_import}
+                  hideChevron
+                  component={TouchableOpacity}
+                  onPress={this.importTransaction}
+                />
               )}
             {this.state.fromWallet.allowBatchSend() && (
               <>
                 <BlueListItem
                   disabled={isSendMaxUsed}
-                  title="Add Recipient"
+                  title={loc.send.details_add_rec_add}
                   hideChevron
                   component={TouchableOpacity}
                   onPress={() => {
@@ -780,7 +789,7 @@ export default class SendDetails extends Component {
                   }}
                 />
                 <BlueListItem
-                  title="Remove Recipient"
+                  title={loc.send.details_add_rec_rem}
                   hideChevron
                   disabled={this.state.addresses.length < 2}
                   component={TouchableOpacity}
@@ -818,7 +827,7 @@ export default class SendDetails extends Component {
         {this.state.isLoading ? (
           <ActivityIndicator />
         ) : (
-          <BlueButton onPress={() => this.createTransaction()} title="Next" testID="CreateTransactionButton" />
+          <BlueButton onPress={() => this.createTransaction()} title={loc.send.details_next} testID="CreateTransactionButton" />
         )}
       </View>
     );
@@ -948,9 +957,7 @@ export default class SendDetails extends Component {
             launchedBy={this.props.route.name}
           />
           {this.state.addresses.length > 1 && (
-            <BlueText style={styles.of}>
-              {index + 1} of {this.state.addresses.length}
-            </BlueText>
+            <BlueText style={styles.of}>{loc.formatString(loc._.of, { number: index + 1, total: this.state.addresses.length })}</BlueText>
           )}
         </View>,
       );
@@ -961,10 +968,8 @@ export default class SendDetails extends Component {
   onUseAllPressed = () => {
     ReactNativeHapticFeedback.trigger('notificationWarning');
     Alert.alert(
-      'Use full balance',
-      `Are you sure you want to use your wallet's full balance for this transaction? ${
-        this.state.addresses.length > 1 ? 'Your other recipients will be removed from this transaction.' : ''
-      }`,
+      loc.send.details_adv_full,
+      loc.send.details_adv_full_sure + ' ' + (this.state.addresses.length > 1 ? loc.send.details_adv_full_remove : ''),
       [
         {
           text: loc._.ok,
@@ -972,6 +977,7 @@ export default class SendDetails extends Component {
             Keyboard.dismiss();
             const recipient = this.state.addresses[this.state.recipientsScrollIndex];
             recipient.amount = BitcoinUnit.MAX;
+            recipient.amountSats = BitcoinUnit.MAX;
             this.setState({
               addresses: [recipient],
               units: [BitcoinUnit.BTC],
@@ -981,7 +987,7 @@ export default class SendDetails extends Component {
           },
           style: 'default',
         },
-        { text: loc.send.details.cancel, onPress: () => {}, style: 'cancel' },
+        { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
       ],
       { cancelable: false },
     );
@@ -1018,7 +1024,7 @@ export default class SendDetails extends Component {
               <View hide={!this.state.showMemoRow} style={styles.memo}>
                 <TextInput
                   onChangeText={text => this.setState({ memo: text })}
-                  placeholder={loc.send.details.note_placeholder}
+                  placeholder={loc.send.details_note_placeholder}
                   placeholderTextColor="#81868e"
                   value={this.state.memo}
                   numberOfLines={1}
@@ -1033,7 +1039,7 @@ export default class SendDetails extends Component {
                 disabled={this.state.isLoading}
                 style={styles.fee}
               >
-                <Text style={styles.feeLabel}>Fee</Text>
+                <Text style={styles.feeLabel}>{loc.send.create_fee}</Text>
                 <View style={styles.feeRow}>
                   <Text style={styles.feeValue}>{this.state.fee}</Text>
                   <Text style={styles.feeUnit}>sat/b</Text>

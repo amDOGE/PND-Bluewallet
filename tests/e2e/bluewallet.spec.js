@@ -65,7 +65,7 @@ describe('BlueWallet UI Tests', () => {
 
     // go to Security page where we will enable encryption
     await element(by.id('SecurityButton')).tap();
-    await expect(element(by.id('EncyptedAndPasswordProtected'))).toBeVisible();
+    // await expect(element(by.id('EncyptedAndPasswordProtected'))).toBeVisible(); // @see https://github.com/react-native-elements/react-native-elements/issues/2519
     await expect(element(by.id('PlausibleDeniabilityButton'))).toBeNotVisible();
 
     if (device.getPlatform() === 'ios') {
@@ -116,7 +116,7 @@ describe('BlueWallet UI Tests', () => {
     await element(by.id('SettingsButton')).tap();
     await expect(element(by.id('SecurityButton'))).toBeVisible();
     await element(by.id('SecurityButton')).tap();
-    await expect(element(by.id('EncyptedAndPasswordProtected'))).toBeVisible();
+    // await expect(element(by.id('EncyptedAndPasswordProtected'))).toBeVisible(); // @see https://github.com/react-native-elements/react-native-elements/issues/2519
     await expect(element(by.id('PlausibleDeniabilityButton'))).toBeVisible();
     await element(by.id('PlausibleDeniabilityButton')).tap();
 
@@ -429,6 +429,33 @@ describe('BlueWallet UI Tests', () => {
 
     await yo('TextHelperForPSBT');
     process.env.TRAVIS && require('fs').writeFileSync(lockFile, '1');
+  });
+
+  it('should handle URL successfully', async () => {
+    const lockFile = '/tmp/travislock.' + hashIt(jasmine.currentTest.fullName);
+    if (process.env.TRAVIS) {
+      if (require('fs').existsSync(lockFile))
+        return console.warn('skipping', jasmine.currentTest.fullName, 'as it previously passed on Travis');
+    }
+    if (!process.env.HD_MNEMONIC_BIP84) {
+      console.error('process.env.HD_MNEMONIC_BIP84 not set, skipped');
+      return;
+    }
+
+    await helperImportWallet(process.env.HD_MNEMONIC_BIP84, 'Imported HD SegWit (BIP84 Bech32 Native)', '0.00105526 BTC');
+
+    await device.launchApp({
+      newInstance: true,
+      url: 'bitcoin:BC1QH6TF004TY7Z7UN2V5NTU4MKF630545GVHS45U7\\?amount=0.0001\\&label=Yo',
+    });
+    try {
+      await element(by.id('CreateTransactionButton')).tap();
+    } catch (_) {}
+
+    // created. verifying:
+    await yo('TransactionValue');
+    expect(element(by.id('TransactionValue'))).toHaveText('0.0001');
+    expect(element(by.id('TransactionAddress'))).toHaveText('BC1QH6TF004TY7Z7UN2V5NTU4MKF630545GVHS45U7');
   });
 });
 

@@ -1,5 +1,6 @@
 // import QuickActions from 'react-native-quick-actions';
 import { Platform } from 'react-native';
+import { formatBalance } from '../loc';
 
 export default class DeviceQuickActions {
   static shared = new DeviceQuickActions();
