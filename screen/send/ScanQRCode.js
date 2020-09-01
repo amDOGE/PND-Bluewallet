@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import { useNavigation, useRoute, useIsFocused, useTheme } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import loc from '../../loc';
 import { BlueLoadingHook, BlueTextHooks, BlueButtonHook, BlueSpacing40 } from '../../BlueComponents';
 const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
@@ -109,18 +109,18 @@ const ScanQRCode = () => {
   const showFilePicker = async () => {
     try {
       setIsLoading(true);
-      const res = await DocumentPicker.pick();
-      const file = await RNFS.readFile(res.uri);
-      const fileParsed = JSON.parse(file);
-      if (fileParsed.keystore.xpub) {
-        let masterFingerprint;
-        if (fileParsed.keystore.ckcc_xfp) {
-          masterFingerprint = Number(fileParsed.keystore.ckcc_xfp);
-        }
-        onBarCodeRead({ data: fileParsed.keystore.xpub, additionalProperties: { masterFingerprint, label: fileParsed.keystore.label } });
-      } else {
-        throw new Error();
-      }
+      // const res = await DocumentPicker.pick();
+      // const file = await RNFS.readFile(res.uri);
+      // const fileParsed = JSON.parse(file);
+      // if (fileParsed.keystore.xpub) {
+      //   let masterFingerprint;
+      //   if (fileParsed.keystore.ckcc_xfp) {
+      //     masterFingerprint = Number(fileParsed.keystore.ckcc_xfp);
+      //   }
+      //   onBarCodeRead({ data: fileParsed.keystore.xpub, additionalProperties: { masterFingerprint, label: fileParsed.keystore.label } });
+      // } else {
+      //   throw new Error();
+      // }
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
         alert(loc.send.qr_error_no_wallet);
