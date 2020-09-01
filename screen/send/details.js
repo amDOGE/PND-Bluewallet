@@ -32,7 +32,7 @@ import {
 } from '../../BlueComponents';
 import Slider from '@react-native-community/slider';
 import Modal from 'react-native-modal';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
