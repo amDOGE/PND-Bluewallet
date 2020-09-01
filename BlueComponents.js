@@ -26,7 +26,7 @@ import {
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import LinearGradient from 'react-native-linear-gradient';
-import ActionSheet from './screen/ActionSheet';
+// import ActionSheet from './screen/ActionSheet';
 import { LightningCustodianWallet, PlaceholderWallet } from './class';
 import Carousel from 'react-native-snap-carousel';
 import { BitcoinUnit } from './models/bitcoinUnits';
@@ -2113,15 +2113,15 @@ export class BlueAddressInput extends Component {
         copyFromClipboardIndex = options.length - 1;
       }
 
-      ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
-        if (buttonIndex === 1) {
-          this.choosePhoto();
-        } else if (buttonIndex === 2) {
-          this.takePhoto();
-        } else if (buttonIndex === copyFromClipboardIndex) {
-          this.copyFromClipbard();
-        }
-      });
+      // ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
+      //   if (buttonIndex === 1) {
+      //     this.choosePhoto();
+      //   } else if (buttonIndex === 2) {
+      //     this.takePhoto();
+      //   } else if (buttonIndex === copyFromClipboardIndex) {
+      //     this.copyFromClipbard();
+      //   }
+      // });
     }
   };
 
