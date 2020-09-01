@@ -5,7 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import loc from '../../loc';
 
 const ReleaseNotes = () => {
-  const notes = require('../../release-notes');
+  // const notes = require('../../release-notes');
   const { colors } = useTheme();
   const styles = StyleSheet.create({
     root: {
@@ -18,7 +18,7 @@ const ReleaseNotes = () => {
     <SafeBlueArea forceInset={{ horizontal: 'always' }} style={styles.root}>
       <ScrollView>
         <BlueCard>
-          <BlueTextHooks>{notes}</BlueTextHooks>
+          <BlueTextHooks>t</BlueTextHooks>
         </BlueCard>
       </ScrollView>
     </SafeBlueArea>
