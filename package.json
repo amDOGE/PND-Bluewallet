@@ -210,5 +210,8 @@
     "_stream_duplex": "readable-stream/duplex",
     "_stream_passthrough": "readable-stream/passthrough",
     "stream": "stream-browserify"
-  }
+  },
+  "resolutions": {
+    "@react-native-community/cli-debugger-ui": "4.7.0"
+}
 }
