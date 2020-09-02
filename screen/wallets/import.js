@@ -21,7 +21,7 @@ import Clipboard from '@react-native-community/clipboard';
 import ImagePicker from 'react-native-image-picker';
 import loc from '../../loc';
 import { getSystemName } from 'react-native-device-info';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
 const { width } = Dimensions.get('window');
@@ -157,21 +157,21 @@ const WalletsImport = () => {
   };
 
   const handleImportFileButtonPressed = async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
+    // try {
+    //   const res = await DocumentPicker.pick({
+    //     type: [DocumentPicker.types.allFiles],
+    //   });
 
-      const file = await RNFS.readFile(res.uri);
-      if (file) {
-        onBarScanned(file);
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      if (!DocumentPicker.isCancel(err)) {
-        alert(loc.wallets.import_error);
-      }
+    //   const file = await RNFS.readFile(res.uri);
+    //   if (file) {
+    //     onBarScanned(file);
+    //   } else {
+    //     throw new Error();
+    //   }
+    // } catch (err) {
+    //   if (!DocumentPicker.isCancel(err)) {
+    //     alert(loc.wallets.import_error);
+    //   }
     }
   };
 
