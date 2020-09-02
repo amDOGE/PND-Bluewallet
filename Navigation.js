@@ -252,14 +252,8 @@ const HodlHodlLoginRoot = () => (
 
 const RootStack = createStackNavigator();
 const Navigation = () => (
-  <RootStack.Navigator mode="modal" screenOptions={defaultScreenOptions} initialRouteName="LoadingScreenRoot">
-    {/* stacks */}
-    <RootStack.Screen name="LoadingScreenRoot" component={LoadingScreenRoot} options={{ headerShown: false, animationEnabled: false }} />
-    <RootStack.Screen
-      name="UnlockWithScreenRoot"
-      component={UnlockWithScreenRoot}
-      options={{ headerShown: false, animationEnabled: false }}
-    />
+  <RootStack.Navigator mode="modal" screenOptions={defaultScreenOptions} initialRouteName="WalletsRoot">
+
     <RootStack.Screen name="WalletsRoot" component={WalletsRoot} options={{ headerShown: false, animationEnabled: false }} />
     <RootStack.Screen name="AddWalletRoot" component={AddWalletRoot} options={{ headerShown: false, gestureEnabled: false }} />
     <RootStack.Screen name="SendDetailsRoot" component={SendDetailsRoot} options={{ headerShown: false }} />
