@@ -6,12 +6,12 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   IgnorableNamespaces="uap mp">
 
- <Identity
-    Name="593e931f-f796-4d7a-b96e-a11aef9b86c9"
+  <Identity
+    Name="b9932519-84ae-434c-9255-1b50e98b8625"
     Publisher="CN=marcos.rodriguez"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="593e931f-f796-4d7a-b96e-a11aef9b86c9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b9932519-84ae-434c-9255-1b50e98b8625" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>bluewallet</DisplayName>
@@ -28,7 +28,8 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
+    <Application
+      Id="App"
       Executable="$targetnametoken$.exe"
       EntryPoint="bluewallet.App">
       <uap:VisualElements
