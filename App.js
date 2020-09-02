@@ -10,13 +10,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   View,
+  Text,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import Modal from 'react-native-modal';
-import { NavigationContainer, CommonActions } from '@react-navigation/native';
+import {  CommonActions } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from './Navigation';
-import { navigationRef } from './NavigationService';
+
 import * as NavigationService from './NavigationService';
 import { BlueTextCentered, BlueButton, SecondButton } from './BlueComponents';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
@@ -297,10 +297,8 @@ export default class App extends React.Component {
     return (
       <SafeAreaProvider>
         <View style={styles.root}>
-          <NavigationContainer ref={navigationRef} theme={this.state.theme === 'dark' ? BlueDarkTheme : BlueDefaultTheme}>
-            <Navigation />
-          </NavigationContainer>
-          {this.renderClipboardContentModal()}
+          
+          <Text>HELLO</Text>
         </View>
       </SafeAreaProvider>
     );
@@ -310,6 +308,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor:'green',
   },
   space: {
     marginHorizontal: 8,
