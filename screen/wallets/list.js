@@ -540,11 +540,11 @@ export default class WalletsList extends Component {
           onPress: this.copyFromClipbard,
         });
       }
-      ActionSheet.showActionSheetWithOptions({
-        title: '',
-        message: '',
-        buttons,
-      });
+      // ActionSheet.showActionSheetWithOptions({
+      //   title: '',
+      //   message: '',
+      //   buttons,
+      // });
     }
   };
 

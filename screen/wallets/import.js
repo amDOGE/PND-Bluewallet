@@ -17,7 +17,7 @@ import Privacy from '../../Privacy';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import WalletImport from '../../class/wallet-import';
 import Clipboard from '@react-native-community/clipboard';
-import ActionSheet from '../ActionSheet';
+// import ActionSheet from '../ActionSheet';
 import ImagePicker from 'react-native-image-picker';
 import loc from '../../loc';
 import { getSystemName } from 'react-native-device-info';
@@ -188,17 +188,17 @@ const WalletsImport = () => {
       options.push(loc.wallets.import_file);
       const impoortFileButtonIndex = options.length - 1;
 
-      ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
-        if (buttonIndex === 1) {
-          takePhoto();
-        } else if (buttonIndex === 2) {
-          choosePhoto();
-        } else if (buttonIndex === copyFromClipboardIndex) {
-          copyFromClipbard();
-        } else if (impoortFileButtonIndex) {
-          handleImportFileButtonPressed();
-        }
-      });
+      // ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, buttonIndex => {
+      //   if (buttonIndex === 1) {
+      //     takePhoto();
+      //   } else if (buttonIndex === 2) {
+      //     choosePhoto();
+      //   } else if (buttonIndex === copyFromClipboardIndex) {
+      //     copyFromClipbard();
+      //   } else if (impoortFileButtonIndex) {
+      //     handleImportFileButtonPressed();
+      //   }
+      // });
     }
   };
 
