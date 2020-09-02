@@ -173,7 +173,7 @@ const WalletsImport = () => {
     //     alert(loc.wallets.import_error);
     //   }
     }
-  };
+  // };
 
   const showActionSheet = async () => {
     const isClipboardEmpty = (await Clipboard.getString()).replace(' ', '').length === 0;
