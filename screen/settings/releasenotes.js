@@ -5,8 +5,8 @@ import { SafeBlueArea, BlueCard, BlueText } from '../../BlueComponents';
 import loc from '../../loc';
 
 const ReleaseNotes = () => {
-  const notes = require('../../release-notes');
-
+  // const notes = require('../../release-notes');
+  const notes = 'notes'
   return (
     <SafeBlueArea>
       <ScrollView>
