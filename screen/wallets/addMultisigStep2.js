@@ -21,7 +21,7 @@ import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { getSystemName } from 'react-native-device-info';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
-import showPopupMenu from 'react-native-popup-menu-android';
+// import showPopupMenu from 'react-native-popup-menu-android';
 import ToolTip from 'react-native-tooltip';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
@@ -533,7 +533,7 @@ const WalletsAddMultisigStep2 = () => {
   };
 
   const showAndroidTooltip = () => {
-    showPopupMenu(toolTipMenuOptions, handleToolTipSelection, vaultKeyData.xpub);
+    // showPopupMenu(toolTipMenuOptions, handleToolTipSelection, vaultKeyData.xpub);
   };
 
   const handleToolTipSelection = () => {
