@@ -12,7 +12,7 @@ import { PlaceholderWallet } from '../../class';
 import WalletImport from '../../class/wallet-import';
 import loc from '../../loc';
 import { BlueStorageContext } from '../../blue_modules/storage-context';
-import { BlurView } from '@react-native-community/blur';
+// import { BlurView } from '@react-native-community/blur';
 
 const DrawerList = props => {
   console.log('drawerList rendering...');
@@ -132,9 +132,9 @@ const DrawerList = props => {
         </SafeAreaView>
         {renderWalletsCarousel()}
       </View>
-      {isDrawerListBlurred && (
+      {/* {isDrawerListBlurred && (
         <BlurView style={styles.absolute} blurType="light" blurAmount={10} reducedTransparencyFallbackColor="white" />
-      )}
+      )} */}
     </DrawerContentScrollView>
   );
 };
