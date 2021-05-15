@@ -35,7 +35,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import loc from '../../loc';
 import { useTheme, useRoute, useNavigation } from '@react-navigation/native';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 import { BlueStorageContext } from '../../blue_modules/storage-context';
 import Notifications from '../../blue_modules/notifications';
@@ -316,19 +316,19 @@ const WalletDetails = () => {
       2,
     );
     if (Platform.OS === 'ios') {
-      const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
-      await RNFS.writeFile(filePath, contents);
-      Share.open({
-        url: 'file://' + filePath,
-        saveToFiles: isCatalyst,
-      })
-        .catch(error => {
-          console.log(error);
-          alert(error.message);
-        })
-        .finally(() => {
-          RNFS.unlink(filePath);
-        });
+      // const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
+      // await RNFS.writeFile(filePath, contents);
+      // Share.open({
+      //   url: 'file://' + filePath,
+      //   saveToFiles: isCatalyst,
+      // })
+      //   .catch(error => {
+      //     console.log(error);
+      //     alert(error.message);
+      //   })
+      //   .finally(() => {
+      //     RNFS.unlink(filePath);
+      //   });
     } else if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
         title: loc.send.permission_storage_title,
@@ -340,14 +340,14 @@ const WalletDetails = () => {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Storage Permission: Granted');
-        const filePath = RNFS.DownloadDirectoryPath + `/${fileName}`;
-        try {
-          await RNFS.writeFile(filePath, contents);
-          alert(loc.formatString(loc.send.txSaved, { filePath: fileName }));
-        } catch (e) {
-          console.log(e);
-          alert(e.message);
-        }
+        // const filePath = RNFS.DownloadDirectoryPath + `/${fileName}`;
+        // try {
+        //   await RNFS.writeFile(filePath, contents);
+        //   alert(loc.formatString(loc.send.txSaved, { filePath: fileName }));
+        // } catch (e) {
+        //   console.log(e);
+        //   alert(e.message);
+        // }
       } else {
         console.log('Storage Permission: Denied');
         Alert.alert(loc.send.permission_storage_title, loc.send.permission_storage_denied_message, [

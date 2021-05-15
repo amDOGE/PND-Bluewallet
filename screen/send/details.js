@@ -21,7 +21,7 @@ import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import BigNumber from 'bignumber.js';
 import * as bitcoin from 'bitcoinjs-lib';
 
@@ -588,32 +588,32 @@ const SendDetails = () => {
       if (DeeplinkSchemaMatch.isPossiblySignedPSBTFile(res.uri)) {
         // we assume that transaction is already signed, so all we have to do is get txhex and pass it to next screen
         // so user can broadcast:
-        const file = await RNFS.readFile(res.uri, 'ascii');
-        const psbt = bitcoin.Psbt.fromBase64(file);
-        const txhex = psbt.extractTransaction().toHex();
-        navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, txhex });
-        setIsLoading(false);
-        setOptionsVisible(false);
-        return;
+        // const file = await RNFS.readFile(res.uri, 'ascii');
+        // const psbt = bitcoin.Psbt.fromBase64(file);
+        // const txhex = psbt.extractTransaction().toHex();
+        // navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, txhex });
+        // setIsLoading(false);
+        // setOptionsVisible(false);
+        // return;
       }
 
       if (DeeplinkSchemaMatch.isPossiblyPSBTFile(res.uri)) {
         // looks like transaction is UNsigned, so we construct PSBT object and pass to next screen
         // so user can do smth with it:
-        const file = await RNFS.readFile(res.uri, 'ascii');
-        const psbt = bitcoin.Psbt.fromBase64(file);
-        navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, psbt });
-        setIsLoading(false);
-        setOptionsVisible(false);
+        // const file = await RNFS.readFile(res.uri, 'ascii');
+        // const psbt = bitcoin.Psbt.fromBase64(file);
+        // navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, psbt });
+        // setIsLoading(false);
+        // setOptionsVisible(false);
         return;
       }
 
       if (DeeplinkSchemaMatch.isTXNFile(res.uri)) {
-        // plain text file with txhex ready to broadcast
-        const file = (await RNFS.readFile(res.uri, 'ascii')).replace('\n', '').replace('\r', '');
-        navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, txhex: file });
-        setIsLoading(false);
-        setOptionsVisible(false);
+        // // plain text file with txhex ready to broadcast
+        // const file = (await RNFS.readFile(res.uri, 'ascii')).replace('\n', '').replace('\r', '');
+        // navigation.navigate('PsbtWithHardwareWallet', { memo, fromWallet: wallet, txhex: file });
+        // setIsLoading(false);
+        // setOptionsVisible(false);
         return;
       }
 
