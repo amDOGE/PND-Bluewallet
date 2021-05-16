@@ -20,7 +20,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import DocumentPicker from 'react-native-document-picker';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { isCatalyst, isMacCatalina } from '../../blue_modules/environment';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
 import Biometric from '../../class/biometrics';
 
 import {
@@ -184,18 +184,18 @@ const PsbtWithHardwareWallet = () => {
   const exportPSBT = async () => {
     const fileName = `${Date.now()}.psbt`;
     if (Platform.OS === 'ios') {
-      const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
-      await RNFS.writeFile(filePath, typeof psbt === 'string' ? psbt : psbt.toBase64());
-      Share.open({
-        url: 'file://' + filePath,
-        saveToFiles: isCatalyst,
-      })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          RNFS.unlink(filePath);
-        });
+      // const filePath = RNFS.TemporaryDirectoryPath + `/${fileName}`;
+      // await RNFS.writeFile(filePath, typeof psbt === 'string' ? psbt : psbt.toBase64());
+      // Share.open({
+      //   url: 'file://' + filePath,
+      //   saveToFiles: isCatalyst,
+      // })
+      //   .catch(error => {
+      //     console.log(error);
+      //   })
+      //   .finally(() => {
+      //     RNFS.unlink(filePath);
+      //   });
     } else if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
         title: loc.send.permission_storage_title,
@@ -206,47 +206,47 @@ const PsbtWithHardwareWallet = () => {
       });
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Storage Permission: Granted');
-        const filePath = RNFS.DownloadDirectoryPath + `/${fileName}`;
-        try {
-          await RNFS.writeFile(filePath, typeof psbt === 'string' ? psbt : psbt.toBase64());
-          alert(loc.formatString(loc.send.txSaved, { filePath: fileName }));
-        } catch (e) {
-          console.log(e);
-          alert(e.message);
-        }
-      } else {
-        console.log('Storage Permission: Denied');
-        Alert.alert(loc.send.permission_storage_title, loc.send.permission_storage_denied_message, [
-          {
-            text: loc.send.open_settings,
-            onPress: () => {
-              Linking.openSettings();
-            },
-            style: 'default',
-          },
-          { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
-        ]);
-      }
+      //   console.log('Storage Permission: Granted');
+      //   const filePath = RNFS.DownloadDirectoryPath + `/${fileName}`;
+      //   try {
+      //     await RNFS.writeFile(filePath, typeof psbt === 'string' ? psbt : psbt.toBase64());
+      //     alert(loc.formatString(loc.send.txSaved, { filePath: fileName }));
+      //   } catch (e) {
+      //     console.log(e);
+      //     alert(e.message);
+      //   }
+      // } else {
+      //   console.log('Storage Permission: Denied');
+      //   Alert.alert(loc.send.permission_storage_title, loc.send.permission_storage_denied_message, [
+      //     {
+      //       text: loc.send.open_settings,
+      //       onPress: () => {
+      //         Linking.openSettings();
+      //       },
+      //       style: 'default',
+      //     },
+      //     { text: loc._.cancel, onPress: () => {}, style: 'cancel' },
+      //   ]);
+      // }
     }
   };
 
   const openSignedTransaction = async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: Platform.OS === 'ios' ? ['io.bluewallet.psbt', 'io.bluewallt.psbt.txn'] : [DocumentPicker.types.allFiles],
-      });
-      const file = await RNFS.readFile(res.uri);
-      if (file) {
-        onBarScanned({ data: file });
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      if (!DocumentPicker.isCancel(err)) {
-        alert(loc.send.details_no_signed_tx);
-      }
-    }
+    // try {
+    //   const res = await DocumentPicker.pick({
+    //     type: Platform.OS === 'ios' ? ['io.bluewallet.psbt', 'io.bluewallt.psbt.txn'] : [DocumentPicker.types.allFiles],
+    //   });
+    //   const file = await RNFS.readFile(res.uri);
+    //   if (file) {
+    //     onBarScanned({ data: file });
+    //   } else {
+    //     throw new Error();
+    //   }
+    // } catch (err) {
+    //   if (!DocumentPicker.isCancel(err)) {
+    //     alert(loc.send.details_no_signed_tx);
+    //   }
+    // }
   };
 
   const openScanner = () => {
