@@ -334,6 +334,7 @@ const App = () => {
     );
   };
   return (
+    <SafeAreaProvider>
       <View style={styles.root}>
         <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
         <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? BlueDarkTheme : BlueDefaultTheme}>
@@ -342,7 +343,12 @@ const App = () => {
           {renderClipboardContentModal()}
         </NavigationContainer>
       </View>
-  
+      <WatchConnectivity />
+      <DeviceQuickActions />
+      <WalletImport />
+      <Biometric />
+      <WidgetCommunication />
+    </SafeAreaProvider>
   );
 };
 

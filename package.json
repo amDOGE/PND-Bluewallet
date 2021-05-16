@@ -15,7 +15,6 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.1.0",
     "babel-preset-flow": "^6.23.0",
-    "detox-recorder": "^1.0.149",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.2",
@@ -177,6 +176,7 @@
     "secure-random": "1.1.2",
     "slip39": "file:blue_modules/slip39",
     "stream-browserify": "2.0.2",
+    "react-native-windows": "0.64.7",
     "url": "0.11.0",
     "util": "0.12.3",
     "wif": "2.0.6"
