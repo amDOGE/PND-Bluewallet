@@ -229,7 +229,7 @@ const PsbtWithHardwareWallet = () => {
       //   ]);
       // }
     }
-  };
+  }};
 
   const openSignedTransaction = async () => {
     // try {
