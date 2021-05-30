@@ -9,17 +9,20 @@ jest.mock('react-native-watch-connectivity', () => {
 });
 
 jest.mock('react-native-secure-key-store', () => {
-  return {
-    setResetOnAppUninstallTo: jest.fn(),
-  };
+  return {};
 });
 
 jest.mock('@react-native-community/push-notification-ios', () => {
   return {};
 });
 
+jest.mock('@sentry/react-native', () => {
+  return {};
+});
+
 jest.mock('react-native-device-info', () => {
   return {
+    getUniqueId: jest.fn().mockReturnValue('uniqueId'),
     getSystemName: jest.fn(),
     hasGmsSync: jest.fn().mockReturnValue(true),
     hasHmsSync: jest.fn().mockReturnValue(false),
@@ -96,7 +99,9 @@ jest.mock('react-native-haptic-feedback', () => ({}));
 const realmInstanceMock = {
   close: function () {},
   write: function () {},
-  objectForPrimaryKey: function () { return {}; },
+  objectForPrimaryKey: function () {
+    return {};
+  },
   objects: function () {
     const wallets = {
       filtered: function () {

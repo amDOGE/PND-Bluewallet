@@ -19,7 +19,7 @@ import Share from 'react-native-share';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import DocumentPicker from 'react-native-document-picker';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
-import { isCatalyst, isMacCatalina } from '../../blue_modules/environment';
+import { isDesktop, isMacCatalina } from '../../blue_modules/environment';
 // import RNFS from 'react-native-fs';
 import Biometric from '../../class/biometrics';
 
