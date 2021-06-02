@@ -4,7 +4,7 @@ import { Image, View, TouchableOpacity, StatusBar, Platform, StyleSheet, TextInp
 import { RNCamera } from 'react-native-camera';
 import { Icon } from 'react-native-elements';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { decodeUR, extractSingleWorkload } from 'bc-ur';
+import { decodeUR, extractSingleWorkload } from '../../blue_modules/ur';
 import { useNavigation, useRoute, useIsFocused, useTheme } from '@react-navigation/native';
 import loc from '../../loc';
 import { BlueLoading, BlueText, BlueButton, BlueSpacing40 } from '../../BlueComponents';

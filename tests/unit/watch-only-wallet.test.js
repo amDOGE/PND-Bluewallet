@@ -1,5 +1,5 @@
 import { WatchOnlyWallet } from '../../class';
-import { decodeUR } from 'bc-ur/dist';
+import { decodeUR, encodeUR, extractSingleWorkload } from '../../blue_modules/ur';
 import { Psbt } from 'bitcoinjs-lib';
 const assert = require('assert');
 
@@ -320,5 +320,49 @@ describe('BC-UR', () => {
       tx.toHex(),
       '0200000000010179a8cb95eb6982c48fa79d31cd6c557b9382d56b6ec5bea8baed300b0625e6ea0100000000feffffff02fc630000000000001600142526fbd63288672766d4aeaa1b3957054483e89e204e000000000000160014c1ad3414335a36d1b1e89ba7214151b211163ec602473044022077ad33068b4a8da130ac8a64a3efbbaabaf18fa20d705adc86d53cbb69c18258022035eea4daadf9ba51080f57a7a3476d9f300414e82c544d58a24e682161e4be700121026757c3ea5b1d39f584ef358ac7c7f0eb99b290c625642529e0b4cc6472401c3f00000000',
     );
+  });
+
+  it('v1: decodeUR() txt works', () => {
+    const txtFileFormatMultisigNativeSegwit =
+      'UR:BYTES/TYQHKGEQGDHKYM6KV96KCAPQF46KCARFWD5KWGRNV4682UPQVE5KCEFQ9P3HYETPW3JKGGR0DCSYGVEHG4Q5GWPC9Y9ZXZJWV9KK2W3QGDT97VENGG65YWF3G90NYTFJPFGX7MRFVDUN5GPJYPHKVGPJPFZX2UNFWESHG6T0DCAZQMF0XSUZWTESYUHNQFE0XGNS53N0WFKKZAP6YPGRY46NFQ9Q53PNXAZ5Z3PC8QAZQKNSW43RWDRFDFCXV6Z92F9YU6NGGD94S5NNWP2XGNZ22C6K2M69D4F4YKNYFPC5GANS8944VARY2EZHJ62CDVMHQKRC2F3XVKN629M8X3ZXWPNYGJZ9FPT8G4NS0Q6YG73EG3R42468DCE9S6E40FRN2AF5X4G4GNTNT9FNYAN2DA5YU5G2XYMRS3ZYXCCRXW3QTFC82C3HX4K5Z3FCG448J7ZN0FHHJ5RDGAHXGD29XEXHJ3PHG9XYWNNWV3E824MKX5E8SUR6D9K4552TW44HWAJ9VEV9GJR3D4YRSMNZVF3NVCMR2Q6HGVNPF5EK6AMNXDCYKK2NDE9HQJ6DF4UHGERZFEZ453J40P9H57N5T9RY6WZSDC9QWZ5LU2';
+    const rez = decodeUR([txtFileFormatMultisigNativeSegwit]);
+    const b = Buffer.from(rez, 'hex');
+    assert.strictEqual(
+      b.toString('ascii'),
+      "# CoboVault Multisig setup file (created on D37EAD88)\n#\nName: CV_33B5B91A_2-2\nPolicy: 2 of 2\nDerivation: m/48'/0'/0'/2'\nFormat: P2WSH\n\nD37EAD88: Zpub74ijpfhERJNjhCKXRspTdLJV5eoEmSRZdHqDvp9kVtdVEyiXk7pXxRbfZzQvsDFpfDHEHVtVpx4Dz9DGUWGn2Xk5zG5u45QTMsYS2vjohNQ\n168DD603: Zpub75mAE8EjyxSzoyPmGnd5E6MyD7ALGNndruWv52xpzimZQKukwvEfXTHqmH8nbbc6ccP5t2aM3mws3pKYSnKpKMMytdbNEZFUxKzztYFM8Pn\n",
+    );
+  });
+
+  it('v2: decodeUR() works', () => {
+    const decoded = decodeUR([
+      'ur:crypto-output/taadmwtaaddlosaowkaxhdclaxmdrpfxwkhptpnewevawkynfpjedemnjkaeghcfqzlkuotplrihmefrtecwgrvwwdaahdcxmhiodypyleaxzogrpkeyptbgbwgwdwhpzeimvdbaaoievewlzegrbkrnfthfammoahtaadehoeadadaoaeamtaaddyotadlncsghykaeykaeykaocyadwmtnkiaxaxattaaddyoeadlraewklawkaxaeaycybghflopadnhhlsfm',
+    ]);
+
+    assert.strictEqual(
+      decoded,
+      '{"ExtPubKey":"zpub6qT7amLcp2exr4mU4AhXZMjD9CFkopECVhUxc9LHW8pNsJG2B9ogs5sFbGZpxEeT5TBjLmc7EFYgZA9EeWEM1xkJMFLefzZc8eigRFhKB8Q","MasterFingerprint":"01EBDA7D","AccountKeyPath":"84\'/0\'/0\'"}',
+    );
+  });
+
+  it('v1: decodeUR() works', () => {
+    const txt = 'hello world';
+    const b = Buffer.from(txt, 'ascii');
+    let fragments = encodeUR(b.toString('hex'), 666);
+    assert.deepStrictEqual(fragments, ['ur:bytes/fd5x2mrvdus8wmmjd3jqugwtl9']);
+    assert.strictEqual(Buffer.from(decodeUR(fragments), 'hex').toString('ascii'), txt);
+
+    fragments = encodeUR(b.toString('hex'), 10);
+    assert.deepStrictEqual(fragments, [
+      'ur:bytes/1of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/fd5x2mrvdu',
+      'ur:bytes/2of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/s8wmmjd3jq',
+      'ur:bytes/3of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/ugwtl9',
+    ]);
+    assert.strictEqual(Buffer.from(decodeUR(fragments), 'hex').toString('ascii'), txt);
+  });
+
+  it('v1: extractSingleWorkload() works', () => {
+    const [index, total] = extractSingleWorkload('ur:bytes/2of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/s8wmmjd3jq');
+    assert.strictEqual(index, 2);
+    assert.strictEqual(total, 3);
   });
 });
