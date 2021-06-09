@@ -25,7 +25,7 @@ import RNFS from 'react-native-fs';
 import BigNumber from 'bignumber.js';
 import * as bitcoin from 'bitcoinjs-lib';
 
-import { BlueButton, BlueDismissKeyboardInputAccessory, BlueListItem, BlueLoading, BlueText } from '../../BlueComponents';
+import { BlueButton, BlueDismissKeyboardInputAccessory, BlueListItem, BlueLoading } from '../../BlueComponents';
 import { navigationStyleTx } from '../../components/navigationStyle';
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
 import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
@@ -56,7 +56,7 @@ const SendDetails = () => {
 
   // state
   const [width, setWidth] = useState(Dimensions.get('window').width);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState(null);
   const [walletSelectionOrCoinsSelectedHidden, setWalletSelectionOrCoinsSelectedHidden] = useState(false);
   const [isAmountToolbarVisibleForAndroid, setIsAmountToolbarVisibleForAndroid] = useState(false);
@@ -1190,9 +1190,7 @@ const SendDetails = () => {
           launchedBy={name}
         />
         {addresses.length > 1 && (
-          <BlueText style={[styles.of, stylesHook.of]}>
-            {loc.formatString(loc._.of, { number: index + 1, total: addresses.length })}
-          </BlueText>
+          <Text style={[styles.of, stylesHook.of]}>{loc.formatString(loc._.of, { number: index + 1, total: addresses.length })}</Text>
         )}
       </View>
     );
