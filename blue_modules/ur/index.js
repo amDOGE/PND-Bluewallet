@@ -1,8 +1,7 @@
 import { URDecoder } from '@apocentre/bc-ur';
-// import b58 from 'bs58check';
-import { CryptoOutput } from '@keystonehq/bc-ur-registry';
+import b58 from 'bs58check';
+import { CryptoAccount } from '@keystonehq/bc-ur-registry';
 import { decodeUR as origDecodeUr, encodeUR as origEncodeUR, extractSingleWorkload as origExtractSingleWorkload } from '../bc-ur/dist';
-// const HDNode = require('bip32');
 
 function encodeUR(arg1, arg2) {
   return origEncodeUR(arg1, arg2);
@@ -28,22 +27,33 @@ function decodeUR(arg) {
   }
 
   const decoded = decoder.resultUR();
-  const cryptoOutput = CryptoOutput.fromCBOR(decoded.cbor);
+  const cryptoAccount = CryptoAccount.fromCBOR(decoded.cbor);
 
-  /*const child = HDNode.fromPublicKey(cryptoOutput.getHDKey().getKey(), cryptoOutput.getHDKey().getChainCode());
-  const xpub = child.toBase58();
-  let data = b58.decode(xpub);
-  data = data.slice(4);
-  data = Buffer.concat([Buffer.from('04b24746', 'hex'), data]);
+  // now, crafting zpub out of data we have
+  const hdKey = cryptoAccount.outputDescriptors[0].getCryptoKey();
+  const version = Buffer.from('04b24746', 'hex');
+  const parentFingerprint = hdKey.getParentFingerprint();
+  const depth = hdKey.getOrigin().getDepth();
+  const depthBuf = Buffer.alloc(1);
+  depthBuf.writeUInt8(depth);
+  const components = hdKey.getOrigin().getComponents();
+  const lastComponents = components[components.length - 1];
+  const index = lastComponents.isHardened() ? lastComponents.getIndex() + 0x80000000 : lastComponents.getIndex();
+  const indexBuf = Buffer.alloc(4);
+  indexBuf.writeUInt32BE(index);
+  const chainCode = hdKey.getChainCode();
+  const key = hdKey.getKey();
+  const data = Buffer.concat([version, depthBuf, parentFingerprint, indexBuf, chainCode, key]);
+
   const zpub = b58.encode(data);
-  console.log(zpub);*/
 
   const result = {};
-  result.ExtPubKey = 'zpub6qT7amLcp2exr4mU4AhXZMjD9CFkopECVhUxc9LHW8pNsJG2B9ogs5sFbGZpxEeT5TBjLmc7EFYgZA9EeWEM1xkJMFLefzZc8eigRFhKB8Q'; // fixme
-  result.MasterFingerprint = cryptoOutput.getHDKey().getOrigin().getSourceFingerprint().toString('hex').toUpperCase();
-  result.AccountKeyPath = cryptoOutput.getHDKey().getOrigin().getPath();
+  result.ExtPubKey = zpub;
+  result.MasterFingerprint = cryptoAccount.getMasterFingerprint().toString('hex').toUpperCase();
+  result.AccountKeyPath = hdKey.getOrigin().getPath();
 
-  return JSON.stringify(result);
+  const str = JSON.stringify(result);
+  return Buffer.from(str, 'ascii').toString('hex'); // we are expected to return hex-encoded string
 }
 
 export { decodeUR, encodeUR, extractSingleWorkload };

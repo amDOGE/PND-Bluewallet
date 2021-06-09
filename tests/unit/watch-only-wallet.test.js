@@ -334,12 +334,17 @@ describe('BC-UR', () => {
   });
 
   it('v2: decodeUR() works', () => {
-    const decoded = decodeUR([
-      'ur:crypto-output/taadmwtaaddlosaowkaxhdclaxmdrpfxwkhptpnewevawkynfpjedemnjkaeghcfqzlkuotplrihmefrtecwgrvwwdaahdcxmhiodypyleaxzogrpkeyptbgbwgwdwhpzeimvdbaaoievewlzegrbkrnfthfammoahtaadehoeadadaoaeamtaaddyotadlncsghykaeykaeykaocyadwmtnkiaxaxattaaddyoeadlraewklawkaxaeaycybghflopadnhhlsfm',
-    ]);
+    const payload =
+      'UR:CRYPTO-ACCOUNT/OEADCYADWMTNKIAOLYTAADMWTAADDLOSAOWKAXHDCLAXMDRPFXWKHPTPNEWEVAWKYNFPJEDEMNJKAEGHCFQZLKUOTPLRIHMEFRTECWGRVWWDAAHDCXMHIODYPYLEAXZOGRPKEYPTBGBWGWDWHPZEIMVDBAAOIEVEWLZEGRBKRNFTHFAMMOAHTAADEHOEADADAOAEAMTAADDYOTADLNCSGHYKAEYKAEYKAOCYADWMTNKIAXAXATTAADDYOEADLRAEWKLAWKAXAEAYCYBGHFLOPACMIOWZLB';
+
+    const [index, total] = extractSingleWorkload(payload);
+    assert.strictEqual(index, 1);
+    assert.strictEqual(total, 1);
+
+    const decoded = decodeUR([payload]);
 
     assert.strictEqual(
-      decoded,
+      Buffer.from(decoded, 'hex').toString('ascii'),
       '{"ExtPubKey":"zpub6qT7amLcp2exr4mU4AhXZMjD9CFkopECVhUxc9LHW8pNsJG2B9ogs5sFbGZpxEeT5TBjLmc7EFYgZA9EeWEM1xkJMFLefzZc8eigRFhKB8Q","MasterFingerprint":"01EBDA7D","AccountKeyPath":"84\'/0\'/0\'"}',
     );
   });
