@@ -1,6 +1,6 @@
-import { URDecoder } from '@apocentre/bc-ur';
+import { URDecoder } from '@ngraveio/bc-ur';
 import b58 from 'bs58check';
-import { CryptoAccount } from '@keystonehq/bc-ur-registry';
+import { CryptoAccount, CryptoPSBT } from '@keystonehq/bc-ur-registry';
 import { decodeUR as origDecodeUr, encodeUR as origEncodeUR, extractSingleWorkload as origExtractSingleWorkload } from '../bc-ur/dist';
 
 function encodeUR(arg1, arg2) {
@@ -27,6 +27,12 @@ function decodeUR(arg) {
   }
 
   const decoded = decoder.resultUR();
+
+  if (decoded.type === 'crypto-psbt') {
+    const cryptoPsbt = CryptoPSBT.fromCBOR(decoded.cbor);
+    return cryptoPsbt.getPSBT().toString('hex');
+  }
+
   const cryptoAccount = CryptoAccount.fromCBOR(decoded.cbor);
 
   // now, crafting zpub out of data we have
@@ -56,4 +62,15 @@ function decodeUR(arg) {
   return Buffer.from(str, 'ascii').toString('hex'); // we are expected to return hex-encoded string
 }
 
-export { decodeUR, encodeUR, extractSingleWorkload };
+class BlueURDecoder extends URDecoder {
+  toString() {
+    const decoded = this.resultUR();
+
+    if (decoded.type === 'crypto-psbt') {
+      const cryptoPsbt = CryptoPSBT.fromCBOR(decoded.cbor);
+      return cryptoPsbt.getPSBT().toString('base64');
+    }
+  }
+}
+
+export { decodeUR, encodeUR, extractSingleWorkload, BlueURDecoder };
