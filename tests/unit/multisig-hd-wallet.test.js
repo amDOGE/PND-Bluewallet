@@ -1790,6 +1790,20 @@ describe('multisig-cosigner', () => {
     assert.strictEqual(cosigner.howManyCosignersWeHave(), 1);
   });
 
+  it('can parse cobo URv2 account', () => {
+    const cosigner = new MultisigCosigner(
+      'UR:CRYPTO-ACCOUNT/OEADCYADWMTNKIAOLYTAADMETAADDLOLAOWKAXHDCLAXHPDIHNWKMYCFHNROCARHSESKLDPDSWOTMWGTJNGWIYHYYNWSOLENTSUEMKTOTAVDAAHDCXBDHHBZSBURBSMKZOECOEHHJPHTSRVACMBGHEROMYCKHHNBHFHGNBGMNYAESPNDFHAHTAADEHOEADADAOAEAMTAADDYOTADLOCSDYYKAEYKAEYKAOYKAOCYADWMTNKIAXAAAYCYLOWLDITOJTCNDTAY',
+    );
+    assert.ok(cosigner.isValid());
+    assert.strictEqual(
+      cosigner.getXpub(),
+      'Zpub756tPxxwHiYkYiT12G2WUD2cpAHyVWhjvKPbXoY5jDZSyo71yG5C14LCuwhycTTAzgTUcQfddR8FFTQ1bSWR6kzmNbMEaVzUrj4Lhxbonjo',
+    );
+    assert.strictEqual(cosigner.getPath(), "m/48'/0'/0'/2'");
+    assert.strictEqual(cosigner.howManyCosignersWeHave(), 1);
+    assert.strictEqual(cosigner.getFp(), '01EBDA7D');
+  });
+
   it('can parse plain Zpub', () => {
     const cosigner = new MultisigCosigner(Zpub1);
     assert.ok(cosigner.isValid());

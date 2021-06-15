@@ -2,6 +2,7 @@ import { URDecoder } from '@ngraveio/bc-ur';
 import b58 from 'bs58check';
 import { CryptoAccount, CryptoPSBT } from '@keystonehq/bc-ur-registry';
 import { decodeUR as origDecodeUr, encodeUR as origEncodeUR, extractSingleWorkload as origExtractSingleWorkload } from '../bc-ur/dist';
+import { MultisigHDWallet } from '../../class';
 
 function encodeUR(arg1, arg2) {
   return origEncodeUR(arg1, arg2);
@@ -34,10 +35,16 @@ function decodeUR(arg) {
   }
 
   const cryptoAccount = CryptoAccount.fromCBOR(decoded.cbor);
+  // console.log(cryptoAccount.outputDescriptors[0]);
 
   // now, crafting zpub out of data we have
   const hdKey = cryptoAccount.outputDescriptors[0].getCryptoKey();
-  const version = Buffer.from('04b24746', 'hex');
+  const derivationPath = 'm/' + hdKey.getOrigin().getPath();
+  const isMultisig =
+    derivationPath === MultisigHDWallet.PATH_LEGACY ||
+    derivationPath === MultisigHDWallet.PATH_WRAPPED_SEGWIT ||
+    derivationPath === MultisigHDWallet.PATH_NATIVE_SEGWIT;
+  const version = Buffer.from(isMultisig ? '02aa7ed3' : '04b24746', 'hex');
   const parentFingerprint = hdKey.getParentFingerprint();
   const depth = hdKey.getOrigin().getDepth();
   const depthBuf = Buffer.alloc(1);
@@ -56,7 +63,7 @@ function decodeUR(arg) {
   const result = {};
   result.ExtPubKey = zpub;
   result.MasterFingerprint = cryptoAccount.getMasterFingerprint().toString('hex').toUpperCase();
-  result.AccountKeyPath = hdKey.getOrigin().getPath();
+  result.AccountKeyPath = derivationPath;
 
   const str = JSON.stringify(result);
   return Buffer.from(str, 'ascii').toString('hex'); // we are expected to return hex-encoded string

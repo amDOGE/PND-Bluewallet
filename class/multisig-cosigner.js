@@ -1,4 +1,5 @@
 import b58 from 'bs58check';
+import { decodeUR } from '../blue_modules/ur';
 const HDNode = require('bip32');
 
 export class MultisigCosigner {
@@ -61,6 +62,23 @@ export class MultisigCosigner {
         this._fp = json.xfp;
         this._xpub = json.xpub;
         this._path = json.path;
+        this._cosigners = [true];
+        this._valid = true;
+        return;
+      }
+    } catch (_) {
+      this._valid = false;
+    }
+
+    // is it cobo crypto-account URv2 ?
+    try {
+      const decoded = decodeUR([data]);
+      const jsonStr = Buffer.from(decoded, 'hex').toString('ascii');
+      const json = JSON.parse(jsonStr);
+      if (json && json.ExtPubKey && json.MasterFingerprint && json.AccountKeyPath) {
+        this._fp = json.MasterFingerprint;
+        this._xpub = json.ExtPubKey;
+        this._path = json.AccountKeyPath;
         this._cosigners = [true];
         this._valid = true;
         return;
