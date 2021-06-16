@@ -72,9 +72,7 @@ export class MultisigCosigner {
 
     // is it cobo crypto-account URv2 ?
     try {
-      const decoded = decodeUR([data]);
-      const jsonStr = Buffer.from(decoded, 'hex').toString('ascii');
-      const json = JSON.parse(jsonStr);
+      const json = JSON.parse(data);
       if (json && json.ExtPubKey && json.MasterFingerprint && json.AccountKeyPath) {
         this._fp = json.MasterFingerprint;
         this._xpub = json.ExtPubKey;
