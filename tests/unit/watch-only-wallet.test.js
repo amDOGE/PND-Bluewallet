@@ -1,5 +1,5 @@
 import { WatchOnlyWallet } from '../../class';
-import { decodeUR, encodeUR, extractSingleWorkload, BlueURDecoder } from '../../blue_modules/ur';
+import { decodeUR, encodeURv2, encodeURv1, extractSingleWorkload, BlueURDecoder } from '../../blue_modules/ur';
 import { Psbt } from 'bitcoinjs-lib';
 const assert = require('assert');
 
@@ -333,7 +333,7 @@ describe('BC-UR', () => {
     );
   });
 
-  it('v2: decodeUR() works', () => {
+  it('v2: decodeUR() crypto-account works', () => {
     const payload =
       'UR:CRYPTO-ACCOUNT/OEADCYADWMTNKIAOLYTAADMWTAADDLOSAOWKAXHDCLAXMDRPFXWKHPTPNEWEVAWKYNFPJEDEMNJKAEGHCFQZLKUOTPLRIHMEFRTECWGRVWWDAAHDCXMHIODYPYLEAXZOGRPKEYPTBGBWGWDWHPZEIMVDBAAOIEVEWLZEGRBKRNFTHFAMMOAHTAADEHOEADADAOAEAMTAADDYOTADLNCSGHYKAEYKAEYKAOCYADWMTNKIAXAXATTAADDYOEADLRAEWKLAWKAXAEAYCYBGHFLOPACMIOWZLB';
 
@@ -384,17 +384,36 @@ describe('BC-UR', () => {
   it('v1: decodeUR() works', () => {
     const txt = 'hello world';
     const b = Buffer.from(txt, 'ascii');
-    let fragments = encodeUR(b.toString('hex'), 666);
+    let fragments = encodeURv1(b.toString('hex'), 666);
     assert.deepStrictEqual(fragments, ['ur:bytes/fd5x2mrvdus8wmmjd3jqugwtl9']);
     assert.strictEqual(Buffer.from(decodeUR(fragments), 'hex').toString('ascii'), txt);
 
-    fragments = encodeUR(b.toString('hex'), 10);
+    fragments = encodeURv1(b.toString('hex'), 10);
     assert.deepStrictEqual(fragments, [
       'ur:bytes/1of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/fd5x2mrvdu',
       'ur:bytes/2of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/s8wmmjd3jq',
       'ur:bytes/3of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/ugwtl9',
     ]);
     assert.strictEqual(Buffer.from(decodeUR(fragments), 'hex').toString('ascii'), txt);
+  });
+
+  it('v2: decodeUR() bytes works', () => {
+    const payload =
+      'UR:BYTES/HKADKNCNCXGRIHKKJKJYJLJTIHCXGTKPJZJYINJKINIOCXJKIHJYKPJOCXIYINJZIHCXDEIAJPIHHSJYIHIECXJLJTCXDYEHFEFWFYFPEMFYDTBKCNBKGLHSJNIHFTCXGRGHHEFGFPFPESDYFEFWENHEEYDPEYBKGDJLJZINIAKKFTCXEYCXJLIYCXEYBKFYIHJPINKOHSJYINJLJTFTCXJNDLEEETDIDLDYDIDLDYDIDLEYDIBKFGJLJPJNHSJYFTCXGDEYHGGUFDBKBKDYEHFEFWFYFPEMFYFTCXHTJOKPIDEMECENJYGDKSKSKTFDINHKJEHKINGHEHEYFLEYHGGOFYEYIAJOFPFDKKHFHGISIMKOGRGDIDHDJLHKECIMFYHTGUKKJLEMEHKKFLECFXEHEEGSFXKPKTISKKIAGHGHFPKNIOGHGOIAGYIYIEIEGMETFGFGGHGYEHIDGUHGGMENJEKNJNGLIDGTFEHSHFKNGOJPIMEEGSISKSIDJLJTIMJLBKESEMFXFWEHECEEEYFTCXHTJOKPIDEMECHFKPHKIYKTJPFXIMEYGLHDKTFGGSGMIEIDKKKOGDGDJNGDKOEMGMJYIHGYKTFGGTHDFDGEGTGDJKFYKPFXEMKOISKOIDHGJSJLJNFEIEEMETHKJOJLGRIEEMJEGRJEIAIAGHGHFXFPJNJNIDECHFJNHDFPEHESHSISEMIMHDGYINIOGRGOIHKSJEIHGSIHKPGRIMKTJYFDKKENECJLBKYLYAHNRS';
+    const result = Buffer.from(decodeUR([payload]), 'hex').toString();
+    assert.ok(result.includes('Keystone Multisig setup file'));
+  });
+
+  it('v2: encodeUR() psbt works', () => {
+    const psbtHex =
+      '70736274ff01009a020000000258e87a21b56daf0c23be8e7070456c336f7cbaa5c8757924f545887bb2abdd750000000000ffffffff838d0427d0ec650a68aa46bb0b098aea4422c071b2ca78352a077959d07cea1d0100000000ffffffff0270aaf00800000000160014d85c2b71d0060b09c9886aeb815e50991dda124d00e1f5050000000016001400aea9a2e5f0f876a588df5546e8742d1d87008f000000000000000000';
+
+    const fragments = encodeURv2(psbtHex, 100);
+    assert.strictEqual(fragments.length, 2);
+    assert.deepStrictEqual(fragments, [
+      'ur:crypto-psbt/1-2/lpadaocsptcybkgdcarhhdgohdosjojkidjyzmadaenyaoaeaeaeaohdvsknclrejnpebncnrnmnjojofejzeojlkerdonspkpkkdkykfelokgprpyutkpaeaeaeaeaezmzmzmzmlslgaaditiwpihbkispkfgrkbdaslewdfycprtjsprsgksecdratkkhktimndacnch',
+      'ur:crypto-psbt/2-2/lpaoaocsptcybkgdcarhhdgokewdcaadaeaeaeaezmzmzmzmaojopkwtayaeaeaeaecmaebbtphhdnjstiambdassoloimwmlyhygdnlcatnbggtaevyykahaeaeaeaecmaebbaeplptoevwwtyakoonlourgofgvsjydpcaltaemyaeaeaeaeaeaeaeaeaeaeswhhtptt',
+    ]);
   });
 
   it('v1: extractSingleWorkload() works', () => {

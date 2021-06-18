@@ -1,5 +1,4 @@
 import b58 from 'bs58check';
-import { decodeUR } from '../blue_modules/ur';
 const HDNode = require('bip32');
 
 export class MultisigCosigner {
@@ -164,5 +163,49 @@ export class MultisigCosigner {
    */
   getAllCosigners() {
     return this._cosigners;
+  }
+
+  isNativeSegwit() {
+    return this.getXpub().startsWith('Zpub');
+  }
+
+  isWrappedSegwit() {
+    return this.getXpub().startsWith('Ypub');
+  }
+
+  isLegacy() {
+    return this.getXpub().startsWith('xpub');
+  }
+
+  getChainCodeHex() {
+    let data = b58.decode(this.getXpub());
+    data = data.slice(4);
+    data = data.slice(1);
+    data = data.slice(4);
+    data = data.slice(4, 36);
+    return data.toString('hex');
+  }
+
+  getKeyHex() {
+    let data = b58.decode(this.getXpub());
+    data = data.slice(4);
+    data = data.slice(1);
+    data = data.slice(4);
+    data = data.slice(36);
+    return data.toString('hex');
+  }
+
+  getParentFingerprintHex() {
+    let data = b58.decode(this.getXpub());
+    data = data.slice(4);
+    data = data.slice(1);
+    data = data.slice(0, 4);
+    return data.toString('hex');
+  }
+
+  getDepthNumber() {
+    let data = b58.decode(this.getXpub());
+    data = data.slice(4, 5);
+    return data.readInt8();
   }
 }
