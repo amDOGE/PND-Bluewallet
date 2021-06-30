@@ -225,4 +225,4 @@ class BlueURDecoder extends URDecoder {
   }
 }
 
-export { decodeUR, encodeUR, extractSingleWorkload, BlueURDecoder, encodeURv1, encodeURv2, isURv1Enabled, setUseURv1, clearUseURv1 };
+export { decodeUR, encodeUR, extractSingleWorkload, BlueURDecoder, isURv1Enabled, setUseURv1, clearUseURv1 };
