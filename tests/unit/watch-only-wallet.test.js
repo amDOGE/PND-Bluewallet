@@ -1,5 +1,5 @@
 import { WatchOnlyWallet } from '../../class';
-import { decodeUR, encodeURv2, encodeURv1, extractSingleWorkload, BlueURDecoder } from '../../blue_modules/ur';
+import { decodeUR, encodeUR, setUseURv1, clearUseURv1, extractSingleWorkload, BlueURDecoder } from '../../blue_modules/ur';
 import { Psbt } from 'bitcoinjs-lib';
 const assert = require('assert');
 
@@ -300,7 +300,7 @@ describe('Watch only wallet', () => {
 });
 
 describe('BC-UR', () => {
-  it('can decodeUR() and then combine unfinalized signed PSBT', () => {
+  it('v1: can decodeUR() and then combine unfinalized signed PSBT', () => {
     const unsignedPayload = decodeUR([
       'UR:BYTES/TYQ4XURNVF607QGQWYPQQQQQQ9U63JU4AD5C93Y057WNRNTV24AE8QK4DDHVT04GHTKNQZCXYHNW5QGQQQQQPLHLLLLS9LRRQQQQQQQQQQTQQ9P9YMAAVV5GVUNKD49W4GDNJ4C9GJP7383QFCQQQQQQQQQPVQQ5CXKNG9PNTGMDRV0GNWNJZS23KGG3V0KXQQQQQQQQQYQ375XRQQQQQQQQQQTQQ98UXJHTKAHE83Q8W5VGHH2G93698VZLP6PZQCPXW47RAFD36W04SNHNTZK8CLCWHXDJJRRZ2EP998STFNRYWFQPC0CC3N8X87Z5QQQGQQQQQZQQQQQQSQQQQQQQQQQQQQQQYGPQY5M4J23F3Z9TK6HZTRDD6M89QX955DEH3HXGXAC6NJQMT3CHYTJHRZXVUCLC2SQQPQQQQQQGQQQQQZQQZQQQQQQQQQQQQQ3QYQK6E2MCA75ZCRMMWZYWXNQKGKNNJC7JUXPNWR5QPYQC3EYRM4NDQ5VGENNRLP2QQQYQQQQQPQQQQQQGQQQQQQQQZQQQQQQQ6GYX3G',
     ]);
@@ -381,14 +381,15 @@ describe('BC-UR', () => {
     assert.ok(psbt);
   });
 
-  it('v1: decodeUR() works', () => {
+  it('v1: decodeUR() works', async () => {
+    await setUseURv1();
     const txt = 'hello world';
     const b = Buffer.from(txt, 'ascii');
-    let fragments = encodeURv1(b.toString('hex'), 666);
+    let fragments = encodeUR(b.toString('hex'), 666);
     assert.deepStrictEqual(fragments, ['ur:bytes/fd5x2mrvdus8wmmjd3jqugwtl9']);
     assert.strictEqual(Buffer.from(decodeUR(fragments), 'hex').toString('ascii'), txt);
 
-    fragments = encodeURv1(b.toString('hex'), 10);
+    fragments = encodeUR(b.toString('hex'), 10);
     assert.deepStrictEqual(fragments, [
       'ur:bytes/1of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/fd5x2mrvdu',
       'ur:bytes/2of3/fc38n9ue84vu8ra8ue6cdnrghws0dwep4f46q4rlrgdncwsg49lsw38e6m/s8wmmjd3jq',
@@ -404,11 +405,12 @@ describe('BC-UR', () => {
     assert.ok(result.includes('Keystone Multisig setup file'));
   });
 
-  it('v2: encodeUR() psbt works', () => {
+  it('v2: encodeUR() psbt works', async () => {
+    await clearUseURv1();
     const psbtHex =
       '70736274ff01009a020000000258e87a21b56daf0c23be8e7070456c336f7cbaa5c8757924f545887bb2abdd750000000000ffffffff838d0427d0ec650a68aa46bb0b098aea4422c071b2ca78352a077959d07cea1d0100000000ffffffff0270aaf00800000000160014d85c2b71d0060b09c9886aeb815e50991dda124d00e1f5050000000016001400aea9a2e5f0f876a588df5546e8742d1d87008f000000000000000000';
 
-    const fragments = encodeURv2(psbtHex, 100);
+    const fragments = encodeUR(psbtHex, 100);
     assert.strictEqual(fragments.length, 2);
     assert.deepStrictEqual(fragments, [
       'ur:crypto-psbt/1-2/lpadaocsptcybkgdcarhhdgohdosjojkidjyzmadaenyaoaeaeaeaohdvsknclrejnpebncnrnmnjojofejzeojlkerdonspkpkkdkykfelokgprpyutkpaeaeaeaeaezmzmzmzmlslgaaditiwpihbkispkfgrkbdaslewdfycprtjsprsgksecdratkkhktimndacnch',
