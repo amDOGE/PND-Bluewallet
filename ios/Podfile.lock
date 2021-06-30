@@ -260,13 +260,13 @@ PODS:
     - React
   - react-native-blur (0.8.0):
     - React
-  - react-native-camera (3.43.9):
+  - react-native-camera (3.44.1):
     - React-Core
-    - react-native-camera/RCT (= 3.43.9)
-    - react-native-camera/RN (= 3.43.9)
-  - react-native-camera/RCT (3.43.9):
+    - react-native-camera/RCT (= 3.44.1)
+    - react-native-camera/RN (= 3.44.1)
+  - react-native-camera/RCT (3.44.1):
     - React-Core
-  - react-native-camera/RN (3.43.9):
+  - react-native-camera/RN (3.44.1):
     - React-Core
   - react-native-document-picker (3.5.4):
     - React
@@ -274,7 +274,7 @@ PODS:
     - React
   - react-native-idle-timer (2.1.6):
     - React-Core
-  - react-native-image-picker (3.8.0):
+  - react-native-image-picker (3.8.1):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
@@ -285,7 +285,7 @@ PODS:
     - React
   - react-native-tor (0.1.7):
     - React
-  - react-native-webview (11.6.2):
+  - react-native-webview (11.6.4):
     - React-Core
   - react-native-widget-center (0.0.4):
     - React
@@ -354,7 +354,7 @@ PODS:
     - React
   - RemobileReactNativeQrcodeLocalImage (1.0.4):
     - React
-  - RNCAsyncStorage (1.15.4):
+  - RNCAsyncStorage (1.15.5):
     - React-Core
   - RNCClipboard (1.7.0):
     - React-Core
@@ -374,7 +374,7 @@ PODS:
     - React
   - RNKeychain (7.0.0):
     - React-Core
-  - RNLocalize (2.1.0):
+  - RNLocalize (2.1.1):
     - React-Core
   - RNPrivacySnapshot (1.0.0):
     - React
@@ -384,7 +384,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
-  - RNReanimated (2.1.0):
+  - RNReanimated (2.2.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -417,10 +417,10 @@ PODS:
     - React-Core
   - RNSecureKeyStore (1.0.0):
     - React
-  - RNSentry (2.5.0-beta.1):
+  - RNSentry (2.5.2):
     - React-Core
     - Sentry (= 7.0.0)
-  - RNShare (6.1.0):
+  - RNShare (6.2.1):
     - React-Core
   - RNSVG (12.1.1):
     - React
@@ -730,16 +730,16 @@ SPEC CHECKSUMS:
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-blue-crypto: 23f1558ad3d38d7a2edb7e2f6ed1bc520ed93e56
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-camera: a3193de4cc61352d9309d15a849b1e0c4a085ac4
+  react-native-camera: 6e6d25f6318980dd2837747760628b4442aac01a
   react-native-document-picker: c5752781fbc0c126c627c1549b037c139444a4cf
   react-native-fingerprint-scanner: c68136ca57e3704d7bdf5faa554ea535ce15b1d0
   react-native-idle-timer: 97b8283237d45146a7a5c25bdebe9e1e85f3687b
-  react-native-image-picker: a135b727a79e0f11423506994bfcdb96c6da4a06
+  react-native-image-picker: 5a7dd93d4f9dd0d910da5dde3707fd96f70d03b3
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
   react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-tcp-socket: 96a4f104cdcc9c6621aafe92937f163d88447c5b
   react-native-tor: 4f389f5719dad633542b57ea32744e954730e7ef
-  react-native-webview: 1f56115845c98f0a59dfbbac685797c014a821be
+  react-native-webview: 4288b81c682bca4dcc9037afb3ee118af2655c03
   react-native-widget-center: 0f81d17beb163e7fb5848b06754d7d277fe7d99a
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -753,7 +753,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RealmJS: 8a51eff2b9eaabf78b53a6819da6da6edde27467
   RemobileReactNativeQrcodeLocalImage: 57aadc12896b148fb5e04bc7c6805f3565f5c3fa
-  RNCAsyncStorage: b17c417b356114699a486715adfa5829a5d6d8b9
+  RNCAsyncStorage: 8324611026e8dc3706f829953aa6e3899f581589
   RNCClipboard: dac13db8b1ce9b998f1cbc7ca33440113602847f
   RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNCPushNotificationIOS: 5b1cf9ad2aaa107ecb92d5d2d7005ba521b2b97a
@@ -763,16 +763,16 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNHandoff: d3b0754cca3a6bcd9b25f544f733f7f033ccf5fa
   RNKeychain: f75b8c8b2f17d3b2aa1f25b4a0ac5b83d947ff8f
-  RNLocalize: ff053575acafb6ae18284974469bdf04fcaf6514
+  RNLocalize: b9a5d22c7e4ecb5db604861f1b1fff6013e03340
   RNPrivacySnapshot: 71919dde3c6a29dd332115409c2aec564afee8f4
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNRate: e0af7e724e5fcf89578dbd22ab6395c85402ef29
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
-  RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
+  RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSecureKeyStore: f1ad870e53806453039f650720d2845c678d89c8
-  RNSentry: 1868bcfe8c69b2c3b2451439a38b3ebea0a7510f
-  RNShare: c93ee0df653c76d913554272d56f6ffd8bdcb3cc
+  RNSentry: bfa1e2776c7413570e790cbbf79d2060dd0a565b
+  RNShare: 5ac8f6532ca4cd80fc71caef1cfbba1854a6a045
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   RNWatch: e4c5d19506c94506860032fb68aedd5991beb985
