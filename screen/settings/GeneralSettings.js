@@ -97,9 +97,6 @@ const GeneralSettings = () => {
         title="Legacy URv1 QR"
         switch={{ onValueChange: onLegacyURv1Switch, value: isURv1SwitchEnabled }}
       />
-      <BlueCard>
-        <BlueText>'sdfgs'</BlueText>
-      </BlueCard>
       <BlueSpacing20 />
     </ScrollView>
   );

@@ -34,8 +34,6 @@ async function isURv1Enabled() {
 }
 
 async function setUseURv1() {
-  await new Promise(resolve => setTimeout(resolve, 1000)); // sleep
-  // sleep is needed for test envirnment mostly, for a case when setUseURv1() and init function have a race condition
   useURv1 = true;
   return AsyncStorage.setItem(USE_UR_V1, '1');
 }

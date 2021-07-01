@@ -382,6 +382,8 @@ describe('BC-UR', () => {
   });
 
   it('v1: decodeUR() works', async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000)); // sleep
+    // sleep is needed because in test envirnment setUseURv1() and init function have a race condition
     await setUseURv1();
     const txt = 'hello world';
     const b = Buffer.from(txt, 'ascii');
