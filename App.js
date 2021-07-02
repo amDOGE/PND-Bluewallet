@@ -41,7 +41,7 @@ const A = require('./blue_modules/analytics');
 const eventEmitter = new NativeEventEmitter(NativeModules.EventEmitter);
 
 const ClipboardContentType = Object.freeze({
-  BITCOIN: 'BITCOIN',
+  BITCOIN: 'PANDACOIN',
   LIGHTNING: 'LIGHTNING',
 });
 

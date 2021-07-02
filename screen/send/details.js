@@ -333,7 +333,7 @@ const SendDetails = () => {
       return Alert.alert(loc.errors.error, loc.send.details_address_field_is_not_valid);
     }
 
-    const dataWithoutSchema = data.replace('bitcoin:', '').replace('BITCOIN:', '');
+    const dataWithoutSchema = data.replace('pandacoin:', '').replace('PANDACOIN:', '');
     if (wallet.isAddressValid(dataWithoutSchema)) {
       setAddresses(addresses => {
         addresses[scrollIndex.current].address = dataWithoutSchema;
@@ -348,7 +348,7 @@ const SendDetails = () => {
     let address = '';
     let options;
     try {
-      if (!data.toLowerCase().startsWith('bitcoin:')) data = `bitcoin:${data}`;
+      if (!data.toLowerCase().startsWith('pandacoin:')) data = `pandacoin:${data}`;
       const decoded = DeeplinkSchemaMatch.bip21decode(data);
       address = decoded.address;
       options = decoded.options;
@@ -361,7 +361,7 @@ const SendDetails = () => {
     }
 
     console.log('options', options);
-    if (btcAddressRx.test(address) || address.startsWith('bc1') || address.startsWith('BC1')) {
+    if (btcAddressRx.test(address) || address.startsWith('pn1') || address.startsWith('PN1')) {
       setAddresses(addresses => {
         addresses[scrollIndex.current].address = address;
         addresses[scrollIndex.current].amount = options.amount;
