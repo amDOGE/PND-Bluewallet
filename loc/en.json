@@ -477,7 +477,7 @@
     "vault_key": "Vault Key {number}",
     "required_keys_out_of_total": "Required keys out of the total",
     "fee": "Fee: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Confirm",
     "header": "Send",
     "share": "Share",
@@ -565,7 +565,7 @@
     "tip": "This feature allows you to see, label, freeze or select coins for improved wallet management. You can select multiple coins by tapping on the colored circles."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Max",
     "sat_byte": "sat/byte",
     "sats": "sats"

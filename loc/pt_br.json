@@ -472,7 +472,7 @@
     "vault_key": "Chave do cofre {número}",
     "required_keys_out_of_total": "Chaves obrigatórias do total",
     "fee": "Taxa: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Confirmar",
     "header": "Enviar",
     "share": "Compartilhar",
@@ -560,7 +560,7 @@
     "tip": "Permite que você veja, marque, congele ou selecione moedas para gerenciar melhor sua carteira."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Máx.",
     "sat_byte": "sat/byte",
     "sats": "sats"

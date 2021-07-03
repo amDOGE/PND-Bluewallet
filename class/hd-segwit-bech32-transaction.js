@@ -165,7 +165,7 @@ export class HDSegwitBech32Transaction {
       reversedHash = reversedHash.toString('hex');
       if (prevTransactions[reversedHash] && prevTransactions[reversedHash].vout && prevTransactions[reversedHash].vout[inp.index]) {
         let value = prevTransactions[reversedHash].vout[inp.index].value;
-        value = new BigNumber(value).multipliedBy(100000000).toNumber();
+        value = new BigNumber(value).multipliedBy(1000000).toNumber();
         wentIn += value;
         const address = SegwitBech32Wallet.witnessToAddress(inp.witness[inp.witness.length - 1]);
         utxos.push({ vout: inp.index, value: value, txId: reversedHash, address: address });
@@ -188,7 +188,7 @@ export class HDSegwitBech32Transaction {
     const targets = [];
     for (const outp of this._remoteTx.vout) {
       const address = outp.scriptPubKey.addresses[0];
-      const value = new BigNumber(outp.value).multipliedBy(100000000).toNumber();
+      const value = new BigNumber(outp.value).multipliedBy(1000000).toNumber();
       if (this._wallet.weOwnAddress(address)) {
         changeAmount += value;
       } else {
@@ -201,7 +201,7 @@ export class HDSegwitBech32Transaction {
     const unconfirmedUtxos = [];
     for (const outp of this._remoteTx.vout) {
       const address = outp.scriptPubKey.addresses[0];
-      const value = new BigNumber(outp.value).multipliedBy(100000000).toNumber();
+      const value = new BigNumber(outp.value).multipliedBy(1000000).toNumber();
       if (this._wallet.weOwnAddress(address)) {
         unconfirmedUtxos.push({
           vout: outp.n,

@@ -473,7 +473,7 @@
     "vault_key": "Klucz Skarbca {number}",
     "required_keys_out_of_total": "Wymagane klucze spośród wszystkich",
     "fee": "Opłata: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Potwierdź",
     "header": "Wyślij",
     "share": "Udostępnij",
@@ -561,7 +561,7 @@
     "tip": "Ta funkcja pozwala zobaczyć, nadać etykietę, zamrozić lub wybrać monety by usprawnić zarządzanie portelem. Możesz wybrać kilka monet wybierając kolorowe kółka."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Max",
     "sat_byte": "sat/bajt",
     "sats": "satoshi"

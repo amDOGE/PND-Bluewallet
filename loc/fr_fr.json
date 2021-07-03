@@ -473,7 +473,7 @@
     "vault_key": "Clé du coffre {number}",
     "required_keys_out_of_total": "Clés requises par rapport au total",
     "fee": "Frais: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Confirmer",
     "header": "Envoyer",
     "share": "Partager",
@@ -561,7 +561,7 @@
     "tip": "Permet de voir, étiqueter, bloquer ou sélectionner des UTXOs pour une meilleure gestion du portefeuille. Vous pouvez sélectionner plusieurs UTXOs en appuyant sur les cercles colorés."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "MAX",
     "sat_byte": "sat/byte",
     "sats": "sats"

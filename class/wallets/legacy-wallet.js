@@ -192,7 +192,7 @@ export class LegacyWallet extends AbstractWallet {
           address = output.scriptPubKey.addresses[0];
         }
         if (ownedAddressesHashmap[address]) {
-          const value = new BigNumber(output.value).multipliedBy(100000000).toNumber();
+          const value = new BigNumber(output.value).multipliedBy(1000000).toNumber();
           utxos.push({
             txid: tx.txid,
             txId: tx.txid,

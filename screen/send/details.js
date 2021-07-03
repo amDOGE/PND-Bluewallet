@@ -79,8 +79,10 @@ const SendDetails = () => {
   // if cutomFee is not set, we need to choose highest possible fee for wallet balance
   // if there are no funds for even Slow option, use 1 sat/byte fee
   const feeRate = useMemo(() => {
+    return '10000';
+    /*
     if (customFee) return customFee;
-    if (feePrecalc.slowFee === null) return '1'; // wait for precalculated fees
+    if (feePrecalc.slowFee === null) return '10000'; // wait for precalculated fees
     let initialFee;
     if (feePrecalc.fastestFee !== null) {
       initialFee = String(networkTransactionFees.fastestFee);
@@ -90,6 +92,7 @@ const SendDetails = () => {
       initialFee = String(networkTransactionFees.slowFee);
     }
     return initialFee;
+    */
   }, [customFee, feePrecalc, networkTransactionFees]);
 
   // keyboad effects
@@ -365,7 +368,7 @@ const SendDetails = () => {
       setAddresses(addresses => {
         addresses[scrollIndex.current].address = address;
         addresses[scrollIndex.current].amount = options.amount;
-        addresses[scrollIndex.current].amountSats = new BigNumber(options.amount).multipliedBy(100000000).toNumber();
+        addresses[scrollIndex.current].amountSats = new BigNumber(options.amount).multipliedBy(1000000).toNumber();
         return [...addresses];
       });
       setUnits(units => {
@@ -510,7 +513,7 @@ const SendDetails = () => {
     }
 
     navigation.navigate('Confirm', {
-      fee: new BigNumber(fee).dividedBy(100000000).toNumber(),
+      fee: new BigNumber(fee).dividedBy(1000000).toNumber(),
       memo,
       fromWallet: wallet,
       tx: tx.toHex(),
@@ -771,7 +774,7 @@ const SendDetails = () => {
     const recipients = psbt.txOutputs.filter(({ address }) => !changeAddresses.includes(address));
 
     navigation.navigate('CreateTransaction', {
-      fee: new BigNumber(psbt.getFee()).dividedBy(100000000).toNumber(),
+      fee: new BigNumber(psbt.getFee()).dividedBy(1000000).toNumber(),
       feeSatoshi: psbt.getFee(),
       wallet,
       tx: tx.toHex(),
@@ -1008,7 +1011,7 @@ const SendDetails = () => {
               component={TouchableOpacity}
               onPress={onUseAllPressed}
             />
-            {wallet.type === HDSegwitBech32Wallet.type && (
+            {false && wallet.type === HDSegwitBech32Wallet.type && (
               <BlueListItem
                 title={loc.send.details_adv_fee_bump}
                 Component={TouchableWithoutFeedback}
@@ -1260,8 +1263,8 @@ const SendDetails = () => {
             <TouchableOpacity
               testID="chooseFee"
               accessibilityRole="button"
-              onPress={() => setIsFeeSelectionModalVisible(true)}
-              disabled={isLoading}
+              onPress={() => false && setIsFeeSelectionModalVisible(true)}
+              disabled
               style={styles.fee}
             >
               <Text style={[styles.feeLabel, stylesHook.feeLabel]}>{loc.send.create_fee}</Text>
@@ -1277,7 +1280,9 @@ const SendDetails = () => {
               )}
             </TouchableOpacity>
             {renderCreateButton()}
+            {/*
             {renderFeeSelectionModal()}
+            */}
             {renderOptionsModal()}
           </KeyboardAvoidingView>
         </View>

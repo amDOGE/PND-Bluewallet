@@ -174,12 +174,14 @@ const TransactionsStatus = () => {
     }
   };
 
+  /*
   const navigateToRBFBumpFee = () => {
     navigate('RBFBumpFee', {
       txid: tx.hash,
       wallet: wallet.current,
     });
   };
+  */
 
   const navigateToRBFCancel = () => {
     navigate('RBFCancel', {
@@ -198,6 +200,7 @@ const TransactionsStatus = () => {
     navigate('TransactionDetails', { hash: tx.hash });
   };
 
+/*
   const renderCPFP = () => {
     if (isCPFPPossible === buttonStatus.unknown) {
       return (
@@ -215,7 +218,7 @@ const TransactionsStatus = () => {
       );
     }
   };
-
+*/
   const renderRBFCancel = () => {
     if (isRBFCancelPossible === buttonStatus.unknown) {
       return (
@@ -237,6 +240,7 @@ const TransactionsStatus = () => {
     }
   };
 
+/*
   const renderRBFBumpFee = () => {
     if (isRBFBumpFeePossible === buttonStatus.unknown) {
       return (
@@ -254,6 +258,7 @@ const TransactionsStatus = () => {
       );
     }
   };
+*/
 
   const renderTXMetadata = () => {
     if (txMetadata[tx.hash]) {
@@ -345,8 +350,10 @@ const TransactionsStatus = () => {
         </BlueCard>
 
         <View style={styles.actions}>
+          {/*
           {renderCPFP()}
           {renderRBFBumpFee()}
+          */}
           {renderRBFCancel()}
           <TouchableOpacity accessibilityRole="button" style={styles.details} onPress={navigateToTransactionDetials}>
             <Text style={styles.detailsText}>{loc.send.create_details.toLowerCase()}</Text>

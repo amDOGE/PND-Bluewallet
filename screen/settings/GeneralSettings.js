@@ -69,6 +69,7 @@ const GeneralSettings = () => {
         </>
       )}
       <BlueListItem title={loc.settings.privacy} onPress={navigateToPrivacy} testID="SettingsPrivacy" chevron />
+      {/* pandacoin TODO: re-enable this
       {Platform.OS === 'ios' ? (
         <>
           <BlueListItem
@@ -83,6 +84,7 @@ const GeneralSettings = () => {
           <BlueSpacing20 />
         </>
       ) : null}
+      */}
       <BlueListItem
         Component={TouchableWithoutFeedback}
         title={loc.settings.general_adv_mode}

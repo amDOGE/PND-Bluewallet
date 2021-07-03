@@ -25,14 +25,16 @@ export default class Marketplace extends Component {
   }
 
   async componentDidMount() {
+    /*
     let address;
     if (this.state.fromWallet && this.state.fromWallet.getAddressAsync) {
       address = await this.state.fromWallet.getAddressAsync();
     } else if (this.state.fromWallet && this.state.fromWallet.getAddress) {
       address = this.state.fromWallet.getAddress();
     }
+    */
 
-    const url = 'https://bluewallet.io/marketplace-btc/?address=' + address; // default
+    const url = 'https://pandacoin.tech/resources#exchanges'; // default
 
     this.setState({
       url,

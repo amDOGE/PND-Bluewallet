@@ -384,7 +384,7 @@
     "provide_signature": "ใส่ลายเซ็น",
     "required_keys_out_of_total": "กุญแจที่ต้องการจากทั้งหมด",
     "fee": "ค่าธรรมเนียม: {number}",
-    "fee_btc": "{number} บิตคอยน์",
+    "fee_btc": "{number} เหรียญแพนด้า",
     "confirm": "ยืนยัน",
     "header": "ส่ง",
     "share": "แชร์",
@@ -434,7 +434,7 @@
     "use_coins": "ใช้เหรียญ"
   },
   "units": {
-    "BTC": "บิตคอยน์",
+    "PND": "เหรียญแพนด้า",
     "sat_byte": "แซทต่อไบท์",
     "sats": "แซท"
   }

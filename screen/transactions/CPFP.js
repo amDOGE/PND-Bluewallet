@@ -16,7 +16,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Text } from 'react-native-elements';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
-import { BlueButton, BlueCard, BlueReplaceFeeSuggestions, BlueSpacing, BlueSpacing20, BlueText, SafeBlueArea } from '../../BlueComponents';
+import { BlueButton, BlueCard, BlueSpacing, BlueSpacing20, BlueText, SafeBlueArea } from '../../BlueComponents';
 import navigationStyle from '../../components/navigationStyle';
 import { BlueCurrentTheme } from '../../components/themes';
 import { HDSegwitBech32Transaction, HDSegwitBech32Wallet } from '../../class';
@@ -178,7 +178,9 @@ export default class CPFP extends Component {
           <BlueCard style={styles.center}>
             <BlueText>{text}</BlueText>
             <BlueSpacing20 />
+            {/*
             <BlueReplaceFeeSuggestions onFeeSelected={fee => this.setState({ newFeeRate: fee })} transactionMinimum={this.state.feeRate} />
+            */}
             <BlueSpacing />
             <BlueButton
               disabled={this.state.newFeeRate <= this.state.feeRate}

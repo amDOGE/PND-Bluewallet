@@ -436,7 +436,7 @@
     "provide_signature": "署名を提供",
     "vault_key": "ヴォールトキー {number}",
     "fee": "費用: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "承認",
     "header": "送る",
     "share": "共有",
@@ -485,7 +485,7 @@
     "use_coins": "コインを利用"
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "sat_byte": "sat/byte",
     "sats": "sats"
   },

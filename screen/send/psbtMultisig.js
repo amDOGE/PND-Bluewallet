@@ -83,7 +83,7 @@ const PsbtMultisig = () => {
     }
   }
   destination = shortenAddress(destination.join(', '));
-  const totalBtc = new BigNumber(totalSat).dividedBy(100000000).toNumber();
+  const totalBtc = new BigNumber(totalSat).dividedBy(1000000).toNumber();
   const totalFiat = currency.satoshiToLocalCurrency(totalSat);
 
   const getFee = () => {
@@ -175,7 +175,7 @@ const PsbtMultisig = () => {
       const tx = psbt.extractTransaction().toHex();
       const satoshiPerByte = Math.round(getFee() / (tx.length / 2));
       navigate('Confirm', {
-        fee: new BigNumber(getFee()).dividedBy(100000000).toNumber(),
+        fee: new BigNumber(getFee()).dividedBy(1000000).toNumber(),
         memo: memo,
         fromWallet: wallet,
         tx,

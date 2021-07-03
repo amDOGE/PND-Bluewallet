@@ -416,7 +416,7 @@
     "multisig_vault_explain": "La miglior sicurezza per grossi importi",
     "required_keys_out_of_total": "Chiavi richieste sul totale",
     "fee": "Commissione: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Conferma",
     "header": "Invia",
     "share": "Condividi",
@@ -444,7 +444,7 @@
     "freezeLabel_un": "Scongela"
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Max",
     "sat_byte": "sat/byte",
     "sats": "sat"

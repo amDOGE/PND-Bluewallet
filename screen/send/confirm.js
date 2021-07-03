@@ -33,7 +33,7 @@ export default class Confirm extends Component {
       payjoinUrl: props.route.params.fromWallet.allowPayJoin() ? props.route.params?.payjoinUrl : false,
       psbt: props.route.params?.psbt,
       fee: props.route.params?.fee,
-      feeSatoshi: new Bignumber(props.route.params.fee).multipliedBy(100000000).toNumber(),
+      feeSatoshi: new Bignumber(props.route.params.fee).multipliedBy(1000000).toNumber(),
       memo: props.route.params.memo,
       recipients: props.route.params.recipients,
       size: Math.round(props.route.params.tx.length / 2),

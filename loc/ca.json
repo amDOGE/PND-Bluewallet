@@ -348,7 +348,7 @@
   },
   "multisig": {
     "multisig_vault": "Bóveda",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Confirmar",
     "header": "Enviar",
     "share": "Compartir",

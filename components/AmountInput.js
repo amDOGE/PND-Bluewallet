@@ -60,13 +60,13 @@ class AmountInput extends Component {
     let sats = 0;
     switch (previousUnit) {
       case BitcoinUnit.BTC:
-        sats = new BigNumber(amount).multipliedBy(100000000).toString();
+        sats = new BigNumber(amount).multipliedBy(1000000).toString();
         break;
       case BitcoinUnit.SATS:
         sats = amount;
         break;
       case BitcoinUnit.LOCAL_CURRENCY:
-        sats = new BigNumber(currency.fiatToBTC(amount)).multipliedBy(100000000).toString();
+        sats = new BigNumber(currency.fiatToBTC(amount)).multipliedBy(1000000).toString();
         break;
     }
     if (previousUnit === BitcoinUnit.LOCAL_CURRENCY && AmountInput.conversionCache[amount + previousUnit]) {
@@ -172,7 +172,7 @@ class AmountInput extends Component {
     let sat;
     switch (unit) {
       case BitcoinUnit.BTC:
-        sat = new BigNumber(amount).multipliedBy(100000000).toString();
+        sat = new BigNumber(amount).multipliedBy(1000000).toString();
         secondaryDisplayCurrency = formatBalanceWithoutSuffix(sat, BitcoinUnit.LOCAL_CURRENCY, false);
         break;
       case BitcoinUnit.SATS:

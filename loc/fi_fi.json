@@ -467,7 +467,7 @@
     "vault_key": "Vault-avain {number}",
     "required_keys_out_of_total": "Vaaditut avaimet kokonaismäärästä",
     "fee": "Siirtokulu: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Vahvista",
     "header": "Lähetä",
     "share": "Jaa",
@@ -555,7 +555,7 @@
     "tip": "Antaa sinun nähdä, merkitä, jäädyttää tai valita kolikoita parempaan lompakon hallintaan. Voit valita useita kolikoita napauttamalla värillisiä ympyröitä. "
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "MAX",
     "sat_byte": "sat/bitti",
     "sats": "sattia"

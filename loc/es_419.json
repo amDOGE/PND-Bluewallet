@@ -477,7 +477,7 @@
     "vault_key": "Clave de la Bóveda {number}",
     "required_keys_out_of_total": "Llaves requeridas del total",
     "fee": "Tarifa: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Confirmar",
     "header": "Enviar",
     "share": "Compartir",
@@ -565,7 +565,7 @@
     "tip": "Esta función te permite ver, etiquetar, congelar o seleccionar monedas para una mejor gestión de la cartera. Puedes seleccionar varias monedas tocando los círculos de colores."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Máx",
     "sat_byte": "sat/byte",
     "sats": "sats"

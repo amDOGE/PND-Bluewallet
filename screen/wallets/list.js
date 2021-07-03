@@ -216,6 +216,7 @@ const WalletsList = () => {
     );
   };
 
+  /*
   const renderLocalTrader = () => {
     if (wallets.every(wallet => wallet === false)) return null;
     if (wallets.length > 0 && !isImportingWallet) {
@@ -238,6 +239,7 @@ const WalletsList = () => {
       return null;
     }
   };
+  */
 
   const renderWalletsCarousel = () => {
     return (
@@ -259,8 +261,8 @@ const WalletsList = () => {
     switch (item.section.key) {
       case WalletsListSections.CAROUSEL:
         return isLargeScreen ? null : renderWalletsCarousel();
-      case WalletsListSections.LOCALTRADER:
-        return renderLocalTrader();
+      // case WalletsListSections.LOCALTRADER:
+      //  return renderLocalTrader();
       case WalletsListSections.TRANSACTIONS:
         return renderTransactionListsRow(item);
       default:

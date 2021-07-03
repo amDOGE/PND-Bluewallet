@@ -373,7 +373,7 @@ export class LightningCustodianWallet extends LegacyWallet {
       tx.walletID = this.getID();
       if (tx.amount) {
         // pending tx
-        tx.amt = tx.amount * -100000000;
+        tx.amt = tx.amount * -1000000;
         tx.fee = 0;
         tx.timestamp = tx.time;
         tx.memo = 'On-chain transaction';

@@ -713,6 +713,11 @@ module.exports.calcEstimateFeeFromFeeHistorgam = function (numberOfBlocks, feeHi
 };
 
 module.exports.estimateFees = async function () {
+  const fast = 10000;
+  const medium = 10000;
+  const slow = 10000;
+  return { fast, medium, slow };
+  /*
   let histogram;
   try {
     histogram = await Promise.race([mainClient.mempool_getFeeHistogram(), new Promise(resolve => setTimeout(resolve, 29000))]);
@@ -732,6 +737,7 @@ module.exports.estimateFees = async function () {
   const medium = Math.max(1, Math.round((fast * _medium) / _fast));
   const slow = Math.max(1, Math.round((fast * _slow) / _fast));
   return { fast, medium, slow };
+  */
 };
 
 /**
@@ -741,11 +747,15 @@ module.exports.estimateFees = async function () {
  * @returns {Promise<number>} Satoshis per byte
  */
 module.exports.estimateFee = async function (numberOfBlocks) {
+  return 0;
+  /*
+  Math.round(new BigNumber(10000).dividedBy(1024).multipliedBy(1000000).toNumber());
   if (!mainClient) throw new Error('Electrum client is not connected');
   numberOfBlocks = numberOfBlocks || 1;
   const coinUnitsPerKilobyte = await mainClient.blockchainEstimatefee(numberOfBlocks);
   if (coinUnitsPerKilobyte === -1) return 1;
-  return Math.round(new BigNumber(coinUnitsPerKilobyte).dividedBy(1024).multipliedBy(100000000).toNumber());
+  return Math.round(new BigNumber(coinUnitsPerKilobyte).dividedBy(1024).multipliedBy(1000000).toNumber());
+  */
 };
 
 module.exports.serverFeatures = async function () {
@@ -909,7 +919,7 @@ function txhexToElectrumTransaction(txhex) {
 
   let n = 0;
   for (const out of tx.outs) {
-    const value = new BigNumber(out.value).dividedBy(100000000).toNumber();
+    const value = new BigNumber(out.value).dividedBy(1000000).toNumber();
     let address = false;
     let type = false;
 

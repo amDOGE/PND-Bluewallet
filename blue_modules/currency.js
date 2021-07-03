@@ -92,7 +92,7 @@ function satoshiToLocalCurrency(satoshi) {
     return '...';
   }
 
-  let b = new BigNumber(satoshi).dividedBy(100000000).multipliedBy(exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]);
+  let b = new BigNumber(satoshi).dividedBy(1000000).multipliedBy(exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]);
 
   if (b.isGreaterThanOrEqualTo(0.005) || b.isLessThanOrEqualTo(-0.005)) {
     b = b.toFixed(2);
@@ -124,24 +124,24 @@ function satoshiToLocalCurrency(satoshi) {
 
 function BTCToLocalCurrency(bitcoin) {
   let sat = new BigNumber(bitcoin);
-  sat = sat.multipliedBy(100000000).toNumber();
+  sat = sat.multipliedBy(1000000).toNumber();
 
   return satoshiToLocalCurrency(sat);
 }
 
 function satoshiToBTC(satoshi) {
   let b = new BigNumber(satoshi);
-  b = b.dividedBy(100000000);
+  b = b.dividedBy(1000000);
   return b.toString(10);
 }
 
 function btcToSatoshi(btc) {
-  return new BigNumber(btc).multipliedBy(100000000).toNumber();
+  return new BigNumber(btc).multipliedBy(1000000).toNumber();
 }
 
 function fiatToBTC(fiatFloat) {
   let b = new BigNumber(fiatFloat);
-  b = b.dividedBy(exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]).toFixed(8);
+  b = b.dividedBy(exchangeRates['BTC_' + preferredFiatCurrency.endPointKey]).toFixed(6);
   return b;
 }
 

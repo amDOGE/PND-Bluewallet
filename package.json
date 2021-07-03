@@ -96,7 +96,7 @@
     "bc-bech32": "file:blue_modules/bc-bech32",
     "bech32": "2.0.0",
     "bignumber.js": "9.0.1",
-    "bip21": "2.0.3",
+    "bip21": "git+https://gitlab.com/pandacoin/pandacoinjs/bip21.git",
     "bip32": "git+https://gitlab.com/pandacoin/pandacoinjs/bip32.git",
     "bip39": "3.0.4",
     "bitcoinjs-lib": "git+https://gitlab.com/pandacoin/pandacoinjs/pandcoinjs-lib.git",

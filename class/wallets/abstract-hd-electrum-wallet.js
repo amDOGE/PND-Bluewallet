@@ -416,14 +416,14 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
           (vin.address && ownedAddressesHashmap[vin.address]) ||
           (vin.addresses && vin.addresses[0] && ownedAddressesHashmap[vin.addresses[0]])
         ) {
-          tx.value -= new BigNumber(vin.value).multipliedBy(100000000).toNumber();
+          tx.value -= new BigNumber(vin.value).multipliedBy(1000000).toNumber();
         }
       }
 
       for (const vout of tx.outputs) {
         // when output goes to our address - this means we are gaining!
         if (vout.scriptPubKey.addresses && vout.scriptPubKey.addresses[0] && ownedAddressesHashmap[vout.scriptPubKey.addresses[0]]) {
-          tx.value += new BigNumber(vout.value).multipliedBy(100000000).toNumber();
+          tx.value += new BigNumber(vout.value).multipliedBy(1000000).toNumber();
         }
       }
       ret.push(tx);
@@ -740,7 +740,7 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
           address = output.scriptPubKey.addresses[0];
         }
         if (ownedAddressesHashmap[address]) {
-          const value = new BigNumber(output.value).multipliedBy(100000000).toNumber();
+          const value = new BigNumber(output.value).multipliedBy(1000000).toNumber();
           utxos.push({
             txid: tx.txid,
             txId: tx.txid,

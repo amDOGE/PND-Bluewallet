@@ -29,7 +29,7 @@ export default class AOPP {
     if (query.v !== '0') throw new Error('Unsupported version');
     if (!query.msg) throw new Error('Message required');
     if (query.msg.lenth > 1024) throw new Error('Message is too big');
-    if (query.asset && query.asset !== 'btc') throw new Error('Unsupported asset');
+    if (query.asset && query.asset !== 'pnd') throw new Error('Unsupported asset');
     if (query.format) {
       if (![AOPP.typeAny, AOPP.typeP2wpkh, AOPP.typeP2sh, AOPP.typeP2pkh].includes(query.format)) {
         throw new Error('Unsupported address format');

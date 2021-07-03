@@ -421,7 +421,7 @@
     "provide_signature": "Aláírás végrehajtása ",
     "vault_key": "Trezor kulcs {number}",
     "fee": "Tranzakciós díj: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Megerősítés",
     "header": "Küldés",
     "share": "Megosztás",
@@ -476,7 +476,7 @@
     "use_coins": "Kriptopénz használata"
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "Maximum",
     "sat_byte": "sat/byte"
   }

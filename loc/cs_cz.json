@@ -473,7 +473,7 @@
     "vault_key": "Klíč úložiště {number}",
     "required_keys_out_of_total": "Požadované klíče z celkového počtu",
     "fee": "Poplatek: {number}",
-    "fee_btc": "{number} BTC",
+    "fee_btc": "{number} PND",
     "confirm": "Potvrdit",
     "header": "Odeslat",
     "share": "Sdílet",
@@ -561,7 +561,7 @@
     "tip": "Umožňuje zobrazit, označit, zmrazit nebo vybrat mince pro lepší správu peněženky. Klepnutím na barevné kruhy můžete vybrat více mincí."
   },
   "units": {
-    "BTC": "BTC",
+    "PND": "PND",
     "MAX": "MAX",
     "sat_byte": "sat/byte",
     "sats": "sats"

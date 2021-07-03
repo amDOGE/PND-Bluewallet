@@ -466,7 +466,7 @@
     "vault_key": "保管庫密鑰 {number}",
     "required_keys_out_of_total": "總數中所需的密鑰",
     "fee": "費用：{number}",
-    "fee_btc": "{number} 比特幣",
+    "fee_btc": "{number} 熊猫币",
     "confirm": "確認",
     "header": "發送",
     "share": "分享",
@@ -554,7 +554,7 @@
     "tip": "此功能使您可以查看、標記、凍結或選擇幣，以改善錢包管理。 您可以通過點擊彩色圓圈選擇多個幣。"
   },
   "units": {
-    "BTC": "比特幣",
+    "PND": "熊猫币",
     "MAX": "最大",
     "sat_byte": "聰/字節",
     "sats": "聰"

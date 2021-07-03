@@ -39,8 +39,8 @@ import WalletXpub from './screen/wallets/xpub';
 import SignVerify from './screen/wallets/signVerify';
 import WalletAddresses from './screen/wallets/addresses';
 import BuyBitcoin from './screen/wallets/buyBitcoin';
-import HodlHodl from './screen/wallets/hodlHodl';
-import HodlHodlViewOffer from './screen/wallets/hodlHodlViewOffer';
+// import HodlHodl from './screen/wallets/hodlHodl';
+// import HodlHodlViewOffer from './screen/wallets/hodlHodlViewOffer';
 import HodlHodlLogin from './screen/wallets/hodlHodlLogin';
 import HodlHodlWebview from './screen/wallets/hodlHodlWebview';
 import HodlHodlMyContracts from './screen/wallets/hodlHodlMyContracts';
@@ -123,8 +123,10 @@ const WalletsRoot = () => {
       <WalletsStack.Screen name="WalletDetails" component={WalletDetails} options={WalletDetails.navigationOptions(theme)} />
       <WalletsStack.Screen name="TransactionDetails" component={TransactionDetails} options={TransactionDetails.navigationOptions(theme)} />
       <WalletsStack.Screen name="TransactionStatus" component={TransactionStatus} options={TransactionStatus.navigationOptions(theme)} />
+      {/*
       <WalletsStack.Screen name="HodlHodl" component={HodlHodl} options={HodlHodl.navigationOptions(theme)} />
       <WalletsStack.Screen name="HodlHodlViewOffer" component={HodlHodlViewOffer} options={HodlHodlViewOffer.navigationOptions(theme)} />
+      */}
       <WalletsStack.Screen name="CPFP" component={CPFP} options={CPFP.navigationOptions(theme)} />
       <WalletsStack.Screen name="RBFBumpFee" component={RBFBumpFee} options={RBFBumpFee.navigationOptions(theme)} />
       <WalletsStack.Screen name="RBFCancel" component={RBFCancel} options={RBFCancel.navigationOptions(theme)} />

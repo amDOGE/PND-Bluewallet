@@ -167,7 +167,7 @@ function WatchConnectivity() {
               type = 'sent';
             }
           }
-        } else if (transaction.value / 100000000 < 0) {
+        } else if (transaction.value / 1000000 < 0) {
           type = 'sent';
         } else {
           type = 'received';
