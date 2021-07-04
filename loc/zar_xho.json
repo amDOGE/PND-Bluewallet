@@ -82,7 +82,7 @@
     "list_title": "ngeniswa"
   },
   "wallets": {
-    "add_bitcoin_explain": "Simple and powerful Bitcoin wallet",
+    "add_bitcoin_explain": "Simple and powerful Pandacoin wallet",
     "add_create": "Yakha",
     "add_import_wallet": "Ukungenisa ingxowa",
     "add_lightning": "Umbane",
@@ -113,7 +113,7 @@
     "list_empty_txs1": "Intengiso yakho iya kubonakala apha,",
     "list_empty_txs2": "akuho nanye okwangoku",
     "list_latest_transaction": "Utshintsho olutsha",
-    "list_tap_here_to_buy": "Cofa apha ukuthenga ibitcoin",
+    "list_tap_here_to_buy": "Cofa apha ukuthenga ipandacoin",
     "list_title": "Ingxowa",
     "reorder_title": "Yenza kwakhona ingxowa",
     "select_wallet": "Khetha ingxowa",

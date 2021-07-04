@@ -355,7 +355,7 @@
   },
   "wallets": {
     "add_bitcoin": "ビットコイン",
-    "add_bitcoin_explain": "シンプルかつパワフルなBitcoinウォレット",
+    "add_bitcoin_explain": "シンプルかつパワフルなPandacoinウォレット",
     "add_create": "作成",
     "add_entropy_generated": "生成されたエントロピーの {gen} バイト",
     "add_entropy_provide": "サイコロを振ってエントロピーを提供",
@@ -418,7 +418,7 @@
     "list_long_clipboard": "クリップボードからコピー",
     "list_long_scan": "QRコードをスキャン",
     "list_marketplace": "Marketplace",
-    "list_tap_here_to_buy": "Bitcoin を購入するにはここをタップ",
+    "list_tap_here_to_buy": "Pandacoin を購入するにはここをタップ",
     "list_title": "ウォレット",
     "list_tryagain": "再度試す",
     "looks_like_bip38": "パスワード保護された秘密鍵(BIP38)のようです。",
