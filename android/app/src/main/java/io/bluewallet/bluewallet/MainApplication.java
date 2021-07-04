@@ -1,4 +1,4 @@
-package io.bluewallet.bluewallet;
+package de.amdoge.bluewallet;
 
 import android.app.Application;
 import android.content.Context;

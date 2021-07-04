@@ -52,7 +52,7 @@ function WidgetCommunication() {
     }
   };
   const setValues = async () => {
-    await DefaultPreference.setName('group.io.bluewallet.bluewallet');
+    await DefaultPreference.setName('group.de.amdoge.bluewallet');
     const { allWalletsBalance, latestTransactionTime } = await allWalletsBalanceAndTransactionTime();
     await DefaultPreference.set(WidgetCommunication.WidgetCommunicationAllWalletsSatoshiBalance, JSON.stringify(allWalletsBalance));
     await DefaultPreference.set(

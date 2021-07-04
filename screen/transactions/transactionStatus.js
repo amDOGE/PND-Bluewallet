@@ -284,7 +284,7 @@ const TransactionsStatus = () => {
     <SafeBlueArea>
       <HandoffComponent
         title={`Bitcoin Transaction ${tx.hash}`}
-        type="io.bluewallet.bluewallet"
+        type="de.amdoge.bluewallet"
         url={`https://blockstream.info/tx/${tx.hash}`}
       />
 
