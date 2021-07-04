@@ -148,9 +148,9 @@ const TransactionsDetails = () => {
   return (
     <SafeBlueArea>
       <HandoffComponent
-        title={`Bitcoin Transaction ${tx.hash}`}
+        title={`Pandacoin Transaction ${tx.hash}`}
         type="de.amdoge.bluewallet"
-        url={`https://blockstream.info/tx/${tx.hash}`}
+        url={`https://explorer.thepandacoin.net/tx/${tx.hash}`}
       />
       <StatusBar barStyle="default" />
       <ScrollView style={styles.scroll}>

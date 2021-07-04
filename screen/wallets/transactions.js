@@ -605,7 +605,7 @@ const WalletTransactions = () => {
       <StatusBar barStyle="light-content" backgroundColor={WalletGradient.headerColorFor(wallet.type)} />
       {wallet.chain === Chain.ONCHAIN && wallet.type !== MultisigHDWallet.type && (
         <HandoffComponent
-          title={`Bitcoin Wallet ${wallet.getLabel()}`}
+          title={`Pandacoin Wallet ${wallet.getLabel()}`}
           type="de.amdoge.bluewallet"
           url={`https://blockpath.com/search/addr?q=${wallet.getXpub()}`}
         />

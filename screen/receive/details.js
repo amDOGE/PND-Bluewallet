@@ -376,9 +376,9 @@ const ReceiveDetails = () => {
       <StatusBar barStyle="light-content" />
       {address !== undefined && showAddress && (
         <HandoffComponent
-          title={`Bitcoin Transaction ${address}`}
+          title={`Pandacoin Transaction ${address}`}
           type="de.amdoge.bluewallet"
-          url={`https://blockstream.info/address/${address}`}
+          url={`https://explorer.thepandacoin.net/address/${address}`}
         />
       )}
       {showAddress ? renderReceiveDetails() : <BlueLoading />}
