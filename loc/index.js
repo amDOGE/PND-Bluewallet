@@ -291,7 +291,8 @@ export function formatBalanceWithoutSuffix(balance = 0, toUnit, withFormatting =
       const value = new BigNumber(balance).dividedBy(1000000).toFixed(6);
       return removeTrailingZeros(value);
     } else if (toUnit === BitcoinUnit.SATS) {
-      return withFormatting ? new Intl.NumberFormat().format(balance).toString() : String(balance);
+      const value = new BigNumber(balance).dividedBy(100);
+      return withFormatting ? new Intl.NumberFormat().format(value).toString() : String(value);
     } else if (toUnit === BitcoinUnit.LOCAL_CURRENCY) {
       return currency.satoshiToLocalCurrency(balance);
     }
