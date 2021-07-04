@@ -187,6 +187,7 @@ const About = () => {
         onPress={handleOnLicensingPress}
         title={loc.settings.about_license}
       />
+      {/*
       <BlueListItem
         leftIcon={{
           name: 'flask',
@@ -198,6 +199,7 @@ const About = () => {
         testID="RunSelfTestButton"
         title={loc.settings.about_selftest}
       />
+      */}
       <BlueSpacing20 />
       <BlueSpacing20 />
       <BlueTextCentered>
