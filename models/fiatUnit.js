@@ -8,6 +8,24 @@ export const FiatUnitSource = Object.freeze({
 });
 
 const RateExtractors = Object.freeze({
+  PNDRate: async ticker => {
+    const api = new Frisbee({ baseURI: 'https://api.coingecko.com' });
+    const res = await api.get(`/api/v3/simple/price?ids=pandacoin&vs_currencies=btc`);
+    if (res.err) throw new Error(`Could not update rate for ${ticker}: ${res.err}`);
+
+    let json;
+    try {
+      json = typeof res.body === 'string' ? JSON.parse(res.body) : res.body;
+    } catch (e) {
+      throw new Error(`Could not update rate for ${ticker}: ${e.message}`);
+    }
+    let rate = json?.pandacoin?.btc;
+    if (!rate) throw new Error(`Could not update rate for ${ticker}: data is wrong`);
+
+    rate = Number(rate);
+    if (!(rate >= 0)) throw new Error(`Could not update rate for ${ticker}: data is wrong`);
+    return rate;
+  },
   CoinDesk: async ticker => {
     const api = new Frisbee({ baseURI: 'https://api.coindesk.com' });
     const res = await api.get(`/v1/bpi/currentprice/${ticker}.json`);
@@ -24,6 +42,10 @@ const RateExtractors = Object.freeze({
 
     rate = Number(rate);
     if (!(rate >= 0)) throw new Error(`Could not update rate for ${ticker}: data is wrong`);
+
+    const pndRate = await RateExtractors.PNDRate(ticker);
+    rate = rate * pndRate;
+
     return rate;
   },
   Yadio: async ticker => {
@@ -42,6 +64,10 @@ const RateExtractors = Object.freeze({
 
     rate = Number(rate);
     if (!(rate >= 0)) throw new Error(`Could not update rate for ${ticker}: data is wrong`);
+
+    const pndRate = await RateExtractors.PNDRate(ticker);
+    rate = rate * pndRate;
+
     return rate;
   },
   BitcoinduLiban: async ticker => {
@@ -60,6 +86,10 @@ const RateExtractors = Object.freeze({
 
     rate = Number(rate);
     if (!(rate >= 0)) throw new Error(`Could not update rate for ${ticker}: data is wrong`);
+
+    const pndRate = await RateExtractors.PNDRate(ticker);
+    rate = rate * pndRate;
+
     return rate;
   },
   Exir: async ticker => {

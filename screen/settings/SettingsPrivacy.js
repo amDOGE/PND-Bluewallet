@@ -145,19 +145,6 @@ const SettingsPrivacy = () => {
         </>
       )}
       <BlueSpacing20 />
-
-      <BlueListItem
-        hideChevron
-        title={loc.settings.privacy_do_not_track}
-        Component={TouchableWithoutFeedback}
-        switch={{ onValueChange: onDoNotTrackValueChange, value: doNotTrackSwitchValue, disabled: isLoading === sections.ALL }}
-      />
-      <BlueCard>
-        <BlueText>{loc.settings.privacy_do_not_track_explanation}</BlueText>
-      </BlueCard>
-      <BlueSpacing20 />
-      <BlueListItem title={loc.settings.privacy_system_settings} chevron onPress={openApplicationSettings} testID="PrivacySystemSettings" />
-      <BlueSpacing20 />
     </ScrollView>
   );
 };

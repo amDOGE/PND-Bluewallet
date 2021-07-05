@@ -66,9 +66,13 @@
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
           <data android:scheme="pandacoin" />
+          <!--
           <data android:scheme="lightning" />
+          -->
           <data android:scheme="bluewallet" />
+          <!--
           <data android:scheme="lapp" />
+          -->
           <data android:scheme="blue" />
           <data android:scheme="aopp" />
         </intent-filter>
