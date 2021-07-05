@@ -1,6 +1,3 @@
-import * as Sentry from '@sentry/react-native';
-import amplitude from 'amplitude-js';
-
 const A = async event => {
   return;
 };
