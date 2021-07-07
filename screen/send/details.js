@@ -79,7 +79,7 @@ const SendDetails = () => {
   // if cutomFee is not set, we need to choose highest possible fee for wallet balance
   // if there are no funds for even Slow option, use 1 sat/byte fee
   const feeRate = useMemo(() => {
-    return '11000';
+    return '10100';
     /*
     if (customFee) return customFee;
     if (feePrecalc.slowFee === null) return '10000'; // wait for precalculated fees
@@ -394,7 +394,7 @@ const SendDetails = () => {
       if (!transaction.amount || transaction.amount < 0 || parseFloat(transaction.amount) === 0) {
         error = loc.send.details_amount_field_is_not_valid;
         console.log('validation error');
-      } else if (parseFloat(transaction.amountSats) <= 1000000) {
+      } else if (parseFloat(transaction.amountSats) < 1000000) {
         error = loc.send.details_amount_field_is_less_than_minimum_amount_sat;
         console.log('validation error');
       } else if (!requestedSatPerByte || parseFloat(requestedSatPerByte) < 1) {

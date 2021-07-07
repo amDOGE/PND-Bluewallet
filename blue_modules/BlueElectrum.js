@@ -713,9 +713,9 @@ module.exports.calcEstimateFeeFromFeeHistorgam = function (numberOfBlocks, feeHi
 };
 
 module.exports.estimateFees = async function () {
-  const fast = 11000;
-  const medium = 11000;
-  const slow = 11000;
+  const fast = 10100;
+  const medium = 10100;
+  const slow = 10100;
   return { fast, medium, slow };
   /*
   let histogram;

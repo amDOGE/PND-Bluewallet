@@ -178,7 +178,7 @@
     "details_adv_full_sure": "您確定要使用錢包的全部結餘來進行此交易嗎？",
     "details_adv_import": "匯入交易",
     "details_amount_field_is_not_valid": "金額無效",
-    "details_amount_field_is_less_than_minimum_amount_sat": "指定的金額太小，請輸入大于500聰 的金額。",
+    "details_amount_field_is_less_than_minimum_amount_sat": "指定的金額太小，請輸入大于1熊猫币数量。",
     "details_create": "建立",
     "details_error_decode": "錯誤：無法解密比特幣地址",
     "details_fee_field_is_not_valid": "費用無效",

@@ -178,7 +178,7 @@
     "details_adv_full_sure": "Tem certeza de que deseja usar o saldo total da sua carteira para esta transação?",
     "details_adv_import": "Importar Transação",
     "details_amount_field_is_not_valid": "O valor não é válido.",
-    "details_amount_field_is_less_than_minimum_amount_sat": "O valor especificado é muito baixo. Insira um valor acima de 500 sats.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "O valor especificado é muito baixo. Insira um valor acima de 1 PND.",
     "details_create": "Criar fatura",
     "details_error_decode": "Não foi possível decodificar o endereço Pandacoin",
     "details_fee_field_is_not_valid": "A taxa não é válida.",

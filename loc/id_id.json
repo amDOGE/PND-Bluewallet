@@ -177,7 +177,7 @@
     "details_adv_full_sure": "Apakah anda yakin ingin menggunakan saldo penuh dompet Anda untuk transaksi ini?",
     "details_adv_import": "Impor transaksi",
     "details_amount_field_is_not_valid": "Jumlah tidak valid",
-    "details_amount_field_is_less_than_minimum_amount_sat": "Jumlah terlalu kecil. Tolong masukkan jumlah yang lebih besar dari 500 sats.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "Jumlah terlalu kecil. Tolong masukkan jumlah yang lebih besar dari 1 PND.",
     "details_create": "Buat",
     "details_error_decode": "Tidak dapat membaca alamat Pandacoin",
     "details_fee_field_is_not_valid": "Tarif tidak valid",

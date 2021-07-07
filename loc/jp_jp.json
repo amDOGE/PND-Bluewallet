@@ -178,7 +178,7 @@
     "details_adv_full_sure": "本当にこのウォレットの全残高をこのトランザクションに利用しますか？",
     "details_adv_import": "トランザクションをインポート",
     "details_amount_field_is_not_valid": "金額欄が正しくありません",
-    "details_amount_field_is_less_than_minimum_amount_sat": "指定した金額が少なすぎます。500sats以上の金額を入力してください。",
+    "details_amount_field_is_less_than_minimum_amount_sat": "指定した金額が少なすぎます。1PND以上の金額を入力してください。",
     "details_create": "作成",
     "details_error_decode": "ビットコインアドレスを復号できません",
     "details_fee_field_is_not_valid": "手数料欄が正しくありません",

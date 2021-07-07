@@ -178,7 +178,7 @@
     "details_adv_full_sure": "Opravdu chcete pro tuto transakci použít celý zůstatek vaší peněženky?",
     "details_adv_import": "Importovat transakci",
     "details_amount_field_is_not_valid": "Čáskta není správně vyplněna",
-    "details_amount_field_is_less_than_minimum_amount_sat": "Zadaná částka je příliš malá. Zadejte částku větší než 500 sat.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "Zadaná částka je příliš malá. Zadejte částku větší než 1 PND.",
     "details_create": "Vytvořit fakturu",
     "details_error_decode": "Pandacoinovou adresu nelze dekódovat",
     "details_fee_field_is_not_valid": "Poplatek není správně vyplněn",

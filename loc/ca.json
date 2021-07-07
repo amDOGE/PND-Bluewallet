@@ -170,7 +170,7 @@
     "details_adv_full_sure": "Esteu segur que voleu utilitzar el saldo complet del moneder per a aquesta transacció?",
     "details_adv_import": "Importar transacció",
     "details_amount_field_is_not_valid": "Quantitat invalida",
-    "details_amount_field_is_less_than_minimum_amount_sat": "La quantitat especificada és massa petita. Introduïu una quantitat superior a 500 sats.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "La quantitat especificada és massa petita. Introduïu una quantitat superior a 1 PND.",
     "details_create": "Crear",
     "details_fee_field_is_not_valid": "Comissió invalida",
     "details_next": "Següent",

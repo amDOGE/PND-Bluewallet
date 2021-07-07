@@ -175,7 +175,7 @@
     "details_adv_full_sure": "Weet u zeker dat u het volledige saldo van uw wallet wilt gebruiken voor deze transactie?",
     "details_adv_import": "Importeer transactie",
     "details_amount_field_is_not_valid": "Bedrag is niet geldig",
-    "details_amount_field_is_less_than_minimum_amount_sat": "Het ingevoerde bedrag is te klein. Voer een bedrag in groter dan 500 sats.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "Het ingevoerde bedrag is te klein. Voer een bedrag in groter dan 1 PND.",
     "details_create": "Maak factuur aan",
     "details_error_decode": "Niet in staat het Pandacoin adres te decoderen",
     "details_fee_field_is_not_valid": "Tarief is niet geldig",

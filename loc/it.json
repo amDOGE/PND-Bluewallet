@@ -175,7 +175,7 @@
     "details_adv_full_sure": "Desideri veramente usare tutti i fondi in questo portafoglio per questa transazione?",
     "details_adv_import": "Importa Transazione",
     "details_amount_field_is_not_valid": "Importo non valido",
-    "details_amount_field_is_less_than_minimum_amount_sat": "L'importo specificato è troppo piccolo. Specifica un importo superiore a 500 sat.",
+    "details_amount_field_is_less_than_minimum_amount_sat": "L'importo specificato è troppo piccolo. Specifica un importo superiore a 1 PND.",
     "details_create": "Crea",
     "details_error_decode": "Impossibile decodificare l'indirizzo Pandacoin",
     "details_fee_field_is_not_valid": "Commissione non valida",
