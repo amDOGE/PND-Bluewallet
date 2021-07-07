@@ -268,8 +268,7 @@ export function formatBalance(balance, toUnit, withFormatting = false) {
     const value = new BigNumber(balance).dividedBy(1000000).toFixed(6);
     return removeTrailingZeros(value) + ' ' + strings.units[BitcoinUnit.BTC];
   } else if (toUnit === BitcoinUnit.SATS) {
-    const value = new BigNumber(balance).dividedBy(100);
-    return (withFormatting ? new Intl.NumberFormat().format(value).toString() : String(value)) + ' ' + strings.units[BitcoinUnit.SATS];
+    return (withFormatting ? new Intl.NumberFormat().format(balance).toString() : String(balance)) + ' ' + strings.units[BitcoinUnit.SATS];
   } else if (toUnit === BitcoinUnit.LOCAL_CURRENCY) {
     return currency.satoshiToLocalCurrency(balance);
   }
@@ -291,8 +290,7 @@ export function formatBalanceWithoutSuffix(balance = 0, toUnit, withFormatting =
       const value = new BigNumber(balance).dividedBy(1000000).toFixed(6);
       return removeTrailingZeros(value);
     } else if (toUnit === BitcoinUnit.SATS) {
-      const value = new BigNumber(balance).dividedBy(100);
-      return withFormatting ? new Intl.NumberFormat().format(value).toString() : String(value);
+      return withFormatting ? new Intl.NumberFormat().format(balance).toString() : String(balance);
     } else if (toUnit === BitcoinUnit.LOCAL_CURRENCY) {
       return currency.satoshiToLocalCurrency(balance);
     }
