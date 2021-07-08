@@ -19,6 +19,9 @@ import { isDesktop, isMacCatalina } from '../../blue_modules/environment';
 import { BlueStorageContext } from '../../blue_modules/storage-context';
 
 const fs = require('../../blue_modules/fs');
+const encryption = require('../blue_modules/encryption');
+const prompt = require('../blue_modules/prompt');
+import { atob } from 'react-native-watch-connectivity/dist/base64';
 
 const WalletsImport = () => {
   const [isToolbarVisibleForAndroid, setIsToolbarVisibleForAndroid] = useState(false);
@@ -57,11 +60,44 @@ const WalletsImport = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const tryLegacy = async (value, isOnBarScanned) => {
+    // pandacoin TODO: lower this to avoid having to base64check every input
+    const cleaned = value.trim().replace(/\n/g, '');
+    let importedOnce = false;
+    try {
+      if (atob(cleaned).startsWith("Salted")) {
+        let password = false;
+        do {
+          // pandacoin TODO: check if pw is valid
+          password = await prompt(loc.wallets.looks_like_bip38.replace("BIP38", "PND Legacy"), loc.wallets.enter_bip38_password, false);
+        } while (!password);
+        const decrypted = encryption.decrypt(cleaned, password);
+        for (const line of decrypted.split('\n')) {
+          const [mightBeWIF] = line.split(' ');
+          if (!line.startsWith("#") && mightBeWIF.length > 0) {
+            do {
+              await importMnemonic(mightBeWIF);
+              importedOnce = true;
+            } while (WalletImport.isCurrentlyImportingWallet())
+          }
+        }
+      }
+    } catch (e) {}
+    if (!importedOnce) {
+      if (isOnBarScanned) {
+        setTimeout(() => importMnemonic(value), 500);
+      } else {
+        importMnemonic(value);
+      }
+    }
+    return importedOnce;
+  }
+
   const importButtonPressed = () => {
     if (importText.trim().length === 0) {
       return;
     }
-    importMnemonic(importText);
+    tryLegacy(importText);
   };
 
   /**
@@ -114,7 +150,7 @@ const WalletsImport = () => {
   const onBarScanned = value => {
     if (value && value.data) value = value.data + ''; // no objects here, only strings
     setImportText(value);
-    setTimeout(() => importMnemonic(value), 500);
+    tryLegacy(value, true);
   };
 
   const importScan = () => {
