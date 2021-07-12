@@ -45,7 +45,7 @@ async function _getRealm() {
 }
 
 const storageKey = 'ELECTRUM_PEERS';
-const defaultPeer = { host: 'electrum.thepandacoin.net', tcp: '50001' };
+const defaultPeer = { host: 'electrum.thepandacoin.net', ssl: '50002' };
 const hardcodedPeers = [
   // { host: 'noveltybobble.coinjoined.com', tcp: '50001' }, // down
   // { host: 'electrum.be', tcp: '50001' },
@@ -55,7 +55,7 @@ const hardcodedPeers = [
   // { host: 'Bitkoins.nl', tcp: '50001' }, // down
   // { host: 'fullnode.coinkite.com', tcp: '50001' },
   // { host: 'preperfect.eleCTruMioUS.com', tcp: '50001' }, // down
-  { host: 'electrum.thepandacoin.net', tcp: '50001' },
+  { host: 'electrum.thepandacoin.net', ssl: '50002' },
 ];
 
 /** @type {ElectrumClient} */

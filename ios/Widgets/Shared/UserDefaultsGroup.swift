@@ -14,18 +14,18 @@ struct UserDefaultsElectrumSettings {
   let sslPort: Int32?
 }
 
-let DefaultElectrumPeers = [UserDefaultsElectrumSettings(host: "electrum.thepandacoin.net", port: 50001)]
+let DefaultElectrumPeers = [UserDefaultsElectrumSettings(host: "electrum.thepandacoin.net", port: 50001, sslPort: 50002)]
 
 class UserDefaultsGroup {
   static private let suite = UserDefaults(suiteName: UserDefaultsGroupKey.GroupName.rawValue)
 
   static func getElectrumSettings() -> UserDefaultsElectrumSettings {
     guard let electrumSettingsHost = suite?.string(forKey: UserDefaultsGroupKey.ElectrumSettingsHost.rawValue) else {
-      return UserDefaultsElectrumSettings(host: "electrum.thepandacoin.net", port: 50001)
+      return UserDefaultsElectrumSettings(host: "electrum.thepandacoin.net", port: 50001, sslPort: 50002)
     }
     
     let electrumSettingsTCPPort = suite?.string(forKey: UserDefaultsGroupKey.ElectrumSettingsTCPPort.rawValue) ?? "50001"
-    let electrumSettingsSSLPort = suite?.string(forKey: UserDefaultsGroupKey.ElectrumSettingsSSLPort.rawValue) ?? "443"
+    let electrumSettingsSSLPort = suite?.string(forKey: UserDefaultsGroupKey.ElectrumSettingsSSLPort.rawValue) ?? "50002"
     
     let host = electrumSettingsHost
     let sslPort = Int32(electrumSettingsSSLPort)
