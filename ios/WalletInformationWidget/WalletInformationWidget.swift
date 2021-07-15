@@ -12,13 +12,13 @@ import SwiftUI
 struct WalletInformationWidgetProvider: TimelineProvider {
   typealias Entry = WalletInformationWidgetEntry
   func placeholder(in context: Context) -> WalletInformationWidgetEntry {
-    return WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$10,000", rate: 10000), allWalletsBalance: WalletData(balance: 1000000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1568804029000)))
+    return WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$0.00035526", rate: 0.00035526), allWalletsBalance: WalletData(balance: 1000000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1626307200000)))
   }
   
   func getSnapshot(in context: Context, completion: @escaping (WalletInformationWidgetEntry) -> ()) {
     let entry: WalletInformationWidgetEntry
     if (context.isPreview) {
-      entry = WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$10,000", rate: 10000), allWalletsBalance: WalletData(balance: 1000000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1568804029000)))
+      entry = WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$0.00035526", rate: 0.00035526), allWalletsBalance: WalletData(balance: 1000000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1626307200000)))
     } else {
       entry = WalletInformationWidgetEntry(date: Date(), marketData: emptyMarketData)
     }
@@ -80,7 +80,7 @@ struct WalletInformationWidget: Widget {
 
 struct WalletInformationWidget_Previews: PreviewProvider {
   static var previews: some View {
-    WalletInformationWidgetEntryView(entry: WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$10,000", rate: Double(0)), allWalletsBalance: WalletData(balance: 10000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1568804029000))))
+    WalletInformationWidgetEntryView(entry: WalletInformationWidgetEntry(date: Date(), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$0.00035526", rate: Double(0)), allWalletsBalance: WalletData(balance: 10000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1626307200000))))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }

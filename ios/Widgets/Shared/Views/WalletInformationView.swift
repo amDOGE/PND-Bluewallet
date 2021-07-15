@@ -18,7 +18,7 @@ struct WalletInformationView: View {
     let numberFormatter = NumberFormatter()
     numberFormatter.locale = Locale(identifier: WidgetAPI.getUserPreferredCurrencyLocale())
     numberFormatter.numberStyle = .currency
-    let amount = numberFormatter.string(from:  NSNumber(value: ((allWalletsBalance.balance / 100000000) * marketData.rate))) ?? ""
+    let amount = numberFormatter.string(from:  NSNumber(value: ((allWalletsBalance.balance / 1000000) * marketData.rate))) ?? ""
     return amount
   }
   var formattedLatestTransactionTime: String {
@@ -58,7 +58,7 @@ struct WalletInformationView: View {
 
 struct WalletInformationView_Previews: PreviewProvider {
   static var previews: some View {
-    WalletInformationView(allWalletsBalance: WalletData(balance: 10000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1568804029000)), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$10,000", rate: Double(13000)))
+    WalletInformationView(allWalletsBalance: WalletData(balance: 10000, latestTransactionTime: LatestTransaction(isUnconfirmed: false, epochValue: 1626307200000)), marketData: MarketData(nextBlock: "26", sats: "9 134", price: "$0.00035526", rate: Double(13000)))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }

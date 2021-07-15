@@ -22,7 +22,7 @@ class NumericKeypadInterfaceController: WKInterfaceController {
     static let keypadDataChanged = Notification(name: NotificationName.keypadDataChanged)
   }
   enum NumericKeypadType: String {
-    case BTC = "BTC"
+    case BTC = "PND"
     case SATS = "sats"
   }
   

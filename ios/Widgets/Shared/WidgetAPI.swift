@@ -22,6 +22,22 @@ var numberFormatter: NumberFormatter {
 
 class WidgetAPI {
   static func fetchPrice(currency: String, completion: @escaping ((WidgetDataStore?, Error?) -> Void)) {
+    let cgUrlString: String = "https://api.coingecko.com/api/v3/simple/price?ids=pandacoin&vs_currencies=btc"
+    guard let cgUrl = URL(string:cgUrlString) else { return }
+
+    URLSession.shared.dataTask(with: cgUrl) { (data, response, error) in
+      guard let dataResponse = data,
+            let json = (try? JSONSerialization.jsonObject(with: dataResponse, options: .mutableContainers) as? Dictionary<String, Any>),
+            error == nil
+      else {
+        print(error?.localizedDescription ?? "Response Error")
+        completion(nil, error)
+        return
+      }
+      guard let rate = json["pandacoin"] as? [String: Any],
+            let cgRate = rate["btc"] as? Double
+      else { return }
+
     let currencyToFiatUnit = fiatUnit(currency: currency)
     guard let source = currencyToFiatUnit?.source, let endPointKey = currencyToFiatUnit?.endPointKey else { return }
 
@@ -53,19 +69,22 @@ class WidgetAPI {
       switch source {
       case "Yadio":
         guard let rateDict = json[endPointKey] as? [String: Any],
-              let rateDouble = rateDict["price"] as? Double,
+              var rateDouble = rateDict["price"] as? Double,
               let lastUpdated = json["timestamp"] as? Int
         else { break }
+        rateDouble *= cgRate
         let unix = Double(lastUpdated / 1_000)
         let lastUpdatedString = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: unix))
         latestRateDataStore = WidgetDataStore(rate: String(rateDouble), lastUpdate: lastUpdatedString, rateDouble: rateDouble)
       case "BitcoinduLiban":
         guard let rateString = json["BTC/LBP"] as? String else { break }
-        guard let rateDouble = Double(rateString) else { break }
+        guard var rateDouble = Double(rateString) else { break }
+        rateDouble *= cgRate
         let lastUpdatedString = ISO8601DateFormatter().string(from: Date())
         latestRateDataStore = WidgetDataStore(rate: rateString, lastUpdate: lastUpdatedString, rateDouble: rateDouble)
       case "Exir":
-        guard let rateDouble = json["last"] as? Double else { break }
+        guard var rateDouble = json["last"] as? Double else { break }
+        rateDouble *= cgRate
         let rateString = String(rateDouble)
         let lastUpdatedString = ISO8601DateFormatter().string(from: Date())
         latestRateDataStore = WidgetDataStore(rate: rateString, lastUpdate: lastUpdatedString, rateDouble: rateDouble)
@@ -73,10 +92,11 @@ class WidgetAPI {
         guard let bpi = json["bpi"] as? Dictionary<String, Any>,
               let preferredCurrency = bpi[endPointKey] as? Dictionary<String, Any>,
               let rateString = preferredCurrency["rate"] as? String,
-              let rateDouble = preferredCurrency["rate_float"] as? Double,
+              var rateDouble = preferredCurrency["rate_float"] as? Double,
               let time = json["time"] as? Dictionary<String, Any>,
               let lastUpdatedString = time["updatedISO"] as? String
         else { break }
+        rateDouble *= cgRate
         latestRateDataStore = WidgetDataStore(rate: rateString, lastUpdate: lastUpdatedString, rateDouble: rateDouble)
       }
 
@@ -87,6 +107,7 @@ class WidgetAPI {
 
       completion(latestRateDataStore, nil)
     }.resume()
+    }.resume() // why, yes, i do suck at swift. how could you tell?
   }
 
   static func getUserPreferredCurrency() -> String {

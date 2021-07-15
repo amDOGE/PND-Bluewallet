@@ -38,13 +38,13 @@ struct WalletData {
     let formatter = NumberFormatter()
     formatter.numberStyle = .none
     formatter.usesSignificantDigits = true
-    formatter.maximumSignificantDigits = 9
+    formatter.maximumSignificantDigits = 7
     formatter.roundingMode = .up
-    let value = NSNumber(value: balance / 100000000);
+    let value = NSNumber(value: balance / 1000000);
     if let valueString = formatter.string(from: value) {
-      return "\(String(describing: valueString)) BTC"
+      return "\(String(describing: valueString)) PND"
     } else {
-      return "0 BTC"
+      return "0 PND"
     }
   }
 
