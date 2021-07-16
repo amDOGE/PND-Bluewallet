@@ -369,7 +369,7 @@ const WalletTransactions = () => {
           <TouchableOpacity
             accessibilityRole="button"
             onPress={async () => {
-              Linking.openURL('https://bluewallet.io/marketplace/');
+              Linking.openURL('https://pandacoin.tech/resources#exchanges');
             }}
             style={[styles.marketplaceButton1, stylesHook.marketplaceButton1]}
           >

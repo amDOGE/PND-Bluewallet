@@ -79,7 +79,7 @@ const SendDetails = () => {
   // if cutomFee is not set, we need to choose highest possible fee for wallet balance
   // if there are no funds for even Slow option, use 1 sat/byte fee
   const feeRate = useMemo(() => {
-    return '10100';
+    return '10500';
     /*
     if (customFee) return customFee;
     if (feePrecalc.slowFee === null) return '10000'; // wait for precalculated fees

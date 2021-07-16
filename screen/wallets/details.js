@@ -286,7 +286,7 @@ const WalletDetails = () => {
         <SecondButton
           testID="Marketplace"
           onPress={async () => {
-            Linking.openURL('https://bluewallet.io/marketplace-btc/');
+            Linking.openURL('https://pandacoin.tech/resources#exchanges');
           }}
           title={loc.wallets.details_marketplace}
         />
