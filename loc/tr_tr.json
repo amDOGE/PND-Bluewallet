@@ -61,7 +61,7 @@
     "create_fake_storage": "Sahte şifreli depolama oluşturun",
     "create_password": "Şifre oluştur",
     "create_password_explanation": "Sahte depolama şifreniz, ana depolama şifrenizle aynı olmamalıdır.",
-    "help": "Bazı koşullar altında, şifrenizi açıklamanız gerekebilir. Paralarınızı güvende tutmak için, BlueWallet başka bir şifre ile şifreli depolama alanı yaratabilir. Baskı altında, Bu şifreyi 3. bir tarafa söyleyebilirsiniz. Girilirse BlueWallet, yeni 'sahte' bir depolamanın kilidini açacaktır. Bu 3. şahıslara normal görünecektir, ancak paraların olduğu ana depolama alanınızı gizlice saklamaya devam edecektir.",
+    "help": "Bazı koşullar altında, şifrenizi açıklamanız gerekebilir. Paralarınızı güvende tutmak için, PND BlueWallet başka bir şifre ile şifreli depolama alanı yaratabilir. Baskı altında, Bu şifreyi 3. bir tarafa söyleyebilirsiniz. Girilirse PND BlueWallet, yeni 'sahte' bir depolamanın kilidini açacaktır. Bu 3. şahıslara normal görünecektir, ancak paraların olduğu ana depolama alanınızı gizlice saklamaya devam edecektir.",
     "help2": "Yeni depolama alanı tamamen işlevsel olacak ve ufak bir miktar tutarsanız daha inanılır görünecektir.",
     "password_should_not_match": "Sahte depolama şifreniz, ana depolama şifrenizle aynı olmamalıdır",
     "retype_password": "Şifrenizi yeniden yazın",
@@ -75,7 +75,7 @@
     "ok_lnd": "Tamam, kaydettim.",
     "text": "Bir dakikanızı ayırıp nimonik cümlenizi bir parça kağıda not almayı ihmal etmeyin. Nimonik cümleniz, cüzdanınızı herhangi bir cihazda tekrar oluşturabilmenizi sağlar.",
     "text_lnd": "Lütfen kurtarma kodunuzu kaydedin. Cüzdanınızı kayıp etmeniz durumunda onu geri oluşturabilmenizi sağlar.",
-    "text_lnd2": "Bu cüzdan BlueWallet tarafından sağlanmaktadır.",
+    "text_lnd2": "Bu cüzdan PND BlueWallet tarafından sağlanmaktadır.",
     "title": "Cüzdanınız oluşturuldu."
   },
   "receive": {
@@ -159,7 +159,7 @@
     "header": "ayarlar",
     "language": "Dil",
     "lightning_settings": "Lightning Ayarları",
-    "lightning_settings_explain": "Kendi LND düğümünüze bağlanmak için lütfen LndHubı yükleyin. ve URL’sini buraya, ayarlara yazın. BlueWallet'in LNDHub (lndhub.io) programını kullanmak için boş bırakın. Değişiklikleri kaydettikten sonra oluşturulan cüzdanlar belirtilen LNDHub'a bağlanacaktır.",
+    "lightning_settings_explain": "Kendi LND düğümünüze bağlanmak için lütfen LndHubı yükleyin. ve URL’sini buraya, ayarlara yazın. PND BlueWallet'in LNDHub (lndhub.io) programını kullanmak için boş bırakın. Değişiklikleri kaydettikten sonra oluşturulan cüzdanlar belirtilen LNDHub'a bağlanacaktır.",
     "password": "Şifre",
     "password_explain": "Depolamanın şifresini çözmek için kullanacağınız şifreyi oluşturun",
     "passwords_do_not_match": "Şifreler eşleşmedi",
