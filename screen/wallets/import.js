@@ -78,19 +78,19 @@ const WalletsImport = () => {
             do {
               await importMnemonic(mightBeWIF);
               importedOnce = true;
-            } while (WalletImport.isCurrentlyImportingWallet())
+            } while (isImportingWallet && isImportingWallet.isFailure === false)
           }
         }
       }
     } catch (e) {}
-    if (!importedOnce) {
-      if (isOnBarScanned) {
-        setTimeout(() => importMnemonic(value), 500);
-      } else {
-        importMnemonic(value);
-      }
+    if (importedOnce) {
+      return;
     }
-    return importedOnce;
+    if (isOnBarScanned) {
+      setTimeout(() => importMnemonic(value), 500);
+    } else {
+      importMnemonic(value);
+    }
   }
 
   const importButtonPressed = () => {
