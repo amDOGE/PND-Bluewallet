@@ -162,7 +162,7 @@
     "create_this_is_hex": "Este é o hex da transacção, assinado e pronto para ser difundido para a network. Continuar?",
     "create_to": "Para",
     "create_tx_size": "Tamanho TX",
-    "create_verify": "Verificar no coinb.in",
+    "create_verify": "Verificar no cointoolkit",
     "details_add_rec_add": "Adicionar destinatário",
     "details_add_rec_rem": "Remover destinatário",
     "details_address": "Endereço",

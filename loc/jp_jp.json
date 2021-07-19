@@ -168,7 +168,7 @@
     "create_this_is_hex": "署名されネットワークへ送信される 16 進数取引コードです",
     "create_to": "送金先",
     "create_tx_size": "TX サイズ",
-    "create_verify": "coinb.inで検証する",
+    "create_verify": "cointoolkitで検証する",
     "details_add_rec_add": "宛先を追加",
     "details_add_rec_rem": "宛先を削除",
     "details_address": "アドレス",

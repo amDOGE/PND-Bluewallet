@@ -151,7 +151,7 @@ const PsbtWithHardwareWallet = () => {
   };
 
   const handleOnVerifyPressed = () => {
-    Linking.openURL('https://coinb.in/?verify=' + txHex);
+    Linking.openURL('https://pandacoin.gitlab.io/cointoolkit/?verify=' + txHex);
   };
 
   const copyHexToClipboard = () => {

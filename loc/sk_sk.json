@@ -120,7 +120,7 @@
     "create_this_is_hex": "Toto je vaša transakcia, podpísaná a pripravená k odoslaniu.",
     "create_to": "Cieľ",
     "create_tx_size": "veľkosť transakcie",
-    "create_verify": "Overiť na coinb.in",
+    "create_verify": "Overiť na cointoolkit",
     "details_add_rec_add": "Pridať prijímateľa",
     "details_add_rec_rem": "Odobrať prijímateľa",
     "details_address": "adresa",

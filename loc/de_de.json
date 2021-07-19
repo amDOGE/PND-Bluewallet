@@ -172,7 +172,7 @@
     "create_this_is_hex": "Das ist die hexadezimale Darstellung der signierten Transaktion, die bereit zum Übertragen an das Netzwerk ist.",
     "create_to": "An",
     "create_tx_size": "Transaktionsgröße",
-    "create_verify": "Verifiziere auf coinb.in",
+    "create_verify": "Verifiziere auf cointoolkit",
     "details_add_rec_add": "Empfänger hinzufügen",
     "details_add_rec_rem": "Empfänger entfernen",
     "details_address": "Adresse",

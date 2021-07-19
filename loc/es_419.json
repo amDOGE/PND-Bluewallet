@@ -172,7 +172,7 @@
     "create_this_is_hex": "Este es el hex de tu transacción, firmado y listo para ser transmitido a la red.",
     "create_to": "A",
     "create_tx_size": "Tamaño de transacción",
-    "create_verify": "Verificar en coinb.in",
+    "create_verify": "Verificar en cointoolkit",
     "details_add_rec_add": "Agregar destinatario",
     "details_add_rec_rem": "Eliminar destinatario",
     "details_address": "Dirección",

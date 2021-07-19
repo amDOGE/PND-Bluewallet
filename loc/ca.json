@@ -160,7 +160,7 @@
     "create_this_is_hex": "Això és la representació en hexadecimal (hex) de la transacció, firmada i llesta per ser enviada a la xarxa. ¿Continuar?",
     "create_to": "A",
     "create_tx_size": "Mida de TX",
-    "create_verify": "Verificar a coinb.in",
+    "create_verify": "Verificar a cointoolkit",
     "details_add_rec_add": "Afegir receptor",
     "details_add_rec_rem": "Eliminar receptor",
     "details_address": "Adreça",

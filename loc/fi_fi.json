@@ -168,7 +168,7 @@
     "create_this_is_hex": "Tämä on siirtotapahtuman hex, allekirjoitettu ja valmis lähetettävksi verkkoon.",
     "create_to": "Vastaanottaja",
     "create_tx_size": "Siirtotapahtuman koko",
-    "create_verify": "Varmenna coinb.in :ssä",
+    "create_verify": "Varmenna cointoolkit :ssä",
     "details_add_rec_add": "Lisää Vastaanottaja",
     "details_add_rec_rem": "Poista Vastaanottaja",
     "details_address": "osoite",

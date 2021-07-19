@@ -165,7 +165,7 @@
     "create_this_is_hex": "Dit is uw transactie-hex, ondertekend en klaar om op het netwerk te worden uitgezonden.",
     "create_to": "Naar",
     "create_tx_size": "TX grootte",
-    "create_verify": "Verifieer op coinb.in",
+    "create_verify": "Verifieer op cointoolkit",
     "details_add_rec_add": "Voeg ontvanger toe",
     "details_add_rec_rem": "Verwijder ontvanger",
     "details_address": "adres",

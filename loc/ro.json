@@ -168,7 +168,7 @@
     "create_this_is_hex": "Acesta este hex-ul tranzacției tale - semnat și gata să fie difuzat către rețea.",
     "create_to": "Către",
     "create_tx_size": "Mărimea tranzacției",
-    "create_verify": "Verifică pe coinb.in",
+    "create_verify": "Verifică pe cointoolkit",
     "details_add_rec_add": "Adaugă destinatar",
     "details_add_rec_rem": "Șterge destinatar",
     "details_address": "Adresă",

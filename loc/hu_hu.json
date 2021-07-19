@@ -161,7 +161,7 @@
     "create_this_is_hex": "Tranzakció hexadecimális formátumban, aláírva és küldésre készen.",
     "create_to": "Címzett",
     "create_tx_size": "Tranzakció mérete",
-    "create_verify": "Igazolás a coinb.in-en",
+    "create_verify": "Igazolás a cointoolkit-en",
     "details_add_rec_add": "Kedvezményezett hozzáadása",
     "details_add_rec_rem": "Kedvezményezett eltávolítása",
     "details_address": "cím",

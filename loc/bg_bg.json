@@ -167,7 +167,7 @@
     "create_this_is_hex": "Това е вашата трансакция/и hex-подписана и гова/и за изпращане",
     "create_to": "До",
     "create_tx_size": "Размер на Транзакцията",
-    "create_verify": "Потвърди в coinb.in",
+    "create_verify": "Потвърди в cointoolkit",
     "details_add_rec_add": "Добави Контакт",
     "details_add_rec_rem": "Премахни Контакт",
     "details_address": "Адрес",

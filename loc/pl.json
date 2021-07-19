@@ -168,7 +168,7 @@
     "create_this_is_hex": "To jest hex twojej transakcji, podpisany i gotowy żeby rozgłosić go w sieci",
     "create_to": "Do",
     "create_tx_size": "Rozmiar TX",
-    "create_verify": "Zweryfikuj na coinb.in",
+    "create_verify": "Zweryfikuj na cointoolkit",
     "details_add_rec_add": "Dodaj Adresata",
     "details_add_rec_rem": "Usuń Adresata",
     "details_address": "adres",

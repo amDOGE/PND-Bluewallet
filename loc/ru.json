@@ -166,7 +166,7 @@
     "create_this_is_hex": "Это данные транзакции. Транзакция подписана и готова быть транслирована в сеть. Продолжить?",
     "create_to": "Куда",
     "create_tx_size": "Размер",
-    "create_verify": "Проверить на coinb.in",
+    "create_verify": "Проверить на cointoolkit",
     "details_add_rec_add": "Добавить Получателя",
     "details_add_rec_rem": "Удалить Получателя",
     "details_address": "Адрес",

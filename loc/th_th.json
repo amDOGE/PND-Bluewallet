@@ -156,7 +156,7 @@
     "create_this_is_hex": "นี่คือ hex ของธุรกรรม, signed แล้วและพร้อมที่จะบรอดคาซท์ไปยังเน็ตเวิร์ค.",
     "create_to": "ถึง",
     "create_tx_size": "ขนาดธุรกรรม",
-    "create_verify": "ตรวจสอบที่ coinb.in",
+    "create_verify": "ตรวจสอบที่ cointoolkit",
     "details_add_rec_add": "เพิ่มผู้รับ",
     "details_add_rec_rem": "ลบผู้รับ",
     "details_address": "แอดเดรส",

@@ -153,7 +153,7 @@
     "create_this_is_hex": "Detta är transaktionens hex, signerad och redo att skickas ut på nätverket.",
     "create_to": "Till",
     "create_tx_size": "Transaktionsstorlek",
-    "create_verify": "Verifiera med coinb.in",
+    "create_verify": "Verifiera med cointoolkit",
     "details_add_rec_add": "Lägg till mottagare",
     "details_add_rec_rem": "Ta bort mottagare",
     "details_address": "adress",

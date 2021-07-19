@@ -103,7 +103,7 @@
     "create_this_is_hex": "Bu, işleminizin hex kodu. İmzalandı ve ağa yayınlanmaya hazır.",
     "create_to": "Kime",
     "create_tx_size": "TX boyutu",
-    "create_verify": "Coinb.in üzerinden kontrol et",
+    "create_verify": "cointoolkit üzerinden kontrol et",
     "details_add_rec_add": "Alıcı ekle",
     "details_add_rec_rem": "Alıcıyı kaldır",
     "details_address": "Adres",

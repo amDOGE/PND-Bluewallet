@@ -167,7 +167,7 @@
     "create_this_is_hex": "Ini adalah hex transaksi, siap untuk disiarkan ke jaringan.",
     "create_to": "Ke",
     "create_tx_size": "Ukuran TX",
-    "create_verify": "Verifikasi di coinb.in",
+    "create_verify": "Verifikasi di cointoolkit",
     "details_add_rec_add": "Tambah penerima",
     "details_add_rec_rem": "Hapus Penerima",
     "details_address": "alamat",

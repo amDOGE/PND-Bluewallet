@@ -168,7 +168,7 @@
     "create_this_is_hex": "Ceci est votre transaction au format hexadécimal, signée et prête à être diffusée sur le réseau.",
     "create_to": "À",
     "create_tx_size": "Taille de la Transaction (TX size)",
-    "create_verify": "Vérifier sur coinb.in",
+    "create_verify": "Vérifier sur cointoolkit",
     "details_add_rec_add": "Ajouter un destinataire",
     "details_add_rec_rem": "Retirer un destinataire",
     "details_address": "adresse",

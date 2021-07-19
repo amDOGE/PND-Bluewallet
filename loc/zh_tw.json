@@ -168,7 +168,7 @@
     "create_this_is_hex": "這個是您的交易的十六進制碼，已簽署並准備好廣播到網絡。",
     "create_to": "到",
     "create_tx_size": "交易大小",
-    "create_verify": "在coinb.in上驗證",
+    "create_verify": "在cointoolkit上驗證",
     "details_add_rec_add": "添加收件人",
     "details_add_rec_rem": "刪除收件人",
     "details_address": "地址",

@@ -168,7 +168,7 @@
     "create_this_is_hex": "Este é o hex da sua transação, assinada e pronta para ser transmitida para o mundo.",
     "create_to": "Para",
     "create_tx_size": "Tamanho",
-    "create_verify": "Verificar no coinb.in",
+    "create_verify": "Verificar no cointoolkit",
     "details_add_rec_add": "Adicionar Destinatário",
     "details_add_rec_rem": "Remover Destinatário",
     "details_address": "Endereço",
