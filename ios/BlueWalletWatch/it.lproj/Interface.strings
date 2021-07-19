@@ -17,8 +17,8 @@
 /* Class = "WKInterfaceLabel"; text = "memo"; ObjectID = "AJ8-p9-ID7"; */
 "AJ8-p9-ID7.text" = "memo";
 
-/* Class = "WKInterfaceController"; title = "BlueWallet"; ObjectID = "AgC-eL-Hgc"; */
-"AgC-eL-Hgc.title" = "BlueWallet";
+/* Class = "WKInterfaceController"; title = "PND BlueWallet"; ObjectID = "AgC-eL-Hgc"; */
+"AgC-eL-Hgc.title" = "PND BlueWallet";
 
 /* Class = "WKInterfaceLabel"; text = "Time"; ObjectID = "GqE-KB-TRD"; */
 "GqE-KB-TRD.text" = "Time";

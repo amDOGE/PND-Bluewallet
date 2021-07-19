@@ -10,7 +10,7 @@
         <!--BlueWallet-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="BlueWallet" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BlueWalletWatch" customModuleProvider="target">
+                <controller title="PND BlueWallet" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="BlueWalletWatch" customModuleProvider="target">
                     <items>
                         <table alignment="left" id="jUH-JS-ccp">
                             <items>

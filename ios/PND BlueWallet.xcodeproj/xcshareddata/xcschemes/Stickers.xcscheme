@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3271B0A8236E2E0700DA766F"
-               BuildableName = "BlueWallet - Bitcoin Price.appex"
-               BlueprintName = "TodayExtension"
-               ReferencedContainer = "container:BlueWallet.xcodeproj">
+               BlueprintIdentifier = "6D2A6460258BA92C0092292B"
+               BuildableName = "Stickers.appex"
+               BlueprintName = "Stickers"
+               ReferencedContainer = "container:PND BlueWallet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -30,9 +30,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "BlueWallet.app"
-               BlueprintName = "BlueWallet"
-               ReferencedContainer = "container:BlueWallet.xcodeproj">
+               BuildableName = "PND BlueWallet.app"
+               BlueprintName = "PND BlueWallet"
+               ReferencedContainer = "container:PND BlueWallet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "BlueWallet.app"
-            BlueprintName = "BlueWallet"
-            ReferencedContainer = "container:BlueWallet.xcodeproj">
+            BuildableName = "PND BlueWallet.app"
+            BlueprintName = "PND BlueWallet"
+            ReferencedContainer = "container:PND BlueWallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "BlueWallet.app"
-            BlueprintName = "BlueWallet"
-            ReferencedContainer = "container:BlueWallet.xcodeproj">
+            BuildableName = "PND BlueWallet.app"
+            BlueprintName = "PND BlueWallet"
+            ReferencedContainer = "container:PND BlueWallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
