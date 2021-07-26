@@ -168,7 +168,7 @@ export class AbstractWallet {
   setSecret(newSecret) {
     this.secret = newSecret.trim().replace('pandacoin:', '').replace('PANDACOIN:', '');
 
-    if (this.secret.startsWith('BC1')) this.secret = this.secret.toLowerCase();
+    if (this.secret.startsWith('PN1')) this.secret = this.secret.toLowerCase();
 
     // [fingerprint/derivation]zpub
     const re = /\[([^\]]+)\](.*)/;
