@@ -785,8 +785,8 @@ module.exports.estimateCurrentBlockheight = function () {
     return latestBlockheight + extraBlocks;
   }
 
-  const baseTs = 1587570465609; // uS
-  const baseHeight = 627179;
+  const baseTs = 1627344672264; // uS
+  const baseHeight = 4085;
   return Math.floor(baseHeight + (+new Date() - baseTs) / 1000 / 60 / 9.93);
 };
 
@@ -800,8 +800,8 @@ module.exports.calculateBlockTime = function (height) {
     return Math.floor(latestBlockheightTimestamp + (height - latestBlockheight) * 9.93 * 60);
   }
 
-  const baseTs = 1585837504; // sec
-  const baseHeight = 624083;
+  const baseTs = 1627344672; // sec
+  const baseHeight = 4085;
   return Math.floor(baseTs + (height - baseHeight) * 9.93 * 60);
 };
 
